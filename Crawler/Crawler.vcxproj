@@ -143,10 +143,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Runcrawler.cpp" />
+    <ClCompile Include="RunCrawler.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Runcrawler.h" />
+    <ClInclude Include="RunCrawler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,12 +18,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Runcrawler.cpp">
+    <ClCompile Include="RunCrawler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Runcrawler.h">
+    <ClInclude Include="RunCrawler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

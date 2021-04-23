@@ -4,7 +4,7 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 #pragma once
-class Runcrawler
+class RunCrawler
 {
 public:
 	static void runCrawler() {
