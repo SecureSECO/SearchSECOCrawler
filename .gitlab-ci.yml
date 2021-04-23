@@ -1,0 +1,26 @@
+image: gcc
+
+google-tests:
+  stage: test
+  before_script:
+    - apt-get update
+    - apt-get -y install cmake autoconf
+  script:
+    - mkdir crawler_build
+    - cd crawler_build
+    - cmake ../Crawler-Test
+    - cmake --build .
+    - ./crawler_tests --gtest_output="xml:report.xml"
+
+
+linting:
+  stage: test
+  before_script:
+    - apt-get update
+    - apt-get -y install cmake autoconf
+    - apt-get -y install clang clang-tidy clang-format
+  script:
+    - cd Crawler
+    - clang-tidy *.cpp --
+    - clang *.cpp -fsyntax-only
+
