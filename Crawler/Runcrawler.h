@@ -30,7 +30,10 @@ public:
 	/// <summary>
 	/// Entry point for the Crawler.
 	/// </summary>
-	static void runCrawler();
+	static void runCrawler() 
+	{
+
+	}
 
 	/// <summary>
 	/// Finds repositories that can be spidered.
