@@ -28,12 +28,7 @@ private:
 
 public:
 	/// <summary>
-	/// Entry point for the Crawler.
-	/// </summary>
-	static void runCrawler();
-
-	/// <summary>
-	/// Finds repositories that can be spidered.
+	/// Finds repositories that can be spidered. Entry point of the crawler.
 	/// </summary>
 	/// <param name="source">A source from which can be crawled.</param>
 	/// <returns>A vector of strings representing URLs.</returns>
