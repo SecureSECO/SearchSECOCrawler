@@ -5,7 +5,7 @@ set(CRAWLER_HEADER_LIST
   ProjectMetadata.h
   Runcrawler.h
   JSON.h
-  ReposityCrawler.h
+  RepositoryCrawler.h
   Utility.h
   GithubInterface.h
 )
@@ -17,7 +17,7 @@ add_library(crawler
   Networking.cpp
   Runcrawler.cpp
   JSON.cpp
-  ReposityCrawler.cpp
+  RepositoryCrawler.cpp
   Utility.cpp
   GithubInterface.cpp
   ${CRAWLER_HEADER_LIST}
