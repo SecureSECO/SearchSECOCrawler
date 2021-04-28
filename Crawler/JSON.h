@@ -5,7 +5,6 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include <sstream>
 #include "nlohmann/json.hpp"
 /// <summary>
 /// Adapter class for JSON formatting.
@@ -14,16 +13,9 @@ class JSON
 {
 private:
 	nlohmann::json json;
-	/// <summary>
-	/// Splits the function based on the delimiter in multiple strings.
-	/// </summary>
-	/// <param name="string">The string to be splitted.</param>
-	/// <param name="delimiter">The delimiter defining where needs to be splitted.</param>
-	/// <returns>A vector of strings.</returns>
-	std::vector<std::string> split(std::string string, char delimiter);
-
 public:
-	JSON(nlohmann::json json) {
+	JSON(nlohmann::json json) 
+	{
 		this->json = json;
 	}
 	/// <summary>

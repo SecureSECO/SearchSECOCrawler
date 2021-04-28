@@ -17,7 +17,8 @@ Utrecht University within the Software Project course.
 #include "curl_ios.h"
 
 
-JSON* GithubInterface::getRequest(std::string query) {
+JSON* GithubInterface::getRequest(std::string query) 
+{
     std::stringstream ss;
     curl::curl_ios<std::stringstream> writer(ss);
 

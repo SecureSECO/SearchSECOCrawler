@@ -19,9 +19,9 @@ public:
 	/// <param name="crawlableSource">The source which needs to be crawled.</param>
 	/// <returns>A list of URLs.</returns>
 	std::vector<std::string> crawlRepositories(CrawlableSource crawlableSource);
-	RepositoryCrawler(GithubInterface* githubInterface) {
+	RepositoryCrawler(GithubInterface* githubInterface) 
+	{
 		this->githubInterface = githubInterface;
-
 	}
 };
 

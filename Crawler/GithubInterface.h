@@ -13,7 +13,8 @@ private:
 	std::string userAgent;
 	std::string userPWD;
 public:
-	GithubInterface(std::string userAgent, std::string userPWD) {
+	GithubInterface(std::string userAgent, std::string userPWD) 
+	{
 		this->userAgent = userAgent;
 		this->userPWD = userPWD;
 	}

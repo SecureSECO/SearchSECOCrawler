@@ -6,6 +6,8 @@ Utrecht University within the Software Project course.
 
 #include "RepositoryCrawler.h"
 #include "RunCrawler.h"
+#include <sstream>
+#include "Utility.h"
 
 CrawlableSource RunCrawler::makeCrawlableSource(std::string)
 {
@@ -20,16 +22,7 @@ std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source)
 
 ProjectMetadata RunCrawler::findMetadata(std::string url)
 {
-
-    // Split url into parts
-    std::stringstream inp;
-    inp.str(url);
-    std::vector<std::string> split;
-    std::string seg;
-    while (std::getline(inp, seg, '/'))
-    {
-        split.push_back(seg);
-    }
+    std::vector<std::string> split = Utility::split(url, '/');
     int segCount = split.size();
 
     // Get owner and repo name
