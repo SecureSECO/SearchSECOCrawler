@@ -1,4 +1,4 @@
-find_package(nlohmann_json REQUIRED)
+find_package(nlohmann-json3-dev REQUIRED)
 
 set(CRAWLER_HEADER_LIST
   Crawler.h
