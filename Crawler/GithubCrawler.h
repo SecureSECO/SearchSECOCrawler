@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 #include "Crawler.h"
 #include "GithubInterface.h"
+
 class GithubCrawler : public Crawler
 {
 private:
@@ -17,17 +18,11 @@ public:
         this->githubInterface = githubInterface;
     }
 
-    std::vector<std::string> crawlRepositories()
-    {
-        JSON *json = githubInterface->getRequest("https://api.github.com/repositories");
-        JSON josn = *json;
-        std::vector<std::string> vec;
-        for (int i = 0; i < 100; i++)
-        {
-            vec.push_back(josn.get(std::to_string(i) + "/url"));
-        }
-        return vec;
-    }
+    /// <summary>
+    /// Returns a list of repositories.
+    /// </summary>
+    /// <returns>A vector consisting of strings representing URLs to repositories.</returns>
+    std::vector<std::string> crawlRepositories();
 
 };
 

@@ -7,12 +7,6 @@ Utrecht University within the Software Project course.
 #include "GithubInterface.h"
 #include "curl_easy.h"
 #include "curl_exception.h"
-/*
-This program has been developed by students from the bachelor Computer Science at
-Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)
-*/
-
 #include "curl_form.h"
 #include "curl_ios.h"
 

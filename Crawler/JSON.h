@@ -6,9 +6,11 @@ Utrecht University within the Software Project course.
 
 #pragma once
 #include "nlohmann/json.hpp"
+
 /// <summary>
 /// Adapter class for JSON formatting.
 /// </summary>
+
 class JSON
 {
 private:

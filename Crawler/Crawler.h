@@ -9,6 +9,7 @@ Utrecht University within the Software Project course.
 #include <string>
 #include "ProjectMetadata.h"
 #include "RunCrawler.h"
+
 class Crawler
 {
 public:
