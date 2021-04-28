@@ -21,6 +21,6 @@ linting:
     - apt-get -y install clang clang-tidy clang-format nlohmann-json3-dev curl
   script:
     - cd Crawler
-    - clang-tidy *.cpp --
-    - clang *.cpp -fsyntax-only
+    - clang-tidy *.cpp -- -I../curlcpp/include/
+    - clang *.cpp -I../curlcpp/include/ -fsyntax-only
 
