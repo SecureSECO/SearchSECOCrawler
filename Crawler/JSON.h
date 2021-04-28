@@ -39,7 +39,7 @@ public:
 	/// Parses a string/stringstream to JSON.
 	/// </summary>
 	/// <param name="s">The stringstream/string. </param>
-	/// <returns>A JSON variable.</returns>
+	/// <returns>A pointer to a JSON variable.</returns>
 	static JSON* parse(std::stringstream s);
 	static JSON* parse(std::string s);
 

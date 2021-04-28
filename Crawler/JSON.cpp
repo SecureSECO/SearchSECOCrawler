@@ -7,7 +7,8 @@ Utrecht University within the Software Project course.
 #include "JSON.h"
 
 // Copied from https://stackoverflow.com/questions/10058606/splitting-a-string-by-a-character/10058756.
-std::vector<std::string> JSON::split(std::string string, char delimiter) {
+std::vector<std::string> JSON::split(std::string string, char delimiter) 
+{
 	std::stringstream ss(string);
 	std::string segment;
 	std::vector<std::string> seglist;
@@ -19,13 +20,20 @@ std::vector<std::string> JSON::split(std::string string, char delimiter) {
 	return seglist;
 }
 
-std::string JSON::get(std::string key) {
+std::string JSON::get(std::string key) 
+{
 	std::vector<std::string> seglist = split(key, '/');
 	nlohmann::basic_json<>::value_type current = json;
 	int size = seglist.size();
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < size; i++) 
+	{
 		current = current[seglist[i]];
-		if (i == size - 1) {
+		if (i == size - 1) 
+		{
+			if (current.empty()) 
+			{
+				return "";
+			}
 			return current;
 		}
 	}

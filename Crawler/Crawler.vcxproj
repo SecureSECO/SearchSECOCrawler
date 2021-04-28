@@ -126,6 +126,10 @@
       <AdditionalDependencies>libcurld.lib;curlcppd.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\curlcpp\lib\x64\;..\curl\build\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libcurld.lib;curlcppd.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\curlcpp\lib\x64\;..\curl\build\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -153,11 +157,13 @@
   <ItemGroup>
     <ClCompile Include="GithubInterface.cpp" />
     <ClCompile Include="JSON.cpp" />
+    <ClCompile Include="RepositoryCrawler.cpp" />
     <ClCompile Include="RunCrawler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GithubInterface.h" />
     <ClInclude Include="JSON.h" />
+    <ClInclude Include="RepositoryCrawler.h" />
     <ClInclude Include="RunCrawler.h" />
   </ItemGroup>
   <ItemGroup>
