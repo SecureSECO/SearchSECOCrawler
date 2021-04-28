@@ -4,7 +4,7 @@ google-tests:
   stage: test
   before_script:
     - apt-get update
-    - apt-get -y install cmake autoconf
+    - apt-get -y install cmake autoconf nlohmann-json3-dev curl
   script:
     - mkdir crawler_build
     - cd crawler_build
@@ -18,9 +18,9 @@ linting:
   before_script:
     - apt-get update
     - apt-get -y install cmake autoconf
-    - apt-get -y install clang clang-tidy clang-format
+    - apt-get -y install clang clang-tidy clang-format nlohmann-json3-dev curl
   script:
     - cd Crawler
-    - clang-tidy *.cpp --
-    - clang *.cpp -fsyntax-only
+    - clang-tidy *.cpp -- -I../curlcpp/include/
+    - clang *.cpp -I../curlcpp/include/ -fsyntax-only
 
