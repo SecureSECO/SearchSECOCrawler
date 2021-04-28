@@ -1,3 +1,5 @@
+find_package(nlohmann.json)
+
 set(CRAWLER_HEADER_LIST
   Crawler.h
   GithubCrawler.h
