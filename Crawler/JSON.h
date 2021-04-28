@@ -27,6 +27,7 @@ public:
 	/// <returns>The value if found, and NULL otherwise.</returns>
 	std::string get(std::string key);
 
+
 	/// <summary>
 	/// Parses a string/stringstream to JSON.
 	/// </summary>

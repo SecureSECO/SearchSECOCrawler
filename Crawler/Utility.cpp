@@ -12,3 +12,9 @@ std::vector<std::string> Utility::split(std::string string, char delimiter)
 	}
 	return seglist;
 }
+
+// Copied from https://stackoverflow.com/questions/2844817/how-do-i-check-if-a-c-string-is-an-int/37864920.
+bool Utility::hasOnlyDigits(std::string s)
+{
+	return s.find_first_not_of("0123456789") == std::string::npos;
+}

@@ -8,6 +8,7 @@ Utrecht University within the Software Project course.
 #include <vector>
 #include <string>
 #include "ProjectMetadata.h"
+#include "RunCrawler.h"
 class Crawler
 {
 public:
@@ -15,7 +16,7 @@ public:
 	/// Finds URLs to spider.
 	/// </summary>
 	/// <returns>A vector of strings representing URLs.</returns>
-	std::vector<std::string> crawl();
+	std::vector<std::string> crawlRepositories(CrawlableSource crawlableSource);
 
 	/// <summary>
 	/// Gets project metadata from the given URL.

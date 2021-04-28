@@ -4,20 +4,30 @@ Utrecht University within the Software Project course.
 � Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "RepositoryCrawler.h"
 #include "RunCrawler.h"
 #include <sstream>
 #include "Utility.h"
+#include "GithubInterface.h"
+#include "GithubCrawler.h"
 
 CrawlableSource RunCrawler::makeCrawlableSource(std::string)
 {
     return CrawlableSource::NOT_IMPLEMENTED;
 }
+
 std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source)
 {
-	RepositoryCrawler repositoryCrawler(new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b"));
-	std::vector<std::string> vec;
-	return vec;
+    std::vector<std::string> vec;
+    GithubCrawler githubCrawler(new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b"));
+    switch (source)
+    {
+    case CrawlableSource::NOT_IMPLEMENTED:
+        return vec;
+    case CrawlableSource::GITHUB:
+        return githubCrawler.crawlRepositories();
+    default:
+        return vec;
+    }
 }
 
 ProjectMetadata RunCrawler::findMetadata(std::string url)
