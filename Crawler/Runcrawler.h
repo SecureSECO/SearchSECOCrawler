@@ -8,6 +8,7 @@ Utrecht University within the Software Project course.
 #include <vector>
 #include <string>
 #include "ProjectMetadata.h"
+#include "GithubInterface.h"
 
 enum class CrawlableSource
 {
@@ -19,34 +20,38 @@ enum class CrawlableSource
 class RunCrawler
 {
 private:
+	GithubInterface githubInterface;
+
 	/// <summary>
 	/// Converts a URL to a CrawlableSource.
 	/// </summary>
 	/// <param name="">An URL.</param>
 	/// <returns>A CrawlableSource.</returns>
-	static CrawlableSource makeCrawlableSource(std::string);
-
-public:
-	/// <summary>
-	/// Entry point for the Crawler.
-	/// </summary>
-	static void runCrawler() 
+	static CrawlableSource makeCrawlableSource(std::string)
 	{
 
 	}
 
+public:
 	/// <summary>
-	/// Finds repositories that can be spidered.
+	/// Finds repositories that can be spidered. Entry point of the crawler.
 	/// </summary>
 	/// <param name="source">A source from which can be crawled.</param>
 	/// <returns>A vector of strings representing URLs.</returns>
-	static std::vector<std::string> crawlRepositories(CrawlableSource source);
+	static std::vector<std::string> crawlRepositories(CrawlableSource source)
+	{
+		std::vector<std::string> vec;
+		return vec;
+	}
 
 	/// <summary>
 	/// Finds project metadata.
 	/// </summary>
 	/// <param name="url">An URL to a project.</param>
 	/// <returns>A string that represents a path to the project metadata file.</returns>
-	static ProjectMetadata findMetadata(std::string url);
+	static ProjectMetadata findMetadata(std::string url)
+	{
+
+	}
 };
 

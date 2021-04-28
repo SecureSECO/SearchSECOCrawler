@@ -7,5 +7,5 @@ Utrecht University within the Software Project course.
 #include "RunCrawler.h"
 int main() 
 {
-	RunCrawler::runCrawler();
+	RunCrawler::crawlRepositories(CrawlableSource::GITHUB);
 }
