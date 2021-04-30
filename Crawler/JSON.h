@@ -6,9 +6,11 @@ Utrecht University within the Software Project course.
 
 #pragma once
 #include "nlohmann/json.hpp"
+
 /// <summary>
 /// Adapter class for JSON formatting.
 /// </summary>
+
 class JSON
 {
 private:
@@ -26,6 +28,7 @@ public:
 	/// <param name="key">The key representing what value needs to be returned.</param>
 	/// <returns>The value if found, and NULL otherwise.</returns>
 	std::string get(std::string key);
+
 
 	/// <summary>
 	/// Parses a string/stringstream to JSON.

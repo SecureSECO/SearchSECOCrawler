@@ -32,7 +32,7 @@ public:
 	/// </summary>
 	/// <param name="source">A source from which can be crawled.</param>
 	/// <returns>A vector of strings representing URLs.</returns>
-	static std::vector<std::string> crawlRepositories(CrawlableSource source);
+	static std::vector<std::string> crawlRepositories(CrawlableSource crawlableSource);
 
 	/// <summary>
 	/// Finds project metadata.

@@ -14,18 +14,28 @@ std::string JSON::get(std::string key)
 	int size = seglist.size();
 	for (int i = 0; i < size; i++) 
 	{
-		current = current[seglist[i]];
-		if (i == size - 1) 
+		std::string currentKey = seglist[i];
+		if (current.is_array())
 		{
-			if (current.empty()) 
+			if (Utility::hasOnlyDigits(currentKey))
 			{
-				return "";
+				current = current[std::stoi(currentKey)];
 			}
-			return current;
+			//else: error
+		}
+		else
+		{
+			current = current[currentKey];
 		}
 	}
+	if (current.empty())
+	{
+		return "";
+	}
+	return current;
 	
 }
+
 
 JSON* JSON::parse(std::stringstream s)
 {

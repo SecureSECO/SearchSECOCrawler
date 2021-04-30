@@ -155,16 +155,18 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Crawler.cpp" />
+    <ClCompile Include="GithubCrawler.cpp" />
     <ClCompile Include="GithubInterface.cpp" />
     <ClCompile Include="JSON.cpp" />
-    <ClCompile Include="RepositoryCrawler.cpp" />
     <ClCompile Include="RunCrawler.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Crawler.h" />
+    <ClInclude Include="GithubCrawler.h" />
     <ClInclude Include="GithubInterface.h" />
     <ClInclude Include="JSON.h" />
-    <ClInclude Include="RepositoryCrawler.h" />
     <ClInclude Include="RunCrawler.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>

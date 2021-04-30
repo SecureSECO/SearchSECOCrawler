@@ -6,9 +6,23 @@ Utrecht University within the Software Project course.
 
 #pragma once
 #include "Crawler.h"
-class GithubCrawler :
-    public Crawler
+#include "GithubInterface.h"
+
+class GithubCrawler : public Crawler
 {
+private:
+	GithubInterface* githubInterface;
+public:
+	GithubCrawler(GithubInterface* githubInterface)
+	{
+		this->githubInterface = githubInterface;
+	}
+
+	/// <summary>
+	/// Returns a list of repositories.
+	/// </summary>
+	/// <returns>A vector consisting of strings representing URLs to repositories.</returns>
+	std::vector<std::string> crawlRepositories();
 
 };
 
