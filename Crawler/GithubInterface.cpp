@@ -13,26 +13,26 @@ Utrecht University within the Software Project course.
 
 JSON* GithubInterface::getRequest(std::string query) 
 {
-    std::stringstream ss;
-    curl::curl_ios<std::stringstream> writer(ss);
+	std::stringstream ss;
+	curl::curl_ios<std::stringstream> writer(ss);
 
-    curl::curl_easy easy(writer);
+	curl::curl_easy easy(writer);
 
-    // Set up data
-    easy.add<CURLOPT_URL>(query.data());
-    easy.add<CURLOPT_FOLLOWLOCATION>(1L);
-    easy.add<CURLOPT_USERAGENT>(userAgent.data());
-    easy.add<CURLOPT_USERPWD>(userPWD.data());
+	// Set up data
+	easy.add<CURLOPT_URL>(query.data());
+	easy.add<CURLOPT_FOLLOWLOCATION>(1L);
+	easy.add<CURLOPT_USERAGENT>(userAgent.data());
+	easy.add<CURLOPT_USERPWD>(userPWD.data());
 
-    // Send query
-    try
-    {
-        easy.perform();
-    }
-    catch (curl::curl_easy_exception error)
-    {
-        auto errors = error.get_traceback();
-        error.print_traceback();
-    }
-    return JSON::parse(ss.str());
+	// Send query
+	try
+	{
+		easy.perform();
+	}
+	catch (curl::curl_easy_exception error)
+	{
+		auto errors = error.get_traceback();
+		error.print_traceback();
+	}
+	return JSON::parse(ss.str());
 }

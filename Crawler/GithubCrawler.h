@@ -11,18 +11,18 @@ Utrecht University within the Software Project course.
 class GithubCrawler : public Crawler
 {
 private:
-    GithubInterface* githubInterface;
+	GithubInterface* githubInterface;
 public:
-    GithubCrawler(GithubInterface* githubInterface)
-    {
-        this->githubInterface = githubInterface;
-    }
+	GithubCrawler(GithubInterface* githubInterface)
+	{
+		this->githubInterface = githubInterface;
+	}
 
-    /// <summary>
-    /// Returns a list of repositories.
-    /// </summary>
-    /// <returns>A vector consisting of strings representing URLs to repositories.</returns>
-    std::vector<std::string> crawlRepositories();
+	/// <summary>
+	/// Returns a list of repositories.
+	/// </summary>
+	/// <returns>A vector consisting of strings representing URLs to repositories.</returns>
+	std::vector<std::string> crawlRepositories();
 
 };
 
