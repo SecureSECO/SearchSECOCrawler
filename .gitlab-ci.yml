@@ -1,10 +1,12 @@
-image: gcc
+image: ubuntu:latest
 
 google-tests:
-  stage: test
+  stage: test  
+  variables:
+    DEBIAN_FRONTEND: "noninteractive"
   before_script:
-    - apt-get update
-    - apt-get -y install cmake autoconf nlohmann-json3-dev curl
+    - apt-get -y update && apt-get -y dist-upgrade
+    - apt-get -y install gcc g++ cmake autoconf git nlohmann-json3-dev curl
   script:
     - mkdir crawler_build
     - cd crawler_build
@@ -14,10 +16,12 @@ google-tests:
 
 
 linting:
-  stage: test
-  before_script:
-    - apt-get update
-    - apt-get -y install cmake autoconf
+  stage: test  
+  variables:
+    DEBIAN_FRONTEND: "noninteractive"
+  before_script: 
+    - apt-get -y update && apt-get -y dist-upgrade
+    - apt-get -y install gcc g++ cmake autoconf
     - apt-get -y install clang clang-tidy clang-format nlohmann-json3-dev curl
   script:
     - cd Crawler
