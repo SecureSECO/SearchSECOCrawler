@@ -59,6 +59,6 @@ ProjectMetadata RunCrawler::findMetadata(std::string url)
 	projectMetadata->name = reponame;
 	projectMetadata->url = json->get("html_url");
 	projectMetadata->license = json->get("license/name");
-	projectMetadata->version = json->get("updated_at");
+	projectMetadata->version = json->get("pushed_at");
 	return *projectMetadata;
 }
