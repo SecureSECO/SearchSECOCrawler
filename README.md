@@ -8,9 +8,11 @@ Download the .zip containing the source files and extract the files.
 ## Dependencies
 
 * c++14 or c++17
+* Windows 10
+* nlohmann.json from the nuget package manager needs to be installed.
 ## Building
 
-The project can be build by opening the solution file and building via Visual Studio 2019. This will result in multiple files including a library of the project.
+The project can be build by opening the solution file and building via Visual Studio 2019.
 # Usage
 
 ## Library
