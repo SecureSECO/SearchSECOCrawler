@@ -8,12 +8,12 @@ Utrecht University within the Software Project course.
 #include <string>
 struct ProjectMetadata
 {
-    std::string version;
-    std::string license;
-    std::string name;
-    std::string url;
-    std::string authorName;
-    std::string authorMail;
+	std::string version;
+	std::string license;
+	std::string name;
+	std::string url;
+	std::string authorName;
+	std::string authorMail;
 
 	/// <summary>
 	/// Converts this ProjectMetadata to a string.
