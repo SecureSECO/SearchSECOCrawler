@@ -1,0 +1,36 @@
+
+if (WIN32)
+  add_definitions(-DCURL_STATICLIB)  
+endif()
+
+add_subdirectory(../curlcpp/src ./curlcpp)
+
+
+
+
+set(CRAWLER_HEADER_LIST
+  Crawler.h
+  GithubCrawler.h
+  Networking.h
+  ProjectMetadata.h
+  RunCrawler.h
+  JSON.h
+  Utility.h
+  GithubInterface.h
+)
+
+
+add_library(crawler
+  Crawler.cpp
+  GithubCrawler.cpp
+  Networking.cpp
+  RunCrawler.cpp
+  JSON.cpp
+  Utility.cpp
+  GithubInterface.cpp
+  ${CRAWLER_HEADER_LIST}
+)
+
+target_link_libraries(crawler curlcpp)
+target_include_directories(crawler PUBLIC "${PROJECT_BINARY_DIR}" ../curlcpp/include)
+
