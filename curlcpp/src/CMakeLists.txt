@@ -66,7 +66,7 @@ else()
         set(CMAKE_PREFIX_PATH /opt/local ${CMAKE_PREFIX_PATH})
     endif()
     if(WIN32)
-      find_library(_libcurl NAMES libcurl PATHS ../../curl/build/lib/x64)
+      find_library(_libcurl NAMES libcurl PATHS ../../curl/build/lib/curl_x64)
       target_link_libraries(curlcpp PUBLIC ${_libcurl} wldap32 ws2_32 crypt32)
       target_include_directories(curlcpp PUBLIC ../../curl/include)     
       
