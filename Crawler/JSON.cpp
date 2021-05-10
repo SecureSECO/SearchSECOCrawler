@@ -6,6 +6,7 @@ Utrecht University within the Software Project course.
 
 #include "JSON.h"
 #include "Utility.h"
+#include "ErrorHandler.h"
 
 std::string JSON::get(std::string key) 
 {
@@ -21,7 +22,10 @@ std::string JSON::get(std::string key)
 			{
 				current = current[std::stoi(currentKey)];
 			}
-			//else: error
+			else
+			{
+				DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+			}
 		}
 		else
 		{
@@ -39,13 +43,30 @@ std::string JSON::get(std::string key)
 
 JSON* JSON::parse(std::stringstream s)
 {
-	return new JSON(nlohmann::json::parse(s));
+	JSON* json;
+	try
+	{
+		json = new JSON(nlohmann::json::parse(s));
+	}
+	catch (std::string error)
+	{
+		DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
+	}
+	return json;
 }
 
 JSON* JSON::parse(std::string s)
 {
-	nlohmann::json nlohmannJson = nlohmann::json::parse(s);
-	JSON* json = new JSON(nlohmannJson);
+
+	JSON* json;
+	try
+	{
+		json = new JSON(nlohmann::json::parse(s));
+	}
+	catch (std::string error)
+	{
+		DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
+	}
 	return json;
 }
 

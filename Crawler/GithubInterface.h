@@ -7,12 +7,14 @@ Utrecht University within the Software Project course.
 #pragma once
 #include <string>
 #include "JSON.h"
+#include "ErrorHandler.h"
 
 class GithubInterface
 {
 private:
 	std::string userAgent;
 	std::string userPWD;
+	DefaultGithubErrorHandler defaultGithubHandler;
 public:
 	GithubInterface(std::string userAgent, std::string userPWD) 
 	{

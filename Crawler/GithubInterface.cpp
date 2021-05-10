@@ -33,6 +33,13 @@ JSON* GithubInterface::getRequest(std::string query)
 	{
 		auto errors = error.get_traceback();
 		error.print_traceback();
+
 	}
+	long code = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
+	githubAPIResponse response = GithubClientErrorConverter::convertResponse(code);
+	if(response != githubAPIResponse::OK){
+		defaultGithubHandler.handle(response, __FILE__, __LINE__);
+	}
+
 	return JSON::parse(ss.str());
 }
