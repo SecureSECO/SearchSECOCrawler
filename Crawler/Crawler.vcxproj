@@ -161,6 +161,11 @@
     <ClCompile Include="JSON.cpp" />
     <ClCompile Include="RunCrawler.cpp" />
     <ClCompile Include="Utility.cpp" />
+	<ClInclude Include="ErrorHandler.cpp" />
+	<ClInclude Include="EmptyHandler.cpp" />
+	<ClInclude Include="GithubClientErrorConverter.cpp" />
+	<ClInclude Include="LogHandler.cpp" />
+	<ClInclude Include="Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Crawler.h" />
@@ -169,6 +174,11 @@
     <ClInclude Include="JSON.h" />
     <ClInclude Include="RunCrawler.h" />
     <ClInclude Include="Utility.h" />
+	<ClInclude Include="ErrorHandler.h" />
+	<ClInclude Include="ErrorList.h" />
+	<ClInclude Include="GithubClientErrorConverter.h" />
+	<ClInclude Include="IndividualErrorHandler.h" />
+	<ClInclude Include="Logger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

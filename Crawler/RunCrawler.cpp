@@ -32,7 +32,7 @@ std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source)
 	}
 }
 
-ProjectMetadata RunCrawler::findMetadata(std::string url)
+ProjectMetadata RunCrawler::findMetadata(std::string url, int &code)
 {
 	std::vector<std::string> split = Utility::split(url, '/');
 	int segCount = split.size();
@@ -46,6 +46,10 @@ ProjectMetadata RunCrawler::findMetadata(std::string url)
 
 	GithubInterface *githubInterface = new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b");
 	auto json = githubInterface->getRequest(repoUrl);
+	if (errno != 0)
+	{
+		return ProjectMetadata();
+	}
 	auto ownerData = githubInterface->getRequest(json->get("owner/url"));
 	std::string email = "";
 	if (ownerData->get("email") != "")
@@ -53,12 +57,13 @@ ProjectMetadata RunCrawler::findMetadata(std::string url)
 		email = ownerData->get("email");
 	}
 
-	ProjectMetadata *projectMetadata = new ProjectMetadata();
-	projectMetadata->authorName = ownername;
-	projectMetadata->authorMail = email;
-	projectMetadata->name = reponame;
-	projectMetadata->url = json->get("html_url");
-	projectMetadata->license = json->get("license/name");
-	projectMetadata->version = json->get("pushed_at");
-	return *projectMetadata;
+	ProjectMetadata projectMetadata = ProjectMetadata();
+	projectMetadata.authorName = ownername;
+	projectMetadata.authorMail = email;
+	projectMetadata.name = reponame;
+	projectMetadata.url = json->get("html_url");
+	projectMetadata.license = json->get("license/name");
+	projectMetadata.version = json->get("pushed_at");
+	code = errno;
+	return projectMetadata;
 }

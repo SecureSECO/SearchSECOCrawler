@@ -39,6 +39,6 @@ public:
 	/// </summary>
 	/// <param name="url">An URL to a project.</param>
 	/// <returns>A string that represents a path to the project metadata file.</returns>
-	static ProjectMetadata findMetadata(std::string url);
+	static ProjectMetadata findMetadata(std::string url, int &code);
 };
 
