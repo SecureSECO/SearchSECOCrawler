@@ -119,6 +119,7 @@
       <PreprocessorDefinitions>_MBCS;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\curl\include\;..\curlcpp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,6 +141,7 @@
       <PreprocessorDefinitions>_MBCS;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\curl\include\;..\curlcpp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -185,7 +187,7 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets" Condition="Exists('$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')"/>
+    <Import Project="$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets" Condition="Exists('$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -193,5 +195,4 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets'))" />
   </Target>
-
 </Project>
