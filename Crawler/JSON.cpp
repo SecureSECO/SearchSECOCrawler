@@ -25,11 +25,20 @@ std::string JSON::get(std::string key)
 			else
 			{
 				DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+				throw 1;
 			}
 		}
 		else
 		{
-			current = current[currentKey];
+			if (current.find(currentKey) != current.end())
+			{
+				current = current[currentKey];
+			}
+			else
+			{
+				DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+				throw 1;
+			}
 		}
 	}
 	if (current.empty())
@@ -43,7 +52,7 @@ std::string JSON::get(std::string key)
 
 JSON* JSON::parse(std::stringstream s)
 {
-	JSON* json;
+	JSON* json = nullptr;
 	try
 	{
 		json = new JSON(nlohmann::json::parse(s));
@@ -51,6 +60,7 @@ JSON* JSON::parse(std::stringstream s)
 	catch (std::string error)
 	{
 		DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
+		throw 1;
 	}
 	return json;
 }
@@ -58,7 +68,7 @@ JSON* JSON::parse(std::stringstream s)
 JSON* JSON::parse(std::string s)
 {
 
-	JSON* json;
+	JSON* json = nullptr;
 	try
 	{
 		json = new JSON(nlohmann::json::parse(s));
@@ -66,6 +76,7 @@ JSON* JSON::parse(std::string s)
 	catch (std::string error)
 	{
 		DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
+		throw 1;
 	}
 	return json;
 }

@@ -1,12 +1,15 @@
-/*This program has been developed by students from the bachelor Computer Science at
+/*
+This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-© Copyright Utrecht University (Department of Information and Computing Sciences)*/
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+*/
+
 #pragma once
 
 #include <string>
 #include <vector>
 #include <map>
-#include "GithubClientErrorConverter.h"
+
 #include "../loguru-master/loguru.hpp"
 #include "Logger.h"
 
@@ -21,21 +24,24 @@ enum class LogLevel
 class IndividualErrorHandler
 {
 public:
-	virtual void execute(const char* file, unsigned int line) {
+	virtual void execute(const char* file, unsigned int line)
+	{
 	};
 };
-
 
 
 class LogHandler : public IndividualErrorHandler
 {
 private:
-	const char *msg;
+	const char* msg;
 	LogLevel level;
+	int code;
 public:
-	LogHandler(const char *msg, LogLevel level) {
+	LogHandler(const char* msg, LogLevel level, int code)
+	{
 		this->msg = msg;
 		this->level = level;
+		this->code = code;
 	}
 	void execute(const char* file, unsigned int line) override;
 };

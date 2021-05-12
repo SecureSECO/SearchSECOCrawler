@@ -4,8 +4,9 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "IndividualErrorHandler.h"
-void EmptyHandler::execute(const char* file, unsigned int line)
-{
+//
+// pch.h
+// Header for standard system include files.
+//
 
-}
+#pragma once

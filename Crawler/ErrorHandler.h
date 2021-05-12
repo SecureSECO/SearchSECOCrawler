@@ -1,14 +1,16 @@
-/*This program has been developed by students from the bachelor Computer Science at
+﻿/*
+This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course.
-� Copyright Utrecht University (Department of Information and Computing Sciences)*/
-#pragma once
+© Copyright Utrecht University (Department of Information and Computing Sciences)
+*/
 
+#pragma once
 
 #include <string>
 #include <vector>
 #include <map>
-#include "GithubClientErrorConverter.h"
 #include "IndividualErrorHandler.h"
+#include "Utility.h"
 
 
 /// <summary>
@@ -18,18 +20,20 @@ Utrecht University within the Software Project course.
 template<class TResponse>
 class ErrorHandler
 {
-static_assert(std::is_enum_v<TResponse>, "TResponse should be an enum. From: ErrorHandler.");
+	//static_assert(std::is_enum_v<TResponse>, "TResponse should be an enum. From: ErrorHandler.");
 private:
 	std::map< TResponse, IndividualErrorHandler*> errorHandlingDictionary;
 protected:
-	void replaceAllHandlers(std::map< TResponse, IndividualErrorHandler*> githubErrorHandlingDictionary) {
+	void replaceAllHandlers(std::map< TResponse, IndividualErrorHandler*> githubErrorHandlingDictionary)
+	{
 		this->errorHandlingDictionary = githubErrorHandlingDictionary;
 	}
 public:
 	// Template function definitions have to be in the same file as the class definition, see:
 	// https://stackoverflow.com/questions/1639797/template-issue-causes-linker-error-c
 
-	ErrorHandler() {
+	ErrorHandler()
+	{
 		errorHandlingDictionary = std::map< TResponse, IndividualErrorHandler*>{};
 	}
 
@@ -56,6 +60,11 @@ public:
 		errorHandlingDictionary[response] = handler;
 		delete oldHandler;
 	}
+
+	int getCode(TResponse response)
+	{
+		return Utility::getCode(response);
+	}
 };
 
 class DefaultGithubErrorHandler : public ErrorHandler<githubAPIResponse>
@@ -68,6 +77,7 @@ class DefaultGenericErrorHandler : public ErrorHandler<genericError>
 {
 public:
 	DefaultGenericErrorHandler();
+
 };
 
 // Taken from https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
@@ -76,10 +86,19 @@ class DefaultJSONErrorHandler : public ErrorHandler<JSONError>
 private:
 	DefaultJSONErrorHandler()
 	{
-		std::map<JSONError, IndividualErrorHandler*> handlers = {
-			{JSONError::branchError, new LogHandler("Couldn't find the given index in JSON structure.", LogLevel::ERROR)},
-			{JSONError::parseError, new LogHandler("Error while parsing JSON structure.", LogLevel::ERROR)},
+		std::map<JSONError, const char*> messages = {
+			{JSONError::branchError, "Couldn't find the given index in JSON structure." },
+			{JSONError::parseError, "Error while parsing JSON structure." },
 		};
+
+		std::map<JSONError, IndividualErrorHandler*> handlers;
+
+		// Taken from https://stackoverflow.com/questions/26281979/c-loop-through-map.
+		for (auto const& keyvalue : messages)
+		{
+			handlers.insert({ keyvalue.first, new LogHandler(keyvalue.second, LogLevel::ERROR, getCode(keyvalue.first)) });
+		}
+
 		replaceAllHandlers(handlers);
 	}
 public:

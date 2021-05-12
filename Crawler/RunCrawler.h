@@ -9,6 +9,7 @@ Utrecht University within the Software Project course.
 #include <string>
 #include "ProjectMetadata.h"
 
+
 enum class CrawlableSource
 {
 	NOT_IMPLEMENTED,
@@ -32,7 +33,7 @@ public:
 	/// </summary>
 	/// <param name="source">A source from which can be crawled.</param>
 	/// <returns>A vector of strings representing URLs.</returns>
-	static std::vector<std::string> crawlRepositories(CrawlableSource crawlableSource);
+	static std::vector<std::string> crawlRepositories(CrawlableSource crawlableSource, int &code);
 
 	/// <summary>
 	/// Finds project metadata.

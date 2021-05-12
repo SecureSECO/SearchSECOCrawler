@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #include "RunCrawler.h"
 int main() 
 {
-	RunCrawler::findMetadata("github.com/torvalds/linux");
-	RunCrawler::crawlRepositories(CrawlableSource::GITHUB);
+	int c;
+	RunCrawler::findMetadata("github.com/torvalds/linux", c);
+	RunCrawler::crawlRepositories(CrawlableSource::GITHUB, c);
 }

@@ -15,7 +15,7 @@ CrawlableSource RunCrawler::makeCrawlableSource(std::string)
 	return CrawlableSource::NOT_IMPLEMENTED;
 }
 
-std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source)
+std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source, int &code)
 {
 	std::vector<std::string> vec;
 	switch (source)
@@ -24,8 +24,15 @@ std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source)
 		return vec;
 	case CrawlableSource::GITHUB:
 	{
-		GithubCrawler githubCrawler(new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b"));
-		return githubCrawler.crawlRepositories();
+		try
+		{
+			GithubCrawler githubCrawler(new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b"));
+			return githubCrawler.crawlRepositories();
+		}
+		catch(int e) 
+		{
+			code = e;
+		}
 	}
 	default:
 		return vec;
@@ -44,26 +51,28 @@ ProjectMetadata RunCrawler::findMetadata(std::string url, int &code)
 	std::string repoUrl = "https://api.github.com/repos/" + ownername + "/" + reponame;
 
 
-	GithubInterface *githubInterface = new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b");
-	auto json = githubInterface->getRequest(repoUrl);
-	if (errno != 0)
-	{
-		return ProjectMetadata();
-	}
-	auto ownerData = githubInterface->getRequest(json->get("owner/url"));
-	std::string email = "";
-	if (ownerData->get("email") != "")
-	{
-		email = ownerData->get("email");
-	}
+	GithubInterface githubInterface = GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b");
 
+	JSON json;
+	JSON ownerData;
 	ProjectMetadata projectMetadata = ProjectMetadata();
-	projectMetadata.authorName = ownername;
-	projectMetadata.authorMail = email;
-	projectMetadata.name = reponame;
-	projectMetadata.url = json->get("html_url");
-	projectMetadata.license = json->get("license/name");
-	projectMetadata.version = json->get("pushed_at");
+	try
+	{
+		json = *githubInterface.getRequest(repoUrl);
+		ownerData = *githubInterface.getRequest(json.get("owner/url"));
+		std::string email = ownerData.get("email");
+
+		projectMetadata.authorName = ownername;
+		projectMetadata.authorMail = email;
+		projectMetadata.name = reponame;
+		projectMetadata.url = json.get("html_url");
+		projectMetadata.license = json.get("license/name");
+		projectMetadata.version = json.get("pushed_at");
+	}
+	catch (int e)
+	{
+		errno = e;
+	}
 	code = errno;
 	return projectMetadata;
 }

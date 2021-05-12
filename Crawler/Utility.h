@@ -8,6 +8,7 @@ Utrecht University within the Software Project course.
 #include <vector>
 #include <string>
 #include <sstream>
+#include "ErrorList.h"
 
 class Utility
 {
@@ -27,5 +28,38 @@ public:
 	/// <param name="s">The string that needs to be checked.</param>
 	/// <returns>A boolean indicating whether the given string only consists of digits.</returns>
 	static bool hasOnlyDigits(std::string s);
+
+
+	// Below is ugly but needed.
+
+	/// <summary>
+	/// Converts an enum to a specific code so that we can specify that code in the error message.
+	/// </summary>
+	/// <param name="response">The error</param>
+	/// <returns>An int useable as an error code.</returns>
+	static int getCode(githubAPIResponse response)
+	{
+		return (int) response;
+	}
+
+	/// <summary>
+	/// Converts an enum to a specific code so that we can specify that code in the error message.
+	/// </summary>
+	/// <param name="response">The error</param>
+	/// <returns>An int useable as an error code.</returns>
+	static int getCode(JSONError error)
+	{
+		return (int)error + getCode(githubAPIResponse::count);
+	}
+
+	/// <summary>
+	/// Converts an enum to a specific code so that we can specify that code in the error message.
+	/// </summary>
+	/// <param name="response">The error</param>
+	/// <returns>An int useable as an error code.</returns>
+	static int getCode(genericError error)
+	{
+		return (int)error + getCode(genericError::count);
+	}
 };
 

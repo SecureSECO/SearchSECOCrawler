@@ -20,6 +20,10 @@ public:
 	{
 		this->json = json;
 	}
+	JSON()
+	{
+		this->json = nlohmann::json::parse("{}");
+	}
 	/// <summary>
 	/// Gets the key in the JSON variable.
 	/// Use forward slashes (/) to branch deeper in the JSON structure, e.g.

@@ -5,6 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 #include "GithubInterface.h"
+#include "GithubClientErrorConverter.h"
 #include "curl_easy.h"
 #include "curl_exception.h"
 #include "curl_form.h"
@@ -35,10 +36,11 @@ JSON* GithubInterface::getRequest(std::string query)
 		error.print_traceback();
 
 	}
-	long code = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
-	githubAPIResponse response = GithubClientErrorConverter::convertResponse(code);
+	long responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
+	githubAPIResponse response = GithubClientErrorConverter::convertResponse(responseCode);
 	if(response != githubAPIResponse::OK){
 		defaultGithubHandler.handle(response, __FILE__, __LINE__);
+		throw 1;
 	}
 
 	return JSON::parse(ss.str());
