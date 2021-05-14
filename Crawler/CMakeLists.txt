@@ -31,6 +31,11 @@ set(CRAWLER_HEADER_LIST
   JSON.h
   Utility.h
   GithubInterface.h
+  ErrorHandler.h
+  ErrorList.h
+  GithubClientErrorConverter.h
+  IndividualErrorHandler.h
+  Logger.h
 )
 
 
@@ -42,6 +47,11 @@ add_library(crawler
   JSON.cpp
   Utility.cpp
   GithubInterface.cpp
+  EmptyHandler.cpp
+  ErrorHandler.cpp
+  GithubClientErrorConverter.cpp
+  Logger.cpp
+  LogHandler.cpp
   ${CRAWLER_HEADER_LIST}
 )
 
