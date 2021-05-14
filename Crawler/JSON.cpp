@@ -49,36 +49,22 @@ std::string JSON::get(std::string key)
 	
 }
 
-
 JSON* JSON::parse(std::stringstream s)
 {
-	JSON* json = nullptr;
-	try
-	{
-		json = new JSON(nlohmann::json::parse(s));
-	}
-	catch (std::string error)
-	{
-		DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
-		throw 1;
-	}
-	return json;
+	return parse(s.str());
 }
 
 JSON* JSON::parse(std::string s)
 {
-
-	JSON* json = nullptr;
 	try
 	{
-		json = new JSON(nlohmann::json::parse(s));
+		return new JSON(nlohmann::json::parse(s));
 	}
-	catch (std::string error)
+	catch (nlohmann::json::parse_error& e)
 	{
 		DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
 		throw 1;
 	}
-	return json;
 }
 
 

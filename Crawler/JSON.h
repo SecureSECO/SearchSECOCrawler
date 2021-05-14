@@ -35,9 +35,16 @@ public:
 
 
 	/// <summary>
+	/// Creates a JSON variable based on a map. 
+	/// </summary>
+	/// <param name="map">The map that needs to be parsed.</param>
+	/// <returns>A pointer to a JSON variable.</returns>
+	static JSON* parse(std::map<int, std::string> map);
+
+	/// <summary>
 	/// Parses a string/stringstream to JSON.
 	/// </summary>
-	/// <param name="s">The stringstream/string. </param>
+	/// <param name="s">The stringstream/string.</param>
 	/// <returns>A pointer to a JSON variable.</returns>
 	static JSON* parse(std::stringstream s);
 	static JSON* parse(std::string s);

@@ -27,7 +27,7 @@ public:
 	/// </summary>
 	/// <param name="query">The query to be send to Github.</param>
 	/// <returns>A pointer to a JSON variable.</returns>
-	JSON* getRequest(std::string query);
+	virtual JSON* getRequest(std::string query);
 
 };
 

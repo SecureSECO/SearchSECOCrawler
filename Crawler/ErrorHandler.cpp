@@ -19,7 +19,7 @@ DefaultGithubErrorHandler::DefaultGithubErrorHandler()
 	std::map<githubAPIResponse, IndividualErrorHandler*> handlers;
 	handlers.insert({ githubAPIResponse::OK, new EmptyHandler() });
 
-	// Taken from https://stackoverflow.com/questions/26281979/c-loop-through-map.
+	// Partially taken from https://stackoverflow.com/questions/26281979/c-loop-through-map.
 	for (auto const& keyvalue : messages)
 	{
 		handlers.insert({ keyvalue.first, new LogHandler(keyvalue.second, LogLevel::ERROR, getCode(keyvalue.first)) });

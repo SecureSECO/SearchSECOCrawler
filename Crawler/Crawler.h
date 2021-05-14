@@ -23,6 +23,6 @@ public:
 	/// Gets project metadata from the given URL.
 	/// </summary>
 	/// <returns>A project metadata file.</returns>
-	ProjectMetadata getProjectMetadata(std::string url);
+	ProjectMetadata getProjectMetadata(std::string url, int &code);
 };
 
