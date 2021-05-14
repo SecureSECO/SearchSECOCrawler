@@ -54,8 +54,8 @@
     <ClCompile Include="LogHandler.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
-    <ClCompile Include="..\loguru-master\loguru.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="loguru\loguru.cpp">
+      <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

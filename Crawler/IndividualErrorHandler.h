@@ -10,7 +10,7 @@ Utrecht University within the Software Project course.
 #include <vector>
 #include <map>
 
-#include "../loguru-master/loguru.hpp"
+#include "loguru/loguru.hpp"
 #include "Logger.h"
 
 enum class LogLevel

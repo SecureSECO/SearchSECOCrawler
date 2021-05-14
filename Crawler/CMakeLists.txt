@@ -36,6 +36,7 @@ set(CRAWLER_HEADER_LIST
   GithubClientErrorConverter.h
   IndividualErrorHandler.h
   Logger.h
+  loguru/loguru.hpp
 )
 
 
@@ -52,6 +53,7 @@ add_library(crawler
   GithubClientErrorConverter.cpp
   Logger.cpp
   LogHandler.cpp
+  loguru/loguru.cpp
   ${CRAWLER_HEADER_LIST}
 )
 

@@ -157,7 +157,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\loguru-master\loguru.cpp" />
     <ClCompile Include="Crawler.cpp" />
     <ClCompile Include="EmptyHandler.cpp" />
     <ClCompile Include="ErrorHandler.cpp" />
@@ -167,6 +166,7 @@
     <ClCompile Include="JSON.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="LogHandler.cpp" />
+    <ClCompile Include="loguru\loguru.cpp" />
     <ClCompile Include="RunCrawler.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
