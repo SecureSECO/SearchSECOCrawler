@@ -60,3 +60,6 @@ add_library(crawler
 target_link_libraries(crawler curlcpp nlohmann_json::nlohmann_json)
 target_include_directories(crawler PUBLIC "${PROJECT_BINARY_DIR}" ../curlcpp/include)
 
+if(CMAKE_DL_LIBS)
+    target_link_libraries(crawler ${CMAKE_DL_LIBS})
+endif()
