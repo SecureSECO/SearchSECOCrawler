@@ -78,7 +78,7 @@ public:
 	DefaultGenericErrorHandler();
 };
 
-// Taken from https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
+// C++ singleton design pattern taken from https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
 class DefaultJSONErrorHandler : public ErrorHandler<JSONError>
 {
 private:
@@ -91,7 +91,7 @@ private:
 
 		std::map<JSONError, IndividualErrorHandler *> handlers;
 
-		// Taken from https://stackoverflow.com/questions/26281979/c-loop-through-map.
+		// Partially Taken from https://stackoverflow.com/questions/26281979/c-loop-through-map.
 		for (auto const &keyvalue : messages)
 		{
 			handlers.insert(

@@ -1,5 +1,5 @@
-#include "GithubInterface.h"
 #include "pch.h"
+#include "GithubInterface.h"
 
 class GithubInterfaceMock : public GithubInterface
 {
