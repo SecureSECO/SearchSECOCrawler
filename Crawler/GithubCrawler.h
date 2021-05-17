@@ -13,18 +13,18 @@ class GithubCrawler : public Crawler
 private:
 	std::unique_ptr<GithubInterface> githubInterface;
 	std::tuple<std::string, std::string> getOwnerAndRepo(std::string url);
+
 public:
-	GithubCrawler(GithubInterface* githubInterface)
+	GithubCrawler(GithubInterface *githubInterface)
 	{
 		this->githubInterface = std::unique_ptr<GithubInterface>(githubInterface);
 	}
 
 	GithubCrawler()
 	{
-		this->githubInterface = std::unique_ptr<GithubInterface>(new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b"));
+		this->githubInterface = std::unique_ptr<GithubInterface>(
+			new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b"));
 	}
-
-
 
 	/// <summary>
 	/// Returns a list of repositories.
@@ -32,8 +32,5 @@ public:
 	/// <returns>A vector consisting of strings representing URLs to repositories.</returns>
 	std::vector<std::string> crawlRepositories();
 
-	ProjectMetadata getProjectMetadata(std::string url, int& code);
-
-
+	ProjectMetadata getProjectMetadata(std::string url, int &code);
 };
-

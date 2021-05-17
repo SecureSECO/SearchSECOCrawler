@@ -5,10 +5,10 @@ Utrecht University within the Software Project course.
 */
 
 #include "RunCrawler.h"
-#include <sstream>
-#include "Utility.h"
-#include "GithubInterface.h"
 #include "GithubCrawler.h"
+#include "GithubInterface.h"
+#include "Utility.h"
+#include <sstream>
 
 CrawlableSource RunCrawler::makeCrawlableSource(std::string)
 {
@@ -29,7 +29,7 @@ std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source, i
 			GithubCrawler githubCrawler;
 			return githubCrawler.crawlRepositories();
 		}
-		catch(int e) 
+		catch (int e)
 		{
 			code = e;
 		}
@@ -43,17 +43,17 @@ ProjectMetadata RunCrawler::findMetadata(std::string url, int &code)
 {
 	switch (makeCrawlableSource(url))
 	{
-		case CrawlableSource::GITHUB:
-			try
-			{
-				GithubCrawler githubCrawler;
-				return githubCrawler.getProjectMetadata(url, code);
-			}
-			catch (int e)
-			{
-				code = e;
-			}
-		default:
-			return ProjectMetadata();
+	case CrawlableSource::GITHUB:
+		try
+		{
+			GithubCrawler githubCrawler;
+			return githubCrawler.getProjectMetadata(url, code);
+		}
+		catch (int e)
+		{
+			code = e;
+		}
+	default:
+		return ProjectMetadata();
 	}
 }

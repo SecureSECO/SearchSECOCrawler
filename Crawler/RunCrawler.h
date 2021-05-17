@@ -5,10 +5,9 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include <vector>
-#include <string>
 #include "ProjectMetadata.h"
-
+#include <string>
+#include <vector>
 
 enum class CrawlableSource
 {
@@ -42,4 +41,3 @@ public:
 	/// <returns>A string that represents a path to the project metadata file.</returns>
 	static ProjectMetadata findMetadata(std::string url, int &code);
 };
-

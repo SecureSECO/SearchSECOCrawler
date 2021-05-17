@@ -5,10 +5,10 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include <vector>
-#include <string>
-#include <sstream>
 #include "ErrorList.h"
+#include <sstream>
+#include <string>
+#include <vector>
 
 class Utility
 {
@@ -21,14 +21,12 @@ public:
 	/// <returns>A vector of strings.</returns>
 	static std::vector<std::string> split(std::string string, char delimiter);
 
-
 	/// <summary>
 	/// Checks if a string consists only of digits.
 	/// </summary>
 	/// <param name="s">The string that needs to be checked.</param>
 	/// <returns>A boolean indicating whether the given string only consists of digits.</returns>
 	static bool hasOnlyDigits(std::string s);
-
 
 	// Below is ugly but needed.
 
@@ -39,7 +37,7 @@ public:
 	/// <returns>An int useable as an error code.</returns>
 	static int getCode(githubAPIResponse response)
 	{
-		return (int) response;
+		return (int)response;
 	}
 
 	/// <summary>
@@ -62,4 +60,3 @@ public:
 		return (int)error + getCode(genericError::count);
 	}
 };
-

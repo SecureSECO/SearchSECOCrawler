@@ -7,24 +7,24 @@ Utrecht University within the Software Project course.
 #pragma once
 enum class githubAPIResponse
 {
-    OK,
-    JSONError,
-    badCredentials,
-    forbidden,
-    badGateway,
-    urlNotFound,
-    unknownError,
-    count, //should always be last
+	OK,
+	JSONError,
+	badCredentials,
+	forbidden,
+	badGateway,
+	urlNotFound,
+	unknownError,
+	count, // should always be last
 };
 enum class genericError
 {
-    basicError,
-    count,
+	basicError,
+	count,
 };
 
 enum class JSONError
 {
-    branchError,
-    parseError,
-    count,
+	branchError,
+	parseError,
+	count,
 };

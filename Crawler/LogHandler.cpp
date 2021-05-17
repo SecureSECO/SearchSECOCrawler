@@ -5,21 +5,21 @@ Utrecht University within the Software Project course.
 */
 
 #include "IndividualErrorHandler.h"
-void LogHandler::execute(const char* file, unsigned int line)
+void LogHandler::execute(const char *file, unsigned int line)
 {
 	switch (level)
 	{
-		case LogLevel::INFO:
-			Logger::logInfo(msg, file, line, code);
-			break;
-		case LogLevel::WARN:
-			Logger::logWarn(msg, file, line, code);
-			break;
-		case LogLevel::ERROR:
-			Logger::logFatal(msg, file, line, code);
-			break;
-		case LogLevel::DEBUG:
-			Logger::logDebug(msg, file, line, code);
-			break;
+	case LogLevel::INFO:
+		Logger::logInfo(msg, file, line, code);
+		break;
+	case LogLevel::WARN:
+		Logger::logWarn(msg, file, line, code);
+		break;
+	case LogLevel::ERROR:
+		Logger::logFatal(msg, file, line, code);
+		break;
+	case LogLevel::DEBUG:
+		Logger::logDebug(msg, file, line, code);
+		break;
 	}
 }

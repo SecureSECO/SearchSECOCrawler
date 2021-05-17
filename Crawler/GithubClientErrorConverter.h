@@ -10,8 +10,8 @@ Utrecht University within the Software Project course.
 class GithubClientErrorConverter
 {
 public:
-    /// <summary>
-    /// Converts most errors that can be received by using the github REST API and converts them into a readable format.
-    /// </summary>
-    static githubAPIResponse convertResponse(long code);
+	/// <summary>
+	/// Converts most errors that can be received by using the github REST API and converts them into a readable format.
+	/// </summary>
+	static githubAPIResponse convertResponse(long code);
 };

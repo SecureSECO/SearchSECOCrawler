@@ -5,7 +5,6 @@ Utrecht University within the Software Project course.
 */
 
 #include "IndividualErrorHandler.h"
-void EmptyHandler::execute(const char* file, unsigned int line)
+void EmptyHandler::execute(const char *file, unsigned int line)
 {
-
 }

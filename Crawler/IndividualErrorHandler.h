@@ -6,12 +6,12 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
-#include "loguru/loguru.hpp"
 #include "Logger.h"
+#include "loguru/loguru.hpp"
 
 enum class LogLevel
 {
@@ -24,30 +24,28 @@ enum class LogLevel
 class IndividualErrorHandler
 {
 public:
-	virtual void execute(const char* file, unsigned int line)
-	{
-	};
+	virtual void execute(const char *file, unsigned int line){};
 };
-
 
 class LogHandler : public IndividualErrorHandler
 {
 private:
-	const char* msg;
+	const char *msg;
 	LogLevel level;
 	int code;
+
 public:
-	LogHandler(const char* msg, LogLevel level, int code)
+	LogHandler(const char *msg, LogLevel level, int code)
 	{
 		this->msg = msg;
 		this->level = level;
 		this->code = code;
 	}
-	void execute(const char* file, unsigned int line) override;
+	void execute(const char *file, unsigned int line) override;
 };
 
 class EmptyHandler : public IndividualErrorHandler
 {
 public:
-	void execute(const char* file, unsigned int line) override;
+	void execute(const char *file, unsigned int line) override;
 };
