@@ -5,10 +5,10 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include <vector>
-#include <string>
 #include "ProjectMetadata.h"
 #include "RunCrawler.h"
+#include <string>
+#include <vector>
 
 class Crawler
 {
@@ -23,6 +23,5 @@ public:
 	/// Gets project metadata from the given URL.
 	/// </summary>
 	/// <returns>A project metadata file.</returns>
-	ProjectMetadata getProjectMetadata(std::string url);
+	ProjectMetadata getProjectMetadata(std::string url, int &code);
 };
-

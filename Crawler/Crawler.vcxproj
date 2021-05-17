@@ -158,17 +158,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Crawler.cpp" />
+    <ClCompile Include="EmptyHandler.cpp" />
+    <ClCompile Include="ErrorHandler.cpp" />
+    <ClCompile Include="GithubClientErrorConverter.cpp" />
     <ClCompile Include="GithubCrawler.cpp" />
     <ClCompile Include="GithubInterface.cpp" />
     <ClCompile Include="JSON.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="LogHandler.cpp" />
+    <ClCompile Include="loguru\loguru.cpp" />
     <ClCompile Include="RunCrawler.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Crawler.h" />
+    <ClInclude Include="ErrorHandler.h" />
+    <ClInclude Include="ErrorList.h" />
+    <ClInclude Include="GithubClientErrorConverter.h" />
     <ClInclude Include="GithubCrawler.h" />
     <ClInclude Include="GithubInterface.h" />
+    <ClInclude Include="IndividualErrorHandler.h" />
     <ClInclude Include="JSON.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="RunCrawler.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>

@@ -31,6 +31,12 @@ set(CRAWLER_HEADER_LIST
   JSON.h
   Utility.h
   GithubInterface.h
+  ErrorHandler.h
+  ErrorList.h
+  GithubClientErrorConverter.h
+  IndividualErrorHandler.h
+  Logger.h
+  loguru/loguru.hpp
 )
 
 
@@ -42,9 +48,18 @@ add_library(crawler
   JSON.cpp
   Utility.cpp
   GithubInterface.cpp
+  EmptyHandler.cpp
+  ErrorHandler.cpp
+  GithubClientErrorConverter.cpp
+  Logger.cpp
+  LogHandler.cpp
+  loguru/loguru.cpp
   ${CRAWLER_HEADER_LIST}
 )
 
 target_link_libraries(crawler curlcpp nlohmann_json::nlohmann_json)
 target_include_directories(crawler PUBLIC "${PROJECT_BINARY_DIR}" ../curlcpp/include)
 
+if(CMAKE_DL_LIBS)
+    target_link_libraries(crawler ${CMAKE_DL_LIBS})
+endif()
