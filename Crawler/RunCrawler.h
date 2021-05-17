@@ -20,7 +20,7 @@ class RunCrawler
 {
 private:
 	/// <summary>
-	/// Converts a URL to a CrawlableSource.
+	/// Converts an URL to a CrawlableSource.
 	/// </summary>
 	/// <param name="">An URL.</param>
 	/// <returns>A CrawlableSource.</returns>

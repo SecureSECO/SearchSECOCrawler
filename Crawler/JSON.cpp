@@ -4,8 +4,8 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "JSON.h"
 #include "ErrorHandler.h"
+#include "JSON.h"
 #include "Utility.h"
 
 std::string JSON::get(std::string key)

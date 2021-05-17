@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "GithubInterfaceMock.cpp"
+#include "pch.h"
 #include <GithubCrawler.h>
 
 TEST(CrawlRepositoriesTest, TestBasic)
@@ -16,10 +16,9 @@ TEST(CrawlRepositoriesTest, TestBasic)
 		{
 			jsonString.append(base + ", ");
 		}
-
 	}
 	jsonString.append("]");
-	GithubInterfaceMock* mock = new GithubInterfaceMock();
+	GithubInterfaceMock *mock = new GithubInterfaceMock();
 	mock->defaultJSON = jsonString;
 	GithubCrawler githubCrawler(mock);
 	std::vector<std::string> vec = githubCrawler.crawlRepositories();
@@ -31,18 +30,18 @@ TEST(CrawlRepositoriesTest, TestBasic)
 
 TEST(CrawlRepositoriesTest, TestErrorCode)
 {
-	GithubInterfaceMock* mock = new GithubInterfaceMock();
+	GithubInterfaceMock *mock = new GithubInterfaceMock();
 	mock->defaultJSON = R"({"invalid json code"})";
 	GithubCrawler githubCrawler(mock);
 	EXPECT_ANY_THROW(githubCrawler.crawlRepositories());
 }
 
-
 TEST(CrawlProjectMetadataTest, TestBasic)
 {
-	GithubInterfaceMock* mock = new GithubInterfaceMock();
+	GithubInterfaceMock *mock = new GithubInterfaceMock();
 
-	std::string baseJSONString = R"({"owner": {"url": "ownerInfoUrl"}, "license": {"name": "exampleLicense"}, "html_url": "html_url_example.com", "pushed_at": "2002"})";
+	std::string baseJSONString =
+		R"({"owner": {"url": "ownerInfoUrl"}, "license": {"name": "exampleLicense"}, "html_url": "html_url_example.com", "pushed_at": "2002"})";
 	std::string baseOwnerJSONString = R"({"email": "example@example.com"})";
 
 	mock->queryToJsonMap = {
@@ -62,7 +61,7 @@ TEST(CrawlProjectMetadataTest, TestBasic)
 
 TEST(CrawlProjectMetadataTest, TestErrorCode)
 {
-	GithubInterfaceMock* mock = new GithubInterfaceMock();
+	GithubInterfaceMock *mock = new GithubInterfaceMock();
 	mock->defaultJSON = R"({"invalid json code"})";
 	GithubCrawler githubCrawler(mock);
 	int c = 0;

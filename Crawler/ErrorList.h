@@ -14,7 +14,7 @@ enum class githubAPIResponse
 	badGateway,
 	urlNotFound,
 	unknownError,
-	count, // should always be last
+	count, // Should always be last.
 };
 enum class genericError
 {

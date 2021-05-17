@@ -8,11 +8,11 @@ Utrecht University within the Software Project course.
 std::vector<std::string> GithubCrawler::crawlRepositories()
 {
 	std::vector<std::string> vec;
-		std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories"));
-		for (int i = 0; i < 100; i++)
-		{
-			vec.push_back(json->get(std::to_string(i) + "/url"));
-		}
+	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories"));
+	for (int i = 0; i < 100; i++)
+	{
+		vec.push_back(json->get(std::to_string(i) + "/url"));
+	}
 
 	return vec;
 }
@@ -41,10 +41,10 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url, int &code)
 	ProjectMetadata projectMetadata = ProjectMetadata();
 	try
 	{
-		// Get information about repoUrl
+		// Get information about repoUrl.
 		std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl));
 
-		// Get information about owner
+		// Get information about owner.
 		std::unique_ptr<JSON> ownerData(githubInterface->getRequest(json->get("owner/url")));
 
 		std::string email = ownerData->get("email");

@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "GithubInterface.h"
+#include "pch.h"
 
 class GithubInterfaceMock : public GithubInterface
 {
@@ -8,10 +8,9 @@ public:
 	std::string defaultJSON;
 	GithubInterfaceMock(std::string userAgent = "", std::string userPWD = "") : GithubInterface(userAgent, userPWD)
 	{
-
 	}
 
-	JSON* getRequest(std::string query)
+	JSON *getRequest(std::string query)
 	{
 		if (queryToJsonMap.find(query) == queryToJsonMap.end())
 		{

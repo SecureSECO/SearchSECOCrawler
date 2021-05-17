@@ -28,12 +28,10 @@ public:
 	/// <returns>A boolean indicating whether the given string only consists of digits.</returns>
 	static bool hasOnlyDigits(std::string s);
 
-	// Below is ugly but needed.
-
 	/// <summary>
 	/// Converts an enum to a specific code so that we can specify that code in the error message.
 	/// </summary>
-	/// <param name="response">The error</param>
+	/// <param name="response">The GitHub error.</param>
 	/// <returns>An int useable as an error code.</returns>
 	static int getCode(githubAPIResponse response)
 	{
@@ -43,7 +41,7 @@ public:
 	/// <summary>
 	/// Converts an enum to a specific code so that we can specify that code in the error message.
 	/// </summary>
-	/// <param name="response">The error</param>
+	/// <param name="response">The JSON error.</param>
 	/// <returns>An int useable as an error code.</returns>
 	static int getCode(JSONError error)
 	{
@@ -53,7 +51,7 @@ public:
 	/// <summary>
 	/// Converts an enum to a specific code so that we can specify that code in the error message.
 	/// </summary>
-	/// <param name="response">The error</param>
+	/// <param name="response">The generic error.</param>
 	/// <returns>An int useable as an error code.</returns>
 	static int getCode(genericError error)
 	{

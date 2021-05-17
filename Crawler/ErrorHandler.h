@@ -18,7 +18,6 @@ Utrecht University within the Software Project course.
 /// <typeparam name="TResponse"> The template class.</typeparam>
 template <class TResponse> class ErrorHandler
 {
-	// static_assert(std::is_enum_v<TResponse>, "TResponse should be an enum. From: ErrorHandler.");
 private:
 	std::map<TResponse, IndividualErrorHandler *> errorHandlingDictionary;
 

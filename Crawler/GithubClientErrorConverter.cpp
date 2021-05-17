@@ -16,7 +16,7 @@ githubAPIResponse GithubClientErrorConverter::convertResponse(long code)
 	case 400: // Bad JSON format.
 	case 422: // Invalid fields in JSON.
 		return githubAPIResponse::JSONError;
-	case 401: // Wrong credentials
+	case 401: // Wrong credentials.
 		return githubAPIResponse::badCredentials;
 	case 403: // Max login attempts exceeded.
 		return githubAPIResponse::forbidden;
