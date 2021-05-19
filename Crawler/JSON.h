@@ -104,7 +104,7 @@ public:
 };
 
 
-//T JSON::getDefault()
+//template <class T> inline T JSON::getDefault()
 //{
 //	return T();
 //}

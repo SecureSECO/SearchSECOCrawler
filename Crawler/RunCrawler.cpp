@@ -27,7 +27,8 @@ std::vector<std::string> RunCrawler::crawlRepositories(std::string url, int star
 		try
 		{
 			GithubCrawler githubCrawler;
-			return githubCrawler.crawlRepositories(start);
+			std::vector<std::string> urls = githubCrawler.crawlRepositories(start);
+			return urls;
 		}
 		catch (int e)
 		{
@@ -47,7 +48,8 @@ ProjectMetadata RunCrawler::findMetadata(std::string url, int &code)
 		try
 		{
 			GithubCrawler githubCrawler;
-			return githubCrawler.getProjectMetadata(url, code);
+			ProjectMetadata p = githubCrawler.getProjectMetadata(url);
+			return p;
 		}
 		catch (int e)
 		{

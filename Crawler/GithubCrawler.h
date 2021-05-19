@@ -11,6 +11,7 @@ Utrecht University within the Software Project course.
 class GithubCrawler : public Crawler
 {
 private:
+	const int maxResultsPerPage = 100;
 	std::unique_ptr<GithubInterface> githubInterface;
 
 	/// <summary>
@@ -42,5 +43,5 @@ public:
 	/// Gets project metadata from the given URL.
 	/// </summary>
 	/// <returns>A project metadata file.</returns>
-	ProjectMetadata getProjectMetadata(std::string url, int &code);
+	ProjectMetadata getProjectMetadata(std::string url);
 };

@@ -8,6 +8,7 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	for (int i = 0; i < 100; i++)
 	{
 		std::string base = "{\"url\": \"" + std::to_string(i) + "\", \"id\": 1}";
+
 		if (i == 99)
 		{
 			jsonString.append(base);
@@ -28,12 +29,22 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	}
 }
 
-TEST(CrawlRepositoriesTest, TestErrorCode)
+TEST(CrawlRepositoriesTest, TestEnd)
 {
-	GithubInterfaceMock *mock = new GithubInterfaceMock();
+	GithubInterfaceMock* mock = new GithubInterfaceMock();
+	mock->defaultJSON = R"([{"url": "url1", "id": 50}, {"url": "url2", "id": 150}, {"url": "url3", "id": 250}])";
+	GithubCrawler githubCrawler(mock);
+	std::vector<std::string> vec = githubCrawler.crawlRepositories(0);
+	EXPECT_EQ(vec.size(), 1);
+	EXPECT_EQ(vec[0], "url1");
+}
+
+TEST(CrawlRepositoriesTest, TestErrorThrow)
+{
+	GithubInterfaceMock* mock = new GithubInterfaceMock();
 	mock->defaultJSON = R"({"invalid json code"})";
 	GithubCrawler githubCrawler(mock);
-	EXPECT_ANY_THROW(githubCrawler.crawlRepositories(0));
+	EXPECT_THROW(githubCrawler.crawlRepositories(0), int);
 }
 
 TEST(CrawlProjectMetadataTest, TestBasic)
@@ -49,8 +60,7 @@ TEST(CrawlProjectMetadataTest, TestBasic)
 		{"ownerInfoUrl", baseOwnerJSONString},
 	};
 	GithubCrawler githubCrawler(mock);
-	int c = 0;
-	ProjectMetadata pm = githubCrawler.getProjectMetadata("example.com/owner/repo", c);
+	ProjectMetadata pm = githubCrawler.getProjectMetadata("example.com/owner/repo");
 	EXPECT_EQ(pm.authorMail, "example@example.com");
 	EXPECT_EQ(pm.authorName, "owner");
 	EXPECT_EQ(pm.license, "exampleLicense");
@@ -59,12 +69,10 @@ TEST(CrawlProjectMetadataTest, TestBasic)
 	EXPECT_EQ(pm.version, "2002");
 }
 
-TEST(CrawlProjectMetadataTest, TestErrorCode)
+TEST(CrawlProjectMetadataTest, TestErrorThrow)
 {
-	GithubInterfaceMock *mock = new GithubInterfaceMock();
+	GithubInterfaceMock* mock = new GithubInterfaceMock();
 	mock->defaultJSON = R"({"invalid json code"})";
 	GithubCrawler githubCrawler(mock);
-	int c = 0;
-	ProjectMetadata pm = githubCrawler.getProjectMetadata("example.com/owner/repo", c);
-	EXPECT_EQ(c, 1);
+	EXPECT_THROW(githubCrawler.getProjectMetadata("example.com/owner/repo"), int);
 }
