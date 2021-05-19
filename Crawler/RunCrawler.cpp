@@ -10,12 +10,12 @@ Utrecht University within the Software Project course.
 #include "Utility.h"
 #include <sstream>
 
-CrawlableSource RunCrawler::makeCrawlableSource(std::string)
+CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 {
 	return CrawlableSource::GITHUB;
 }
 
-std::vector<std::string> RunCrawler::crawlRepositories(std::string url, int start, int &code)
+std::vector<std::string> RunCrawler::crawlRepositories(std::string const& url, int start, int &code)
 {
 	std::vector<std::string> vec;
 	switch (makeCrawlableSource(url))
@@ -40,7 +40,7 @@ std::vector<std::string> RunCrawler::crawlRepositories(std::string url, int star
 	}
 }
 
-ProjectMetadata RunCrawler::findMetadata(std::string url, int &code)
+ProjectMetadata RunCrawler::findMetadata(std::string const& url, int &code)
 {
 	switch (makeCrawlableSource(url))
 	{

@@ -19,7 +19,7 @@ private:
 	/// </summary>
 	/// <param name="url">The URL from which the owner and repository name should be retrieved.</param>
 	/// <returns>A tuple consisting of the owner name and repository name in place one and two respectively.</returns>
-	std::tuple<std::string, std::string> getOwnerAndRepo(std::string url);
+	std::tuple<std::string, std::string> getOwnerAndRepo(std::string const& url);
 
 public:
 	GithubCrawler(GithubInterface *githubInterface)

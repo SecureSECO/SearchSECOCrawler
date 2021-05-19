@@ -10,7 +10,7 @@ public:
 	{
 	}
 
-	JSON *getRequest(std::string query)
+	JSON *getRequest(std::string const& query)
 	{
 		if (queryToJsonMap.find(query) == queryToJsonMap.end())
 		{

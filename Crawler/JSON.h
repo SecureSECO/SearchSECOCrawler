@@ -8,19 +8,6 @@ Utrecht University within the Software Project course.
 #include "nlohmann/json.hpp"
 #include "ErrorHandler.h"
 
-
-/// <summary>
-/// Returns a default value for a given type T. Returns T() if no specialization can be found.
-/// </summary>
-/// <typeparam name="T">The type.</typeparam>
-/// <returns>A default value of the given type.</returns>
-
-
-
-
-
-
-
 /// <summary>
 /// Adapter class for JSON formatting.
 /// </summary>
@@ -37,7 +24,14 @@ private:
 	/// </summary>
 	/// <param name="key">The key representing what value needs to be returned.</param>
 	/// <returns>The value if found, and NULL otherwise.</returns>
-	nlohmann::json internalGet(std::string key);
+	nlohmann::json internalGet(std::string const& key);
+
+	/// <summary>
+	/// Returns a default value for a given type T. Returns T() if no specialization can be found.
+	/// </summary>
+	/// <typeparam name="T">The type.</typeparam>
+	/// <returns>A default value of the given type.</returns>
+
 	template<class T> T getDefault()
 	{
 		return T();
@@ -62,7 +56,7 @@ public:
 	/// <returns>A value of type T.</returns>
 	
 	template<class T>
-	T get(std::string key, bool expectNonEmpty = false)
+	T get(std::string const& key, bool expectNonEmpty = false)
 	{
 		nlohmann::json result = internalGet(key);
 		T finalResult;
@@ -102,12 +96,6 @@ public:
 	static JSON *parse(std::stringstream s);
 	static JSON *parse(std::string s);
 };
-
-
-//template <class T> inline T JSON::getDefault()
-//{
-//	return T();
-//}
 
 template <> inline int JSON::getDefault<int>()
 {

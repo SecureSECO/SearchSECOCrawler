@@ -24,7 +24,7 @@ private:
 	/// </summary>
 	/// <param name="">An URL.</param>
 	/// <returns>A CrawlableSource.</returns>
-	static CrawlableSource makeCrawlableSource(std::string);
+	static CrawlableSource makeCrawlableSource(std::string const& url);
 
 public:
 	/// <summary>
@@ -32,12 +32,12 @@ public:
 	/// </summary>
 	/// <param name="source">A source from which can be crawled.</param>
 	/// <returns>A vector of strings representing URLs.</returns>
-	static std::vector<std::string> crawlRepositories(std::string url, int start, int &code);
+	static std::vector<std::string> crawlRepositories(std::string const &url, int start, int &code);
 
 	/// <summary>
 	/// Finds project metadata.
 	/// </summary>
 	/// <param name="url">An URL to a project.</param>
 	/// <returns>A string that represents a path to the project metadata file.</returns>
-	static ProjectMetadata findMetadata(std::string url, int &code);
+	static ProjectMetadata findMetadata(std::string const& url, int &code);
 };
