@@ -24,9 +24,17 @@ enum class LogLevel
 class IndividualErrorHandler
 {
 public:
+	/// <summary>
+	/// A generic execute function which reacts to when an error occurs.
+	/// </summary>
+	/// <param name="file">The file in which this function is called from.</param>
+	/// <param name="line">The line from which this function is called from.</param>
 	virtual void execute(const char *file, unsigned int line){};
 };
 
+/// <summary>
+/// A handler that logs errors to console.        
+/// </summary>
 class LogHandler : public IndividualErrorHandler
 {
 private:
@@ -41,11 +49,24 @@ public:
 		this->level = level;
 		this->code = code;
 	}
+	/// <summary>
+	/// A generic execute function which reacts to when an error occurs.
+	/// </summary>
+	/// <param name="file">The file in which this function is called from.</param>
+	/// <param name="line">The line from which this function is called from.</param>
 	void execute(const char *file, unsigned int line) override;
 };
 
+/// <summary>
+/// A handler that does nothing.
+/// </summary>
 class EmptyHandler : public IndividualErrorHandler
 {
 public:
+	/// <summary>
+	/// A generic execute function which reacts to when an error occurs.
+	/// </summary>
+	/// <param name="file">The file in which this function is called from.</param>
+	/// <param name="line">The line from which this function is called from.</param>
 	void execute(const char *file, unsigned int line) override;
 };
