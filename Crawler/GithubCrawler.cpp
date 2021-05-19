@@ -5,13 +5,20 @@ Utrecht University within the Software Project course.
 */
 
 #include "GithubCrawler.h"
-std::vector<std::string> GithubCrawler::crawlRepositories()
+std::vector<std::string> GithubCrawler::crawlRepositories(int start)
 {
 	std::vector<std::string> vec;
-	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories"));
+	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + std::to_string(start)));
 	for (int i = 0; i < 100; i++)
 	{
-		vec.push_back(json->get(std::to_string(i) + "/url"));
+		if (json->get<int>(std::to_string(i) + "/id") < start + 100)
+		{
+			vec.push_back(json->get<std::string>(std::to_string(i) + "/url"));
+		}
+		else
+		{
+			break;
+		}
 	}
 
 	return vec;
@@ -45,16 +52,16 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url, int &code)
 		std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl));
 
 		// Get information about owner.
-		std::unique_ptr<JSON> ownerData(githubInterface->getRequest(json->get("owner/url")));
+		std::unique_ptr<JSON> ownerData(githubInterface->getRequest(json->get<std::string>("owner/url")));
 
-		std::string email = ownerData->get("email");
+		std::string email = ownerData->get<std::string>("email");
 
 		projectMetadata.authorName = ownername;
 		projectMetadata.authorMail = email;
 		projectMetadata.name = reponame;
-		projectMetadata.url = json->get("html_url");
-		projectMetadata.license = json->get("license/name");
-		projectMetadata.version = json->get("pushed_at");
+		projectMetadata.url = json->get<std::string>("html_url");
+		projectMetadata.license = json->get<std::string>("license/name");
+		projectMetadata.version = json->get<std::string>("pushed_at");
 	}
 	catch (int e)
 	{

@@ -87,6 +87,8 @@ private:
 		std::map<JSONError, const char *> messages = {
 			{JSONError::branchError, "Couldn't find the given index in JSON structure."},
 			{JSONError::parseError, "Error while parsing JSON structure."},
+			{JSONError::typeError,
+			 "Error while converting JSON type to standard type. Perhaps something is wrong in the program code?"}
 		};
 
 		std::map<JSONError, IndividualErrorHandler *> handlers;

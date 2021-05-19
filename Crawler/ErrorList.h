@@ -26,5 +26,6 @@ enum class JSONError
 {
 	branchError,
 	parseError,
+	typeError,
 	count,
 };

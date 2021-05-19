@@ -21,7 +21,7 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	GithubInterfaceMock *mock = new GithubInterfaceMock();
 	mock->defaultJSON = jsonString;
 	GithubCrawler githubCrawler(mock);
-	std::vector<std::string> vec = githubCrawler.crawlRepositories();
+	std::vector<std::string> vec = githubCrawler.crawlRepositories(0);
 	for (int i = 0; i < 100; i++)
 	{
 		EXPECT_EQ(vec[i], std::to_string(i));
@@ -33,7 +33,7 @@ TEST(CrawlRepositoriesTest, TestErrorCode)
 	GithubInterfaceMock *mock = new GithubInterfaceMock();
 	mock->defaultJSON = R"({"invalid json code"})";
 	GithubCrawler githubCrawler(mock);
-	EXPECT_ANY_THROW(githubCrawler.crawlRepositories());
+	EXPECT_ANY_THROW(githubCrawler.crawlRepositories(0));
 }
 
 TEST(CrawlProjectMetadataTest, TestBasic)

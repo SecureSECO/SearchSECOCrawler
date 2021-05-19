@@ -6,6 +6,7 @@ Utrecht University within the Software Project course.
 
 #pragma once
 #include "nlohmann/json.hpp"
+#include "ErrorHandler.h"
 
 /// <summary>
 /// Adapter class for JSON formatting.
@@ -16,6 +17,32 @@ class JSON
 private:
 	nlohmann::json json;
 
+	/// <summary>
+	/// Gets the key in the JSON variable.
+	/// Use forward slashes (/) to branch deeper in the JSON structure, e.g.
+	/// json->get("a/b/c") = json["a"]["b"]["c"].
+	/// </summary>
+	/// <param name="key">The key representing what value needs to be returned.</param>
+	/// <returns>The value if found, and NULL otherwise.</returns>
+	nlohmann::json internalGet(std::string key);
+
+	template<class T> 
+	T getDefault();
+
+	template <> int getDefault<int>()
+	{
+		return 0;
+	}
+	template <> std::string getDefault<std::string>()
+	{
+		return "";
+	}
+	template <> bool getDefault<bool>()
+	{
+		return false;
+	}
+
+
 public:
 	JSON(nlohmann::json json)
 	{
@@ -25,21 +52,37 @@ public:
 	{
 		this->json = nlohmann::json::parse("{}");
 	}
-	/// <summary>
-	/// Gets the key in the JSON variable.
-	/// Use forward slashes (/) to branch deeper in the JSON structure, e.g.
-	/// json->get("a/b/c") = json["a"]["b"]["c"].
-	/// </summary>
-	/// <param name="key">The key representing what value needs to be returned.</param>
-	/// <returns>The value if found, and NULL otherwise.</returns>
-	std::string get(std::string key);
 
 	/// <summary>
-	/// Creates a JSON variable based on a map.
+	/// Gets a string, int or bool respectively. Uses get().
 	/// </summary>
-	/// <param name="map">The map that needs to be parsed.</param>
-	/// <returns>A pointer to a JSON variable.</returns>
-	static JSON *parse(std::map<int, std::string> map);
+	/// <param name="key">The key on which needs to be indexed.</param>
+	/// <returns>A string, int or bool of the value found respectively.</returns>
+	
+	template<class T>
+	T get(std::string key)
+	{
+		nlohmann::json result = internalGet(key);
+		T finalResult;
+		if (result.empty())
+		{
+			return getDefault<T>();
+		}
+		try
+		{
+			finalResult = (T)result;
+		}
+		catch (nlohmann::json::type_error)
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+			throw 1;
+		}
+		return finalResult;
+	}
+
+
+
+
 
 	/// <summary>
 	/// Parses a string/stringstream to JSON.
@@ -49,3 +92,4 @@ public:
 	static JSON *parse(std::stringstream s);
 	static JSON *parse(std::string s);
 };
+

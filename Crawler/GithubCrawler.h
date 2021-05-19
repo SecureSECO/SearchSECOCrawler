@@ -36,7 +36,7 @@ public:
 	/// Returns a list of repositories.
 	/// </summary>
 	/// <returns>A vector consisting of strings representing URLs to repositories.</returns>
-	std::vector<std::string> crawlRepositories();
+	std::vector<std::string> crawlRepositories(int start);
 
 	/// <summary>
 	/// Gets project metadata from the given URL.
