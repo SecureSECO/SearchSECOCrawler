@@ -8,6 +8,5 @@ Utrecht University within the Software Project course.
 int main() 
 {
 	int c;
-	RunCrawler::findMetadata("github.com/torvalds/linux", c);
-	RunCrawler::crawlRepositories(CrawlableSource::GITHUB, c);
+	RunCrawler::crawlRepositories("github.com", 100, c);
 }

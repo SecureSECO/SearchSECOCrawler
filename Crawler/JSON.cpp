@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 #include "JSON.h"
 #include "Utility.h"
 
-std::string JSON::get(std::string key)
+nlohmann::json JSON::internalGet(std::string const& key)
 {
 	std::vector<std::string> seglist = Utility::split(key, '/');
 	nlohmann::basic_json<>::value_type current = json;
@@ -41,12 +41,9 @@ std::string JSON::get(std::string key)
 			}
 		}
 	}
-	if (current.empty())
-	{
-		return "";
-	}
 	return current;
 }
+
 
 JSON *JSON::parse(std::stringstream s)
 {

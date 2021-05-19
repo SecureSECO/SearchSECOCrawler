@@ -10,7 +10,7 @@ public:
 	{
 	}
 
-	JSON *getRequest(std::string query)
+	JSON *getRequest(std::string query) override
 	{
 		if (queryToJsonMap.find(query) == queryToJsonMap.end())
 		{

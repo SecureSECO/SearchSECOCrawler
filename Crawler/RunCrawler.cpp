@@ -10,15 +10,15 @@ Utrecht University within the Software Project course.
 #include "Utility.h"
 #include <sstream>
 
-CrawlableSource RunCrawler::makeCrawlableSource(std::string)
+CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 {
 	return CrawlableSource::GITHUB;
 }
 
-std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source, int &code)
+std::vector<std::string> RunCrawler::crawlRepositories(std::string const& url, int start, int &code)
 {
 	std::vector<std::string> vec;
-	switch (source)
+	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::NOT_IMPLEMENTED:
 		return vec;
@@ -27,7 +27,8 @@ std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source, i
 		try
 		{
 			GithubCrawler githubCrawler;
-			return githubCrawler.crawlRepositories();
+			std::vector<std::string> urls = githubCrawler.crawlRepositories(start);
+			return urls;
 		}
 		catch (int e)
 		{
@@ -39,7 +40,7 @@ std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source, i
 	}
 }
 
-ProjectMetadata RunCrawler::findMetadata(std::string url, int &code)
+ProjectMetadata RunCrawler::findMetadata(std::string const& url, int &code)
 {
 	switch (makeCrawlableSource(url))
 	{
@@ -47,7 +48,8 @@ ProjectMetadata RunCrawler::findMetadata(std::string url, int &code)
 		try
 		{
 			GithubCrawler githubCrawler;
-			return githubCrawler.getProjectMetadata(url, code);
+			ProjectMetadata p = githubCrawler.getProjectMetadata(url);
+			return p;
 		}
 		catch (int e)
 		{
