@@ -36,7 +36,6 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ErrorHandler_test.cpp" />
     <ClCompile Include="GithubCrawler_test.cpp" />
     <ClCompile Include="GithubInterfaceMock.cpp" />
     <ClCompile Include="pch.cpp">
