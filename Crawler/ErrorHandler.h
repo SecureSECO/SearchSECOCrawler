@@ -88,7 +88,9 @@ private:
 			{JSONError::branchError, "Couldn't find the given index in JSON structure."},
 			{JSONError::parseError, "Error while parsing JSON structure."},
 			{JSONError::typeError,
-			 "Error while converting JSON type to standard type. Perhaps something is wrong in the program code?"}
+			 "Error while converting JSON type to standard type. Perhaps something is wrong in the program code?"},
+			{JSONError::fieldEmptyError, 
+			"Field was empty in JSON structure while it shouldn't have been. Perhaps something changed in the external API?"}
 		};
 
 		std::map<JSONError, IndividualErrorHandler *> handlers;

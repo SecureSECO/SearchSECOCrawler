@@ -5,15 +5,18 @@ Utrecht University within the Software Project course.
 */
 
 #include "GithubCrawler.h"
+#include <iostream>
 std::vector<std::string> GithubCrawler::crawlRepositories(int start)
 {
 	std::vector<std::string> vec;
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + std::to_string(start)));
 	for (int i = 0; i < 100; i++)
 	{
-		if (json->get<int>(std::to_string(i) + "/id") < start + 100)
+		if (json->get<int>(std::to_string(i) + "/id", true) < start + 100)
 		{
-			vec.push_back(json->get<std::string>(std::to_string(i) + "/url"));
+			std::string url = json->get<std::string>(std::to_string(i) + "/url", true);
+			vec.push_back(url);
+			std::cout << url << std::endl;
 		}
 		else
 		{

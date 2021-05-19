@@ -8,6 +8,19 @@ Utrecht University within the Software Project course.
 #include "nlohmann/json.hpp"
 #include "ErrorHandler.h"
 
+
+/// <summary>
+/// Returns a default value for a given type T. Returns T() if no specialization can be found.
+/// </summary>
+/// <typeparam name="T">The type.</typeparam>
+/// <returns>A default value of the given type.</returns>
+
+
+
+
+
+
+
 /// <summary>
 /// Adapter class for JSON formatting.
 /// </summary>
@@ -25,23 +38,10 @@ private:
 	/// <param name="key">The key representing what value needs to be returned.</param>
 	/// <returns>The value if found, and NULL otherwise.</returns>
 	nlohmann::json internalGet(std::string key);
-
-	template<class T> 
-	T getDefault();
-
-	template <> int getDefault<int>()
+	template<class T> T getDefault()
 	{
-		return 0;
+		return T();
 	}
-	template <> std::string getDefault<std::string>()
-	{
-		return "";
-	}
-	template <> bool getDefault<bool>()
-	{
-		return false;
-	}
-
 
 public:
 	JSON(nlohmann::json json)
@@ -54,19 +54,29 @@ public:
 	}
 
 	/// <summary>
-	/// Gets a string, int or bool respectively. Uses get().
+	/// Can get a value from a JSON structure. In case the field is empty returns a default value. Uses internalGet().
 	/// </summary>
 	/// <param name="key">The key on which needs to be indexed.</param>
-	/// <returns>A string, int or bool of the value found respectively.</returns>
+	/// <param name="expectNonEmpty">
+	/// Whether the program should return an error to the user when the field found is empty.</param>
+	/// <returns>A value of type T.</returns>
 	
 	template<class T>
-	T get(std::string key)
+	T get(std::string key, bool expectNonEmpty = false)
 	{
 		nlohmann::json result = internalGet(key);
 		T finalResult;
 		if (result.empty())
 		{
-			return getDefault<T>();
+			if (expectNonEmpty)
+			{
+				DefaultJSONErrorHandler::getInstance().handle(JSONError::fieldEmptyError, __FILE__, __LINE__);
+				throw 1;
+			}
+			else
+			{
+				return getDefault<T>();
+			}
 		}
 		try
 		{
@@ -93,3 +103,21 @@ public:
 	static JSON *parse(std::string s);
 };
 
+
+//T JSON::getDefault()
+//{
+//	return T();
+//}
+
+template <> inline int JSON::getDefault<int>()
+{
+	return 0;
+}
+template <> inline std::string JSON::getDefault<std::string>()
+{
+	return "";
+}
+template <> inline bool JSON::getDefault<bool>()
+{
+	return false;
+}

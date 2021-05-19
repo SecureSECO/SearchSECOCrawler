@@ -36,6 +36,18 @@ TEST(TestJSONGet, JSONGetEmpty)
 	EXPECT_EQ(json->get<std::string>("commit"), "");
 }
 
+TEST(TestJSONGet, JSONGetEmptyInt)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {}})"));
+	EXPECT_EQ(json->get<int>("commit"), 0);
+}
+
+TEST(TestJSONGet, JSONGetEmptyThrow)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {}})"));
+	EXPECT_ANY_THROW(json->get<std::string>("commit", true));
+}
+
 TEST(TestJSONGet, JSONArrayGet)
 {
 	std::unique_ptr<JSON> json(JSON::parse("[{\"test1\": \"test\"}]"));

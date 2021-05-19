@@ -27,5 +27,6 @@ enum class JSONError
 	branchError,
 	parseError,
 	typeError,
+	fieldEmptyError,
 	count,
 };
