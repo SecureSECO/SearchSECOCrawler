@@ -7,7 +7,7 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	std::string jsonString = "[";
 	for (int i = 0; i < 100; i++)
 	{
-		std::string base = "{\"url\": \"" + std::to_string(i) + "\", \"id\": \"1\"}";
+		std::string base = "{\"url\": \"" + std::to_string(i) + "\", \"id\": 1}";
 		if (i == 99)
 		{
 			jsonString.append(base);
