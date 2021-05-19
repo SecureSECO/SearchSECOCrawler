@@ -14,14 +14,15 @@ class Crawler
 {
 public:
 	/// <summary>
-	/// Finds URLs to spider.
+	/// Finds URLs to spider. Currently not used.
 	/// </summary>
 	/// <returns>A vector of strings representing URLs.</returns>
 	std::vector<std::string> crawlRepositories(CrawlableSource crawlableSource);
 
 	/// <summary>
-	/// Gets project metadata from the given URL.
+	/// Gets project metadata from the given repository URL. Currently not used.
 	/// </summary>
+	/// <param name="url">The url to a repository.</param>
 	/// <returns>A project metadata file.</returns>
-	ProjectMetadata getProjectMetadata(std::string url, int &code);
+	ProjectMetadata getProjectMetadata(std::string url);
 };

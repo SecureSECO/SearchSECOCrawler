@@ -34,15 +34,17 @@ public:
 	}
 
 	/// <summary>
-	/// Returns a list of repositories.
+	/// Returns a list of repositories based on a start project ID.
+	/// Returns all the repositories with project ID in the interval [projectID, projectID+100)
 	/// </summary>
-	/// <param name="start"></param>
+	/// <param name="start">The start project ID.</param>
 	/// <returns>A vector consisting of strings representing URLs to repositories.</returns>
 	std::vector<std::string> crawlRepositories(int start);
 
 	/// <summary>
-	/// Gets project metadata from the given URL.
+	/// Gets project metadata from the given repository URL.
 	/// </summary>
+	/// <param name="url">The url to a repository.</param>
 	/// <returns>A project metadata file.</returns>
 	ProjectMetadata getProjectMetadata(std::string url);
 };

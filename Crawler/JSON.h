@@ -54,7 +54,6 @@ public:
 	/// <param name="expectNonEmpty">
 	/// Whether the program should return an error to the user when the field found is empty.</param>
 	/// <returns>A value of type T.</returns>
-	
 	template<class T>
 	T get(std::string const& key, bool expectNonEmpty = false)
 	{

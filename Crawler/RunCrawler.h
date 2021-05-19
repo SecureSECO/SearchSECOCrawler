@@ -22,7 +22,7 @@ private:
 	/// <summary>
 	/// Converts an URL to a CrawlableSource.
 	/// </summary>
-	/// <param name="">An URL.</param>
+	/// <param name="url">An URL.</param>
 	/// <returns>A CrawlableSource.</returns>
 	static CrawlableSource makeCrawlableSource(std::string const& url);
 
@@ -30,8 +30,10 @@ public:
 	/// <summary>
 	/// Finds repositories that can be spidered. Entry point of the crawler.
 	/// </summary>
-	/// <param name="source">A source from which can be crawled.</param>
-	/// <returns>A vector of strings representing URLs.</returns>
+	/// <param name="url">An URL to the site from which needs to be crawled.</param>
+	/// <param name="start">The start project ID.</param>
+	/// <param name="code">A code, where 0 indicates that this function succeeded and 1 indicates a failure.</param>
+	/// <returns>A list of urls.</returns>
 	static std::vector<std::string> crawlRepositories(std::string const &url, int start, int &code);
 
 	/// <summary>
