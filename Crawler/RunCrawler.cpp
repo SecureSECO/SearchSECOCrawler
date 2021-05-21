@@ -15,20 +15,20 @@ CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 	return CrawlableSource::GITHUB;
 }
 
-std::vector<std::string> RunCrawler::crawlRepositories(std::string const& url, int start, int &code)
+CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, int &code)
 {
-	std::vector<std::string> vec;
+	CrawlData data;
 	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::NOT_IMPLEMENTED:
-		return vec;
+		return data;
 	case CrawlableSource::GITHUB:
 	{
 		try
 		{
 			GithubCrawler githubCrawler;
-			std::vector<std::string> urls = githubCrawler.crawlRepositories(start);
-			return urls;
+			CrawlData data = githubCrawler.crawlRepositories(start);
+			return data;
 		}
 		catch (int e)
 		{
@@ -36,7 +36,7 @@ std::vector<std::string> RunCrawler::crawlRepositories(std::string const& url, i
 		}
 	}
 	default:
-		return vec;
+		return data;
 	}
 }
 

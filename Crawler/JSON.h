@@ -83,7 +83,7 @@ public:
 		return finalResult;
 	}
 
-
+	bool isEmpty(std::string key);
 
 
 
