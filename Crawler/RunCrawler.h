@@ -16,6 +16,11 @@ enum class CrawlableSource
 	GITHUB
 };
 
+
+/// <summary>
+/// Data which is returned when crawling. First value in the pair is the URL found, 
+/// second is the importance of the given URL. The finalProjectId is the last project id found while crawling.
+/// </summary>
 struct CrawlData
 {
 	std::vector<std::pair<std::string, int>> URLImportanceList;
