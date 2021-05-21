@@ -8,26 +8,24 @@ Utrecht University within the Software Project course.
 #include <iostream>
 CrawlData GithubCrawler::crawlRepositories(int start)
 {
-	std::vector<std::pair<std::string, int>> vec;
-	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + std::to_string(start)));
+	CrawlData crawlData;
 	int currentId;
+	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + std::to_string(start)));
 	for (int i = 0; i < maxResultsPerPage; i++)
 	{
 		if (!json->isEmpty(std::to_string(i)))
 		{
 			currentId = json->get<int>(std::to_string(i) + "/id", true);
 			std::string url = json->get<std::string>(std::to_string(i) + "/url", true);
-			vec.push_back(std::make_pair(url, 1));
+			crawlData.URLImportanceList.push_back(std::make_pair(url, 1));
 		}
 		else
 		{
 			break;
 		}
 	}
-	CrawlData ci;
-	ci.finalProjectId = currentId;
-	ci.URLImportanceList = vec;
-	return ci;
+	crawlData.finalProjectId = currentId;
+	return crawlData;
 }
 
 std::tuple<std::string, std::string> GithubCrawler::getOwnerAndRepo(std::string const& url)
