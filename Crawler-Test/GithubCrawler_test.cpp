@@ -22,10 +22,10 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	GithubInterfaceMock *mock = new GithubInterfaceMock();
 	mock->defaultJSON = jsonString;
 	GithubCrawler githubCrawler(mock);
-	std::vector<std::string> vec = githubCrawler.crawlRepositories(0);
+	CrawlData data = githubCrawler.crawlRepositories(0);
 	for (int i = 0; i < 100; i++)
 	{
-		EXPECT_EQ(vec[i], std::to_string(i));
+		EXPECT_EQ(data.URLImportanceList[i].first, std::to_string(i));
 	}
 }
 
@@ -34,9 +34,9 @@ TEST(CrawlRepositoriesTest, TestEnd)
 	GithubInterfaceMock* mock = new GithubInterfaceMock();
 	mock->defaultJSON = R"([{"url": "url1", "id": 50}, {"url": "url2", "id": 150}, {"url": "url3", "id": 250}])";
 	GithubCrawler githubCrawler(mock);
-	std::vector<std::string> vec = githubCrawler.crawlRepositories(0);
-	EXPECT_EQ(vec.size(), 1);
-	EXPECT_EQ(vec[0], "url1");
+	CrawlData data = githubCrawler.crawlRepositories(0);
+	EXPECT_EQ(data.URLImportanceList.size(), 3);
+	EXPECT_EQ(data.finalProjectId, 250);
 }
 
 TEST(CrawlRepositoriesTest, TestErrorThrow)

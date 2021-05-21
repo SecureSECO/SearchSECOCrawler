@@ -39,7 +39,7 @@ public:
 	/// </summary>
 	/// <param name="start">The start project ID.</param>
 	/// <returns>A vector consisting of strings representing URLs to repositories.</returns>
-	std::vector<std::string> crawlRepositories(int start);
+	CrawlData crawlRepositories(int start);
 
 	/// <summary>
 	/// Gets project metadata from the given repository URL.

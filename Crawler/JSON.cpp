@@ -44,6 +44,12 @@ nlohmann::json JSON::internalGet(std::string const& key)
 	return current;
 }
 
+bool JSON::isEmpty(std::string key)
+{
+	nlohmann::json result = internalGet(key);
+	return result.empty();
+}
+
 
 JSON *JSON::parse(std::stringstream s)
 {

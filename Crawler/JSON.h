@@ -83,9 +83,12 @@ public:
 		return finalResult;
 	}
 
-
-
-
+	/// <summary>
+	/// Checks whether the given key returns an empty field. Uses internalGet().
+	/// </summary>
+	/// <param name="key">The key on which needs to be indexed.</param>
+	/// <returns>A boolean indicating whether the field found was empty or not.</returns>
+	bool isEmpty(std::string key);
 
 	/// <summary>
 	/// Parses a string/stringstream to JSON.
