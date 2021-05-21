@@ -14,12 +14,12 @@ enum class githubAPIResponse
 	badGateway,
 	urlNotFound,
 	unknownError,
-	count, // Should always be last.
+	count // Should always be last.
 };
 enum class genericError
 {
 	basicError,
-	count,
+	count
 };
 
 enum class JSONError
@@ -28,5 +28,5 @@ enum class JSONError
 	parseError,
 	typeError,
 	fieldEmptyError,
-	count,
+	count
 };

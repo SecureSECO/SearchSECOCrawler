@@ -32,7 +32,7 @@ public:
 	/// Converts an enum to a specific code so that we can specify that code in the error message.
 	/// </summary>
 	/// <param name="response">The GitHub error.</param>
-	/// <returns>An int useable as an error code.</returns>
+	/// <returns>An int representing an error code.</returns>
 	static int getCode(githubAPIResponse response)
 	{
 		return (int)response;
@@ -42,7 +42,7 @@ public:
 	/// Converts an enum to a specific code so that we can specify that code in the error message.
 	/// </summary>
 	/// <param name="response">The JSON error.</param>
-	/// <returns>An int useable as an error code.</returns>
+	/// <returns>An int representing an error code.</returns>
 	static int getCode(JSONError error)
 	{
 		return (int)error + getCode(githubAPIResponse::count);
@@ -52,7 +52,7 @@ public:
 	/// Converts an enum to a specific code so that we can specify that code in the error message.
 	/// </summary>
 	/// <param name="response">The generic error.</param>
-	/// <returns>An int useable as an error code.</returns>
+	/// <returns>An int representing an error code.</returns>
 	static int getCode(genericError error)
 	{
 		return (int)error + getCode(genericError::count);
