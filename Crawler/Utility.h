@@ -5,9 +5,10 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include <vector>
-#include <string>
+#include "ErrorList.h"
 #include <sstream>
+#include <string>
+#include <vector>
 
 class Utility
 {
@@ -20,12 +21,40 @@ public:
 	/// <returns>A vector of strings.</returns>
 	static std::vector<std::string> split(std::string string, char delimiter);
 
-
 	/// <summary>
 	/// Checks if a string consists only of digits.
 	/// </summary>
 	/// <param name="s">The string that needs to be checked.</param>
 	/// <returns>A boolean indicating whether the given string only consists of digits.</returns>
 	static bool hasOnlyDigits(std::string s);
-};
 
+	/// <summary>
+	/// Converts an enum to a specific code so that we can specify that code in the error message.
+	/// </summary>
+	/// <param name="response">The GitHub error.</param>
+	/// <returns>An int useable as an error code.</returns>
+	static int getCode(githubAPIResponse response)
+	{
+		return (int)response;
+	}
+
+	/// <summary>
+	/// Converts an enum to a specific code so that we can specify that code in the error message.
+	/// </summary>
+	/// <param name="response">The JSON error.</param>
+	/// <returns>An int useable as an error code.</returns>
+	static int getCode(JSONError error)
+	{
+		return (int)error + getCode(githubAPIResponse::count);
+	}
+
+	/// <summary>
+	/// Converts an enum to a specific code so that we can specify that code in the error message.
+	/// </summary>
+	/// <param name="response">The generic error.</param>
+	/// <returns>An int useable as an error code.</returns>
+	static int getCode(genericError error)
+	{
+		return (int)error + getCode(genericError::count);
+	}
+};

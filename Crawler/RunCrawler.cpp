@@ -5,60 +5,57 @@ Utrecht University within the Software Project course.
 */
 
 #include "RunCrawler.h"
-#include <sstream>
-#include "Utility.h"
-#include "GithubInterface.h"
 #include "GithubCrawler.h"
+#include "GithubInterface.h"
+#include "Utility.h"
+#include <sstream>
 
-CrawlableSource RunCrawler::makeCrawlableSource(std::string)
+CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 {
-	return CrawlableSource::NOT_IMPLEMENTED;
+	return CrawlableSource::GITHUB;
 }
 
-std::vector<std::string> RunCrawler::crawlRepositories(CrawlableSource source)
+std::vector<std::string> RunCrawler::crawlRepositories(std::string const& url, int start, int &code)
 {
 	std::vector<std::string> vec;
-	switch (source)
+	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::NOT_IMPLEMENTED:
 		return vec;
 	case CrawlableSource::GITHUB:
 	{
-		GithubCrawler githubCrawler(new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b"));
-		return githubCrawler.crawlRepositories();
+		try
+		{
+			GithubCrawler githubCrawler;
+			std::vector<std::string> urls = githubCrawler.crawlRepositories(start);
+			return urls;
+		}
+		catch (int e)
+		{
+			code = e;
+		}
 	}
 	default:
 		return vec;
 	}
 }
 
-ProjectMetadata RunCrawler::findMetadata(std::string url)
+ProjectMetadata RunCrawler::findMetadata(std::string const& url, int &code)
 {
-	std::vector<std::string> split = Utility::split(url, '/');
-	int segCount = split.size();
-
-	// Get owner and repo name
-	std::string ownername = split[segCount - 2];
-	std::string reponame = split[segCount - 1];
-
-	std::string repoUrl = "https://api.github.com/repos/" + ownername + "/" + reponame;
-
-
-	GithubInterface *githubInterface = new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b");
-	auto json = githubInterface->getRequest(repoUrl);
-	auto ownerData = githubInterface->getRequest(json->get("owner/url"));
-	std::string email = "";
-	if (ownerData->get("email") != "")
+	switch (makeCrawlableSource(url))
 	{
-		email = ownerData->get("email");
+	case CrawlableSource::GITHUB:
+		try
+		{
+			GithubCrawler githubCrawler;
+			ProjectMetadata p = githubCrawler.getProjectMetadata(url);
+			return p;
+		}
+		catch (int e)
+		{
+			code = e;
+		}
+	default:
+		return ProjectMetadata();
 	}
-
-	ProjectMetadata *projectMetadata = new ProjectMetadata();
-	projectMetadata->authorName = ownername;
-	projectMetadata->authorMail = email;
-	projectMetadata->name = reponame;
-	projectMetadata->url = json->get("html_url");
-	projectMetadata->license = json->get("license/name");
-	projectMetadata->version = json->get("pushed_at");
-	return *projectMetadata;
 }

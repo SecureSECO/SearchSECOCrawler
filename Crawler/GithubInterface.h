@@ -5,16 +5,19 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include <string>
+#include "ErrorHandler.h"
 #include "JSON.h"
+#include <string>
 
 class GithubInterface
 {
 private:
 	std::string userAgent;
 	std::string userPWD;
+	DefaultGithubErrorHandler defaultGithubHandler;
+
 public:
-	GithubInterface(std::string userAgent, std::string userPWD) 
+	GithubInterface(std::string userAgent, std::string userPWD)
 	{
 		this->userAgent = userAgent;
 		this->userPWD = userPWD;
@@ -25,7 +28,5 @@ public:
 	/// </summary>
 	/// <param name="query">The query to be send to Github.</param>
 	/// <returns>A pointer to a JSON variable.</returns>
-	JSON* getRequest(std::string query);
-
+	virtual JSON *getRequest(std::string query);
 };
-
