@@ -14,8 +14,6 @@ Utrecht University within the Software Project course.
 
 CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 {
-	loguru::set_thread_name(THREAD_NAME);
-
 	return CrawlableSource::GITHUB;
 }
 
