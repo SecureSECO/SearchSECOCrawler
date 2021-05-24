@@ -7,7 +7,7 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	std::string jsonString = "[";
 	for (int i = 0; i < 100; i++)
 	{
-		std::string base = "{\"url\": \"" + std::to_string(i) + "\", \"id\": 1}";
+		std::string base = "{\"html_url\": \"" + std::to_string(i) + "\", \"id\": 1}";
 
 		if (i == 99)
 		{
@@ -32,7 +32,7 @@ TEST(CrawlRepositoriesTest, TestBasic)
 TEST(CrawlRepositoriesTest, TestEnd)
 {
 	GithubInterfaceMock* mock = new GithubInterfaceMock();
-	mock->defaultJSON = R"([{"url": "url1", "id": 50}, {"url": "url2", "id": 150}, {"url": "url3", "id": 250}])";
+	mock->defaultJSON = R"([{"html_url": "url1", "id": 50}, {"html_url": "url2", "id": 150}, {"html_url": "url3", "id": 250}])";
 	GithubCrawler githubCrawler(mock);
 	CrawlData data = githubCrawler.crawlRepositories(0);
 	EXPECT_EQ(data.URLImportanceList.size(), 3);

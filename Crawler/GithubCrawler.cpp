@@ -16,7 +16,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 		if (!json->isEmpty(std::to_string(i)))
 		{
 			currentId = json->get<int>(std::to_string(i) + "/id", true);
-			std::string url = json->get<std::string>(std::to_string(i) + "/url", true);
+			std::string url = json->get<std::string>(std::to_string(i) + "/html_url", true);
 			crawlData.URLImportanceList.push_back(std::make_pair(url, 1));
 		}
 		else
