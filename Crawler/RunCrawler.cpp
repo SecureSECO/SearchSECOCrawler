@@ -10,13 +10,19 @@ Utrecht University within the Software Project course.
 #include "Utility.h"
 #include <sstream>
 
+#define THREAD_NAME "crawler"
+
 CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 {
+	loguru::set_thread_name(THREAD_NAME);
+
 	return CrawlableSource::GITHUB;
 }
 
 CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, int &code)
 {
+	loguru::set_thread_name(THREAD_NAME);
+
 	CrawlData data;
 	switch (makeCrawlableSource(url))
 	{
@@ -42,6 +48,8 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, int &
 
 ProjectMetadata RunCrawler::findMetadata(std::string const& url, int &code)
 {
+	loguru::set_thread_name(THREAD_NAME);
+
 	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::GITHUB:
