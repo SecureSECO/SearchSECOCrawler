@@ -9,5 +9,5 @@ int main()
 {
 	int c;
 	RunCrawler::crawlRepositories("github.com", 100, c);
-	RunCrawler::findMetadata("github.com/torvalds/linux", c);
+	RunCrawler::findMetadata("github.com/manicolosi/manico-crumbs", c);
 }
