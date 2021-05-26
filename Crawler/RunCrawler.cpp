@@ -36,16 +36,21 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start)
 		{
 			GithubCrawler githubCrawler;
 			CrawlData data = githubCrawler.crawlRepositories(start);
+			LoggerCrawler::logInfo("Returning successful", __FILE__, __LINE__);
 			return data;
 		}
 		catch (int e)
 		{
 			errno = e;
+			LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
 			return data;
 		}
 	}
 	default:
+	{
+		LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
 		return data;
+	}
 	}
 }
 
