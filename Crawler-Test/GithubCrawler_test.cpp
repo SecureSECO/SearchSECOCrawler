@@ -52,7 +52,7 @@ TEST(CrawlProjectMetadataTest, TestBasic)
 	GithubInterfaceMock *mock = new GithubInterfaceMock();
 
 	std::string baseJSONString =
-		R"({"owner": {"url": "ownerInfoUrl"}, "license": {"name": "exampleLicense"}, "html_url": "html_url_example.com", "pushed_at": "2002"})";
+		R"({"owner": {"url": "ownerInfoUrl"}, "license": {"name": "exampleLicense"}, "html_url": "html_url_example.com", "pushed_at": "2002", "default_branch": "notMaster"})";
 	std::string baseOwnerJSONString = R"({"email": "example@example.com"})";
 
 	mock->queryToJsonMap = {
@@ -67,6 +67,7 @@ TEST(CrawlProjectMetadataTest, TestBasic)
 	EXPECT_EQ(pm.name, "repo");
 	EXPECT_EQ(pm.url, "html_url_example.com");
 	EXPECT_EQ(pm.version, "2002");
+	EXPECT_EQ(pm.defaultBranch, "notMaster");
 }
 
 TEST(CrawlProjectMetadataTest, TestErrorThrow)
