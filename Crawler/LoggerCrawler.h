@@ -8,7 +8,7 @@ Utrecht University within the Software Project course.
 
 #include <string>
 
-class Logger
+class LoggerCrawler
 {
 private:
 	static std::string getMessage(const char *message, int code);

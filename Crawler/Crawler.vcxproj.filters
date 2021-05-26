@@ -45,9 +45,6 @@
     <ClCompile Include="ErrorHandler.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>Source Files\ErrorHandling</Filter>
-    </ClCompile>
     <ClCompile Include="EmptyHandler.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
@@ -55,6 +52,9 @@
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
     <ClCompile Include="loguru\loguru.cpp">
+      <Filter>Source Files\ErrorHandling</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggerCrawler.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,13 +83,13 @@
     <ClInclude Include="ErrorHandler.h">
       <Filter>Header Files\ErrorHandling</Filter>
     </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>Header Files\ErrorHandling</Filter>
-    </ClInclude>
     <ClInclude Include="IndividualErrorHandler.h">
       <Filter>Header Files\ErrorHandling</Filter>
     </ClInclude>
     <ClInclude Include="ErrorList.h">
+      <Filter>Header Files\ErrorHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggerCrawler.h">
       <Filter>Header Files\ErrorHandling</Filter>
     </ClInclude>
   </ItemGroup>
