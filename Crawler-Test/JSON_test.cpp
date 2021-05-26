@@ -64,3 +64,9 @@ TEST(TestJSONParse, InvalidJSON)
 {
 	EXPECT_ANY_THROW(JSON::parse(R"(invalid)"));
 }
+
+TEST(TestJSONExist, JSONNull)
+{
+	std::unique_ptr<JSON> json(JSON::parse("{\"test1\": null}"));
+	EXPECT_EQ(json->get<std::string>("test1"), "");
+}

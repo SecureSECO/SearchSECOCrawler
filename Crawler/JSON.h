@@ -27,6 +27,21 @@ private:
 	nlohmann::json internalGet(std::string const& key);
 
 	/// <summary>
+	/// Indexes once on the given key. Does not use the structure of internalGet.
+	/// </summary>
+	/// <param name="current">The current JSON structure in which needs to be indexed.</param>
+	/// <param name="key">The key representing what value needs to be indexed on.</param>
+	/// <returns>The value.</returns>
+	nlohmann::json branch(nlohmann::json current, std::string const& key);
+
+	/// <summary>
+	/// Checks whether the field associated to the given key is not null.
+	/// </summary>
+	/// <param name="key">The key on which needs to be indexed.</param>
+	/// <returns>A boolean indicating whether the associated field is null or not.</returns>
+	bool isNotNull(nlohmann::json base, std::string key);
+
+	/// <summary>
 	/// Returns a default value for a given type T. Returns T() if no specialization can be found.
 	/// </summary>
 	/// <typeparam name="T">The type.</typeparam>
@@ -57,9 +72,35 @@ public:
 	template<class T>
 	T get(std::string const& key, bool expectNonEmpty = false)
 	{
-		nlohmann::json result = internalGet(key);
-		T finalResult;
-		if (result.empty())
+		bool exist = isNotNull(json, key);
+		if (exist)
+		{
+			nlohmann::json result = internalGet(key);
+			T finalResult;
+			if (result.empty())
+			{
+				if (expectNonEmpty)
+				{
+					DefaultJSONErrorHandler::getInstance().handle(JSONError::fieldEmptyError, __FILE__, __LINE__);
+					throw 1;
+				}
+				else
+				{
+					return getDefault<T>();
+				}
+			}
+			try
+			{
+				finalResult = (T)result;
+			}
+			catch (nlohmann::json::type_error)
+			{
+				DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+				throw 1;
+			}
+			return finalResult;
+		}
+		else
 		{
 			if (expectNonEmpty)
 			{
@@ -71,20 +112,12 @@ public:
 				return getDefault<T>();
 			}
 		}
-		try
-		{
-			finalResult = (T)result;
-		}
-		catch (nlohmann::json::type_error)
-		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
-			throw 1;
-		}
-		return finalResult;
 	}
 
 	/// <summary>
 	/// Checks whether the given key returns an empty field. Uses internalGet().
+	/// Empty fields are typically of the form: 
+	/// "field": {}
 	/// </summary>
 	/// <param name="key">The key on which needs to be indexed.</param>
 	/// <returns>A boolean indicating whether the field found was empty or not.</returns>
@@ -97,6 +130,9 @@ public:
 	/// <returns>A pointer to a JSON variable.</returns>
 	static JSON *parse(std::stringstream s);
 	static JSON *parse(std::string s);
+
+
+
 };
 
 template <> inline int JSON::getDefault<int>()

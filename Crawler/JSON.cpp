@@ -11,37 +11,60 @@ Utrecht University within the Software Project course.
 nlohmann::json JSON::internalGet(std::string const& key)
 {
 	std::vector<std::string> seglist = Utility::split(key, '/');
-	nlohmann::basic_json<>::value_type current = json;
+	nlohmann::json current = json;
 	int size = seglist.size();
 	for (int i = 0; i < size; i++)
 	{
 		std::string currentKey = seglist[i];
-		if (current.is_array())
+		current = branch(current, currentKey);
+	}
+	return current;
+}
+
+nlohmann::json JSON::branch(nlohmann::json current, std::string const& key)
+{
+	if (current.is_array())
+	{
+		if (Utility::hasOnlyDigits(key))
 		{
-			if (Utility::hasOnlyDigits(currentKey))
-			{
-				current = current[std::stoi(currentKey)];
-			}
-			else
-			{
-				DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
-				throw 1;
-			}
+			return current[std::stoi(key)];
 		}
 		else
 		{
-			if (current.find(currentKey) != current.end())
-			{
-				current = current[currentKey];
-			}
-			else
-			{
-				DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
-				throw 1;
-			}
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+			throw 1;
 		}
 	}
-	return current;
+	else
+	{
+		if (current.find(key) != current.end())
+		{
+			return current[key];
+		}
+		else
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+			throw 1;
+		}
+	}
+}
+
+
+bool JSON::isNotNull(nlohmann::json base, std::string key)
+{
+	int nextSlash = key.find("/");
+	std::string before = key.substr(0, nextSlash);
+	std::string after = key.substr(nextSlash + 1, key.npos - nextSlash - 1);
+	nlohmann::json val = branch(base, before);
+	if (!val.is_null() && val != NULL)
+	{
+		if (nextSlash != std::string::npos)
+		{
+			return isNotNull(val, after);
+		}
+		return true;
+	}
+	return false;
 }
 
 bool JSON::isEmpty(std::string key)
