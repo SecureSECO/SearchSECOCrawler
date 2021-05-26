@@ -17,7 +17,7 @@ CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 	return CrawlableSource::GITHUB;
 }
 
-CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, int &code)
+CrawlData RunCrawler::crawlRepositories(std::string const& url, int start)
 {
 	loguru::set_thread_name(THREAD_NAME);
 
@@ -25,43 +25,60 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, int &
 	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::NOT_IMPLEMENTED:
+	{
+		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source", __FILE__, __LINE__);
 		return data;
+	}
 	case CrawlableSource::GITHUB:
 	{
+		LoggerCrawler::logDebug("Detected GitHub as the source to crawl repositories from", __FILE__, __LINE__);
 		try
 		{
 			GithubCrawler githubCrawler;
 			CrawlData data = githubCrawler.crawlRepositories(start);
+			LoggerCrawler::logInfo("Returning successful", __FILE__, __LINE__);
 			return data;
 		}
 		catch (int e)
 		{
-			code = e;
+			errno = e;
+			LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+			return data;
 		}
 	}
 	default:
+	{
+		LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
 		return data;
+	}
 	}
 }
 
-ProjectMetadata RunCrawler::findMetadata(std::string const& url, int &code)
+ProjectMetadata RunCrawler::findMetadata(std::string const& url)
 {
 	loguru::set_thread_name(THREAD_NAME);
+
+	LoggerCrawler::logInfo("Finding metadata for the repository at \"" + url + "\"", __FILE__, __LINE__);
 
 	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::GITHUB:
 		try
 		{
+			LoggerCrawler::logDebug("Detected GitHub as the source of the repository", __FILE__, __LINE__);
+
 			GithubCrawler githubCrawler;
 			ProjectMetadata p = githubCrawler.getProjectMetadata(url);
 			return p;
 		}
 		catch (int e)
 		{
-			code = e;
+			errno = e;
+			LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+			return ProjectMetadata();
 		}
 	default:
+		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source. Returning empty", __FILE__, __LINE__);
 		return ProjectMetadata();
 	}
 }
