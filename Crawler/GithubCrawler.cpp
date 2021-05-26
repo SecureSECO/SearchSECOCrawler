@@ -8,11 +8,26 @@ Utrecht University within the Software Project course.
 #include <iostream>
 CrawlData GithubCrawler::crawlRepositories(int start)
 {
+	auto strStart = std::to_string(start);
+
+	LoggerCrawler::logDebug("Starting crawling at index " + strStart, __FILE__, __LINE__);
 	CrawlData crawlData;
 	int currentId;
-	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + std::to_string(start)));
+	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
+	
+	int progress,
+		previousLog = 0,
+		percentageSteps = 10;
+	
 	for (int i = 0; i < maxResultsPerPage; i++)
 	{
+		progress = (i / double(maxResultsPerPage)) * 100;
+		if (previousLog + percentageSteps < progress)
+		{
+			previousLog += percentageSteps;
+			LoggerCrawler::logInfo(std::to_string(previousLog) + "% done...", __FILE__, __LINE__);
+		}
+
 		if (!json->isEmpty(std::to_string(i)))
 		{
 			currentId = json->get<int>(std::to_string(i) + "/id", true);
@@ -24,6 +39,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 			break;
 		}
 	}
+	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(maxResultsPerPage) + " repositories)", __FILE__, __LINE__);
 	crawlData.finalProjectId = currentId;
 	return crawlData;
 }
@@ -41,6 +57,7 @@ std::tuple<std::string, std::string> GithubCrawler::getOwnerAndRepo(std::string 
 
 ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 {
+	LoggerCrawler::logDebug("Finding owner and repository...", __FILE__, __LINE__);
 	std::tuple<std::string, std::string> ownerAndRepo = getOwnerAndRepo(url);
 	std::string ownername = std::get<0>(ownerAndRepo);
 	std::string reponame = std::get<1>(ownerAndRepo);
@@ -50,9 +67,11 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 
 	ProjectMetadata projectMetadata = ProjectMetadata();
 	// Get information about repoUrl.
+	LoggerCrawler::logDebug("Getting information about the repository...", __FILE__, __LINE__);
 	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl));
 
 	// Get information about owner.
+	LoggerCrawler::logDebug("Getting information about the owner...", __FILE__, __LINE__);
 	std::unique_ptr<JSON> ownerData(githubInterface->getRequest(json->get<std::string>("owner/url")));
 
 	std::string email = ownerData->get<std::string>("email");
@@ -64,5 +83,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	projectMetadata.license = json->get<std::string>("license/name");
 	projectMetadata.version = json->get<std::string>("pushed_at");
 	projectMetadata.defaultBranch = json->get<std::string>("default_branch");
+
+	LoggerCrawler::logInfo("Successfully found all relevant metadata, returning.", __FILE__, __LINE__);
 	return projectMetadata;
 }

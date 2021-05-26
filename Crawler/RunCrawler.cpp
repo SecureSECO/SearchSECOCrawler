@@ -25,9 +25,13 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, int &
 	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::NOT_IMPLEMENTED:
+	{
+		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source", __FILE__, __LINE__);
 		return data;
+	}
 	case CrawlableSource::GITHUB:
 	{
+		LoggerCrawler::logDebug("Detected GitHub as the source to crawl repositories from", __FILE__, __LINE__);
 		try
 		{
 			GithubCrawler githubCrawler;
@@ -48,11 +52,15 @@ ProjectMetadata RunCrawler::findMetadata(std::string const& url, int &code)
 {
 	loguru::set_thread_name(THREAD_NAME);
 
+	LoggerCrawler::logInfo("Finding metadata for the repository at \"" + url + "\"", __FILE__, __LINE__);
+
 	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::GITHUB:
 		try
 		{
+			LoggerCrawler::logDebug("Detected GitHub as the source of the repository", __FILE__, __LINE__);
+
 			GithubCrawler githubCrawler;
 			ProjectMetadata p = githubCrawler.getProjectMetadata(url);
 			return p;
@@ -62,6 +70,7 @@ ProjectMetadata RunCrawler::findMetadata(std::string const& url, int &code)
 			code = e;
 		}
 	default:
+		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source. Returning empty.", __FILE__, __LINE__);
 		return ProjectMetadata();
 	}
 }
