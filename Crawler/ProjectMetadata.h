@@ -14,6 +14,7 @@ struct ProjectMetadata
 	std::string url;
 	std::string authorName;
 	std::string authorMail;
+	std::string defaultBranch;
 
 	/// <summary>
 	/// Converts this ProjectMetadata to a string.

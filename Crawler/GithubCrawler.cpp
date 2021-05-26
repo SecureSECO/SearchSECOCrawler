@@ -63,5 +63,6 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	projectMetadata.url = json->get<std::string>("html_url");
 	projectMetadata.license = json->get<std::string>("license/name");
 	projectMetadata.version = json->get<std::string>("pushed_at");
+	projectMetadata.defaultBranch = json->get<std::string>("default_branch");
 	return projectMetadata;
 }
