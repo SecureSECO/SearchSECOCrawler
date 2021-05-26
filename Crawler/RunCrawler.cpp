@@ -17,7 +17,7 @@ CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 	return CrawlableSource::GITHUB;
 }
 
-CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, int &code)
+CrawlData RunCrawler::crawlRepositories(std::string const& url, int start)
 {
 	loguru::set_thread_name(THREAD_NAME);
 
@@ -40,7 +40,8 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, int &
 		}
 		catch (int e)
 		{
-			code = e;
+			errno = e;
+			return data;
 		}
 	}
 	default:
@@ -48,7 +49,7 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, int &
 	}
 }
 
-ProjectMetadata RunCrawler::findMetadata(std::string const& url, int &code)
+ProjectMetadata RunCrawler::findMetadata(std::string const& url)
 {
 	loguru::set_thread_name(THREAD_NAME);
 
@@ -67,10 +68,12 @@ ProjectMetadata RunCrawler::findMetadata(std::string const& url, int &code)
 		}
 		catch (int e)
 		{
-			code = e;
+			errno = e;
+			LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+			return ProjectMetadata();
 		}
 	default:
-		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source. Returning empty.", __FILE__, __LINE__);
+		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source. Returning empty", __FILE__, __LINE__);
 		return ProjectMetadata();
 	}
 }
