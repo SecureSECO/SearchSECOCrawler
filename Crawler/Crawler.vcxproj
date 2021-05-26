@@ -164,7 +164,7 @@
     <ClCompile Include="GithubCrawler.cpp" />
     <ClCompile Include="GithubInterface.cpp" />
     <ClCompile Include="JSON.cpp" />
-    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="LoggerCrawler.cpp" />
     <ClCompile Include="LogHandler.cpp" />
     <ClCompile Include="loguru\loguru.cpp" />
     <ClCompile Include="RunCrawler.cpp" />
@@ -179,7 +179,7 @@
     <ClInclude Include="GithubInterface.h" />
     <ClInclude Include="IndividualErrorHandler.h" />
     <ClInclude Include="JSON.h" />
-    <ClInclude Include="Logger.h" />
+    <ClInclude Include="LoggerCrawler.h" />
     <ClInclude Include="RunCrawler.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
