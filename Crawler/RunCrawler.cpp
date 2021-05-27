@@ -27,6 +27,7 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start)
 	case CrawlableSource::NOT_IMPLEMENTED:
 	{
 		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source", __FILE__, __LINE__);
+		errno = 0;
 		return data;
 	}
 	case CrawlableSource::GITHUB:
@@ -41,14 +42,15 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start)
 		}
 		catch (int e)
 		{
-			errno = e;
 			LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+			errno = e;
 			return data;
 		}
 	}
 	default:
 	{
 		LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+		errno = 1;
 		return data;
 	}
 	}
@@ -69,16 +71,18 @@ ProjectMetadata RunCrawler::findMetadata(std::string const& url)
 
 			GithubCrawler githubCrawler;
 			ProjectMetadata p = githubCrawler.getProjectMetadata(url);
+			errno = 0;
 			return p;
 		}
 		catch (int e)
 		{
-			errno = e;
 			LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+			errno = e;
 			return ProjectMetadata();
 		}
 	default:
 		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source. Returning empty", __FILE__, __LINE__);
+		errno = 1;
 		return ProjectMetadata();
 	}
 }
