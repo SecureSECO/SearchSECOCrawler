@@ -17,21 +17,24 @@ class JSON
 {
 private:
 	nlohmann::json *json;
+
 	std::optional<std::vector<nlohmann::json>> items; // An optional list of items.
 	// Allows us to check with if(items) whether the variable is intialized.
 
-	/// <summary>
-	/// Gets the key in the JSON variable.
-	/// Use forward slashes (/) to branch deeper in the JSON structure, e.g.
-	/// json->get("a/b/c") = json["a"]["b"]["c"].
-	/// </summary>
-	/// <param name="key">The key representing what value needs to be returned.</param>
-	/// <returns>The value if found, and NULL otherwise.</returns>
+
 	template <class T> nlohmann::json internalGet(nlohmann::json current, T key)
 	{
 		return nlohmann::json::parse("{}");
 	}
 
+	/// <summary>
+	/// Gets the given value and checks whether it is empty. Uses internalGet().
+	/// </summary>
+	/// <typeparam name="T">The type of the key.</typeparam>
+	/// <param name="current">The json variable in which needs to be indexed.</param>
+	/// <param name="key">The key.</param>
+	/// <param name="expectNonEmpty">Whether the program should throw an error to the user when the field found is empty.</param>
+	/// <returns>A nlohmann::json variable.</returns>
 	template <class T>
 	nlohmann::json internalSafeGet(nlohmann::json current, T key, bool expectNonEmpty)
 	{
@@ -53,12 +56,15 @@ private:
 
 
 	/// <summary>
-	/// Returns a default value for a given type T. Returns T() if no specialization can be found.
+	/// Returns a default value for a given type O. Returns O() if no specialization can be found.
 	/// </summary>
-	/// <typeparam name="T">The type.</typeparam>
+	/// <typeparam name="O">The type of the output.</typeparam>
 	/// <returns>A default value of the given type.</returns>
 
-	template <class O> O getDefault();
+	template <class O> O getDefault()
+	{
+		return O();
+	}
 
 
 
@@ -73,8 +79,18 @@ public:
 		this->json = &basic;
 	}
 
+	/// <summary>
+	/// Gets the length of the nlohmann::json inside this JSON variable.
+	/// </summary>
+	/// <returns>The length of the nlohmann::json variable.</returns>
 	int length();
 
+	/// <summary>
+	/// Gets the value sitting at position "index". Constructs a new list of items if none was present.
+	/// </summary>
+	/// <typeparam name="O">The type of the output.</typeparam>
+	/// <param name="index">The index.</param>
+	/// <returns>The value at the position of the index.</returns>
 	template<class O>
 	O getIndex(int index)
 	{
@@ -99,7 +115,7 @@ public:
 	/// </summary>
 	/// <param name="key">The key on which needs to be indexed.</param>
 	/// <param name="expectNonEmpty">
-	/// Whether the program should return an error to the user when the field found is empty.</param>
+	/// Whether the program should throw an error to the user when the field found is empty.</param>
 	/// <returns>A value of type T.</returns>
 	template<class T, class O>
 	O get(T key, bool expectNonEmpty = false)
@@ -122,6 +138,14 @@ public:
 		return finalResult;
 	}
 
+	/// <summary>
+	/// Gets a value for which there is need to branch several times.
+	/// </summary>
+	/// <typeparam name="T">The type of the key.</typeparam>
+	/// <typeparam name="O">The type of the output.</typeparam>
+	/// <param name="keys">The list of keys.</param>
+	/// <param name="expectNonEmpty">Whether this function should raise an error when nothing was found.</param>
+	/// <returns>The value found, or a default value if expectNonEmpty was false and nothing was found.</returns>
 	template <class T, class O> 
 	O repeatedGet(std::vector<T> const &keys, bool expectNonEmpty = false)
 	{
@@ -156,17 +180,21 @@ public:
 		return finalResult;
 	}
 
-
+	/// <summary>
+	/// Branch on a given key.
+	/// </summary>
+	/// <typeparam name="T">The type of the key.</typeparam>
+	/// <param name="key">The key.</param>
+	/// <returns>A JSON variable which is branched on the key.</returns>
 	template <class T> JSON branch(T key)
 	{
-		nlohmann::json *result = new nlohmann::json(json->at(key)); // new nlohmann::json((*json)[key]);
-		//internalSafeGet<T>(json, key, true);
+		nlohmann::json *result = new nlohmann::json(json->at(key)); 
 		return JSON(result);
 	}
 
 
 	/// <summary>
-	/// Checks whether the given key returns an empty field. Uses internalGet().
+	/// Checks whether the given key returns an empty field. 
 	/// Empty fields are typically of the form: 
 	/// "field": {}
 	/// </summary>
@@ -175,6 +203,11 @@ public:
 	bool isEmpty(std::string key);
 	bool isEmpty(int key);
 
+
+	/// Checks whether the given key returns a null field. 
+	/// </summary>
+	/// <param name="key">The key on which needs to be indexed.</param>
+	/// <returns>A boolean indicating whether the field found was null or not.</returns>
 	bool isNull(std::string key);
 	bool isNull(int key);
 
