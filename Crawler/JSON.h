@@ -15,7 +15,7 @@ Utrecht University within the Software Project course.
 class JSON
 {
 private:
-	nlohmann::json json;
+	nlohmann::json *json;
 
 	/// <summary>
 	/// Gets the key in the JSON variable.
@@ -24,22 +24,30 @@ private:
 	/// </summary>
 	/// <param name="key">The key representing what value needs to be returned.</param>
 	/// <returns>The value if found, and NULL otherwise.</returns>
-	nlohmann::json internalGet(std::string const& key);
+	template <class T> nlohmann::json internalGet(nlohmann::json current, T key)
+	{
+		return nlohmann::json::parse("{}");
+	}
 
-	/// <summary>
-	/// Indexes once on the given key. Does not use the structure of internalGet.
-	/// </summary>
-	/// <param name="current">The current JSON structure in which needs to be indexed.</param>
-	/// <param name="key">The key representing what value needs to be indexed on.</param>
-	/// <returns>The value.</returns>
-	nlohmann::json branch(nlohmann::json current, std::string const& key);
+	template <class T>
+	nlohmann::json internalSafeGet(nlohmann::json current, T key, bool expectNonEmpty)
+	{
+		nlohmann::json result = internalGet<T>(current, key);
+		if (result.is_null() || result.empty())
+		{
+			if (expectNonEmpty)
+			{
+				DefaultJSONErrorHandler::getInstance().handle(JSONError::fieldEmptyError, __FILE__, __LINE__);
+				throw 1;
+			}
+		}
+		return result;
+	}
 
-	/// <summary>
-	/// Checks whether the field associated to the given key is not null.
-	/// </summary>
-	/// <param name="key">The key on which needs to be indexed.</param>
-	/// <returns>A boolean indicating whether the associated field is null or not.</returns>
-	bool isNotNull(nlohmann::json base, std::string key);
+	int length();
+
+
+
 
 	/// <summary>
 	/// Returns a default value for a given type T. Returns T() if no specialization can be found.
@@ -47,19 +55,19 @@ private:
 	/// <typeparam name="T">The type.</typeparam>
 	/// <returns>A default value of the given type.</returns>
 
-	template<class T> T getDefault()
-	{
-		return T();
-	}
+	template <class O> O getDefault();
+
+
 
 public:
-	JSON(nlohmann::json json)
+	JSON(nlohmann::json *json)
 	{
 		this->json = json;
 	}
 	JSON()
 	{
-		this->json = nlohmann::json::parse("{}");
+		nlohmann::json basic = nlohmann::json::parse("{}");
+		this->json = &basic;
 	}
 
 	/// <summary>
@@ -69,50 +77,69 @@ public:
 	/// <param name="expectNonEmpty">
 	/// Whether the program should return an error to the user when the field found is empty.</param>
 	/// <returns>A value of type T.</returns>
-	template<class T>
-	T get(std::string const& key, bool expectNonEmpty = false)
+	template<class T, class O>
+	O get(T key, bool expectNonEmpty = false)
 	{
-		bool exist = isNotNull(json, key);
-		if (exist)
+		nlohmann::json result = internalSafeGet<T>(*json, key, expectNonEmpty);
+		if (result.empty() || result.is_null())
 		{
-			nlohmann::json result = internalGet(key);
-			T finalResult;
-			if (result.empty())
+			return getDefault<O>();
+		}
+		O finalResult;
+		try
+		{
+			finalResult = (O)result;
+		}
+		catch (nlohmann::json::type_error)
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+			throw 1;
+		}
+		return finalResult;
+	}
+
+	template <class T, class O> 
+	O repeatedGet(std::vector<T> const &keys, bool expectNonEmpty = false)
+	{
+		nlohmann::json current = *json;
+		for (int i = 0; i < keys.size(); i++)
+		{
+			T key = keys[i];
+			current = internalSafeGet(current, key, expectNonEmpty);
+			if (current.empty() || current.is_null())
 			{
-				if (expectNonEmpty)
+				if (i == keys.size() - 1)
+				{
+					return getDefault<O>();
+				}
+				else
 				{
 					DefaultJSONErrorHandler::getInstance().handle(JSONError::fieldEmptyError, __FILE__, __LINE__);
 					throw 1;
 				}
-				else
-				{
-					return getDefault<T>();
-				}
 			}
-			try
-			{
-				finalResult = (T)result;
-			}
-			catch (nlohmann::json::type_error)
-			{
-				DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
-				throw 1;
-			}
-			return finalResult;
 		}
-		else
+		O finalResult;
+		try
 		{
-			if (expectNonEmpty)
-			{
-				DefaultJSONErrorHandler::getInstance().handle(JSONError::fieldEmptyError, __FILE__, __LINE__);
-				throw 1;
-			}
-			else
-			{
-				return getDefault<T>();
-			}
+			finalResult = (O)current;
 		}
+		catch (nlohmann::json::type_error)
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+			throw 1;
+		}
+		return finalResult;
 	}
+
+
+	template <class T> JSON branch(T key)
+	{
+		nlohmann::json *result = new nlohmann::json(json->at(key)); // new nlohmann::json((*json)[key]);
+		//internalSafeGet<T>(json, key, true);
+		return JSON(result);
+	}
+
 
 	/// <summary>
 	/// Checks whether the given key returns an empty field. Uses internalGet().
@@ -122,6 +149,11 @@ public:
 	/// <param name="key">The key on which needs to be indexed.</param>
 	/// <returns>A boolean indicating whether the field found was empty or not.</returns>
 	bool isEmpty(std::string key);
+	bool isEmpty(int key);
+
+	bool isNull(std::string key);
+	bool isNull(int key);
+
 
 	/// <summary>
 	/// Parses a string/stringstream to JSON.
@@ -131,7 +163,10 @@ public:
 	static JSON *parse(std::stringstream s);
 	static JSON *parse(std::string s);
 
-
+	~JSON()
+	{
+		delete json;
+	}
 
 };
 
@@ -143,7 +178,42 @@ template <> inline std::string JSON::getDefault<std::string>()
 {
 	return "";
 }
+template <> inline const char * JSON::getDefault<const char *>()
+{
+	return "";
+}
 template <> inline bool JSON::getDefault<bool>()
 {
 	return false;
+}
+
+template <> inline nlohmann::json JSON::internalGet<int>(nlohmann::json current, int key)
+{
+	if (key < current.size())
+	{
+		return current[key];
+	}
+	else
+	{
+		DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+		throw 1;
+	}
+}
+
+template <> inline nlohmann::json JSON::internalGet<const char *>(nlohmann::json current, const char *key)
+{
+	if (current.find(key) != current.end())
+	{
+		return current[key];
+	}
+	else
+	{
+		DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+		throw 1;
+	}
+}
+
+template <> inline nlohmann::json JSON::internalGet<std::string>(nlohmann::json current, std::string key)
+{
+	return internalGet<const char *>(current, key.c_str());
 }

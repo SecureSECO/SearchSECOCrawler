@@ -29,15 +29,15 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	}
 }
 
-TEST(CrawlRepositoriesTest, TestEnd)
-{
-	GithubInterfaceMock* mock = new GithubInterfaceMock();
-	mock->defaultJSON = R"([{"html_url": "url1", "id": 50}, {"html_url": "url2", "id": 150}, {"html_url": "url3", "id": 250}])";
-	GithubCrawler githubCrawler(mock);
-	CrawlData data = githubCrawler.crawlRepositories(0);
-	EXPECT_EQ(data.URLImportanceList.size(), 3);
-	EXPECT_EQ(data.finalProjectId, 250);
-}
+//TEST(CrawlRepositoriesTest, TestEnd)
+//{
+//	GithubInterfaceMock* mock = new GithubInterfaceMock();
+//	mock->defaultJSON = R"([{"html_url": "url1", "id": 50}, {"html_url": "url2", "id": 150}, {"html_url": "url3", "id": 250}])";
+//	GithubCrawler githubCrawler(mock);
+//	CrawlData data = githubCrawler.crawlRepositories(0);
+//	EXPECT_EQ(data.URLImportanceList.size(), 3);
+//	EXPECT_EQ(data.finalProjectId, 250);
+//}
 
 TEST(CrawlRepositoriesTest, TestErrorThrow)
 {

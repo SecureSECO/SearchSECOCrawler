@@ -8,69 +8,69 @@ Utrecht University within the Software Project course.
 #include "JSON.h"
 #include "Utility.h"
 
-nlohmann::json JSON::internalGet(std::string const& key)
-{
-	std::vector<std::string> seglist = Utility::split(key, '/');
-	nlohmann::json current = json;
-	int size = seglist.size();
-	for (int i = 0; i < size; i++)
-	{
-		std::string currentKey = seglist[i];
-		current = branch(current, currentKey);
-	}
-	return current;
-}
-
-nlohmann::json JSON::branch(nlohmann::json current, std::string const& key)
-{
-	if (current.is_array())
-	{
-		if (Utility::hasOnlyDigits(key))
-		{
-			return current[std::stoi(key)];
-		}
-		else
-		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
-			throw 1;
-		}
-	}
-	else
-	{
-		if (current.find(key) != current.end())
-		{
-			return current[key];
-		}
-		else
-		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
-			throw 1;
-		}
-	}
-}
 
 
-bool JSON::isNotNull(nlohmann::json base, std::string key)
-{
-	int nextSlash = key.find("/");
-	std::string before = key.substr(0, nextSlash);
-	std::string after = key.substr(nextSlash + 1, key.npos - nextSlash - 1);
-	nlohmann::json val = branch(base, before);
-	if (!val.is_null() && val != NULL)
-	{
-		if (nextSlash != std::string::npos)
-		{
-			return isNotNull(val, after);
-		}
-		return true;
-	}
-	return false;
-}
+
 
 bool JSON::isEmpty(std::string key)
 {
-	nlohmann::json result = internalGet(key);
-	return result.empty();
+	bool empty;
+	try
+	{
+		empty = json->at(key).empty();
+	}
+	catch (nlohmann::json::type_error)
+	{
+		DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+		throw 1;
+	}
+}
+
+bool JSON::isEmpty(int key)
+{
+	bool empty;
+	try
+	{
+		empty = json->at(key).empty();
+	}
+	catch (nlohmann::json::type_error)
+	{
+		DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+		throw 1;
+	}
+}
+
+bool JSON::isNull(std::string key)
+{
+	bool empty;
+	try
+	{
+		empty = json->at(key).is_null();
+	}
+	catch (nlohmann::json::type_error)
+	{
+		DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+		throw 1;
+	}
+}
+
+bool JSON::isNull(int key)
+{
+	bool empty;
+	try
+	{
+		empty = json->at(key).is_null();
+	}
+	catch (nlohmann::json::type_error)
+	{
+		DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+		throw 1;
+	}
+}
+
+int JSON::length()
+{
+	return json->size();
 }
 
 
@@ -83,7 +83,8 @@ JSON *JSON::parse(std::string s)
 {
 	try
 	{
-		return new JSON(nlohmann::json::parse(s));
+		nlohmann::json *parsed = new nlohmann::json(nlohmann::json::parse(s));
+		return new JSON(parsed);
 	}
 	catch (nlohmann::json::parse_error &e)
 	{

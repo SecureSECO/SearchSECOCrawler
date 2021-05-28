@@ -13,10 +13,11 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + std::to_string(start)));
 	for (int i = 0; i < maxResultsPerPage; i++)
 	{
-		if (!json->isEmpty(std::to_string(i)))
+		if (!json->isEmpty(i))
 		{
-			currentId = json->get<int>(std::to_string(i) + "/id", true);
-			std::string url = json->get<std::string>(std::to_string(i) + "/html_url", true);
+			JSON branch = json->branch(i);
+			currentId = json->branch<int>(i).get<std::string, int>("id", true);
+			std::string url = json->branch<int>(i).get<std::string, std::string>("html_url", true);
 			crawlData.URLImportanceList.push_back(std::make_pair(url, 1));
 		}
 		else
@@ -53,16 +54,24 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl));
 
 	// Get information about owner.
-	std::unique_ptr<JSON> ownerData(githubInterface->getRequest(json->get<std::string>("owner/url")));
+	JSON branch = json->branch("owner");
+	std::unique_ptr<JSON> ownerData(githubInterface->getRequest(json->branch("owner").get<std::string, std::string>("url")));
 
-	std::string email = ownerData->get<std::string>("email");
+	std::string email = ownerData->get<std::string, std::string>("email");
 
 	projectMetadata.authorName = ownername;
 	projectMetadata.authorMail = email;
 	projectMetadata.name = reponame;
-	projectMetadata.url = json->get<std::string>("html_url");
-	projectMetadata.license = json->get<std::string>("license/name");
-	projectMetadata.version = json->get<std::string>("pushed_at");
-	projectMetadata.defaultBranch = json->get<std::string>("default_branch");
+	projectMetadata.url = json->get<std::string, std::string>("html_url", true);
+	if (!json->isEmpty("license") && !json->isNull("license"))
+	{
+		projectMetadata.license = json->branch("license").get<std::string, std::string>("name");
+	}
+	else
+	{
+		projectMetadata.license = "";
+	}
+	projectMetadata.version = json->get<std::string, std::string>("pushed_at");
+	projectMetadata.defaultBranch = json->get<std::string, std::string>("default_branch");
 	return projectMetadata;
 }
