@@ -7,7 +7,7 @@ The Crawler is responsible for finding projects to process, scouring different c
 Download the .zip containing the source files and extract the files.
 ## Dependencies
 
-* c++14 or c++17
+* c++17 (uses std::optional)
 * Windows 10
 * nlohmann.json from the nuget package manager needs to be installed.
 ## Building
