@@ -75,3 +75,38 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	projectMetadata.defaultBranch = json->get<std::string, std::string>("default_branch");
 	return projectMetadata;
 }
+
+int GithubCrawler::getImportanceMeasure(std::string repoUrl)
+{
+	int stars = getStars(repoUrl);
+	float parseable = getParseablePercentage(repoUrl);
+	time_t now = time(0);
+	return std::floor(stars * parseable);
+}
+
+int GithubCrawler::getStars(std::string repoUrl)
+{
+	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl));
+	return json->get<std::string, int>("stargazers_count");
+}
+
+float GithubCrawler::getParseablePercentage(std::string repoUrl)
+{
+	std::string languagesUrl = repoUrl + "/languages";
+	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl));
+	std::vector<std::string> listOfParseableLanguages = {};
+	int total = 0;
+	int parseable = 0;
+	for (int i = 0; i < json->length(); i++)
+	{
+		total += json->getIndex<int>(i);
+	}
+	for (std::string language : listOfParseableLanguages)
+	{
+		if (!json->isEmpty(language))
+		{
+			parseable += json->get<std::string, int>(language);
+		}
+	}
+	return parseable / total;
+}

@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 #include "nlohmann/json.hpp"
 #include "ErrorHandler.h"
+#include <optional>
 
 /// <summary>
 /// Adapter class for JSON formatting.
@@ -16,6 +17,8 @@ class JSON
 {
 private:
 	nlohmann::json *json;
+	std::optional<std::vector<nlohmann::json>> items; // An optional list of items.
+	// Allows us to check with if(items) whether the variable is intialized.
 
 	/// <summary>
 	/// Gets the key in the JSON variable.
@@ -44,7 +47,7 @@ private:
 		return result;
 	}
 
-	int length();
+
 
 
 
@@ -68,6 +71,27 @@ public:
 	{
 		nlohmann::json basic = nlohmann::json::parse("{}");
 		this->json = &basic;
+	}
+
+	int length();
+
+	template<class O>
+	O getIndex(int index)
+	{
+		if (items)
+		{
+			return items.value()[index];
+		}
+		else
+		{
+			std::vector<nlohmann::json> vec;
+			nlohmann::json jj = *json;
+			for (nlohmann::json::iterator it = jj.begin(); it != jj.end(); ++it)
+			{
+				vec.push_back(*it);
+			}
+			items = vec;
+		}
 	}
 
 	/// <summary>

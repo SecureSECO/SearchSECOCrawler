@@ -47,4 +47,10 @@ public:
 	/// <param name="url">The url to a repository.</param>
 	/// <returns>A project metadata file.</returns>
 	ProjectMetadata getProjectMetadata(std::string url);
+
+	int getStars(std::string repoUrl);
+
+	float getParseablePercentage(std::string repoUrl);
+
+	int getImportanceMeasure(std::string repoUrl);
 };
