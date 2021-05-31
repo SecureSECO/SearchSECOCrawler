@@ -26,5 +26,5 @@ linting:
   script:
     - cd Crawler
     - clang-tidy *.cpp -- -I../curlcpp/include/
-    - clang *.cpp -I../curlcpp/include/ -fsyntax-only
+    - clang *.cpp -I../curlcpp/include/ -fsyntax-only -std=c++20
 
