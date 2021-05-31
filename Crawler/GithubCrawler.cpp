@@ -16,9 +16,10 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 		if (!json->isEmpty(i))
 		{
 			JSON branch = json->branch(i);
-			currentId = json->branch<int>(i).get<std::string, int>("id", true);
-			std::string url = json->branch<int>(i).get<std::string, std::string>("html_url", true);
-			crawlData.URLImportanceList.push_back(std::make_pair(url, 1));
+			currentId = branch.get<std::string, int>("id", true);
+			std::string url = branch.get<std::string, std::string>("html_url", true);
+			std::string repoUrl = branch.get<std::string, std::string>("url", true);
+			crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(repoUrl)));
 		}
 		else
 		{
@@ -63,7 +64,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	projectMetadata.authorMail = email;
 	projectMetadata.name = reponame;
 	projectMetadata.url = json->get<std::string, std::string>("html_url", true);
-	if (!json->isEmpty("license") && !json->isNull("license"))
+	if (json->exists("license"))
 	{
 		projectMetadata.license = json->branch("license").get<std::string, std::string>("name");
 	}
@@ -80,7 +81,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 int GithubCrawler::getImportanceMeasure(std::string repoUrl)
 {
 	int stars = getStars(repoUrl);
-	float parseable = getParseablePercentage(repoUrl);
+	float parseable = getParseableRatio(repoUrl);
 	time_t now = time(0);
 	return std::floor(stars * parseable);
 }
@@ -91,11 +92,11 @@ int GithubCrawler::getStars(std::string repoUrl)
 	return json->get<std::string, int>("stargazers_count");
 }
 
-float GithubCrawler::getParseablePercentage(std::string repoUrl)
+float GithubCrawler::getParseableRatio(std::string repoUrl)
 {
 	std::string languagesUrl = repoUrl + "/languages";
 	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl));
-	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "Python", "C#"};
+	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "Python", "C#", "Ruby"};
 	int total = 0;
 	int parseable = 0;
 	int length = json->length();
@@ -110,5 +111,9 @@ float GithubCrawler::getParseablePercentage(std::string repoUrl)
 			parseable += json->get<std::string, int>(language);
 		}
 	}
-	return parseable / total;
+	if (total != 0)
+	{
+		return parseable / total;
+	}
+	return 0;
 }

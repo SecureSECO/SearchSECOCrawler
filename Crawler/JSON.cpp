@@ -12,44 +12,6 @@ Utrecht University within the Software Project course.
 
 
 
-//bool JSON::isEmpty(std::string key)
-//{
-//
-//}
-//
-//bool JSON::isEmpty(int key)
-//{
-//	bool empty;
-//	try
-//	{
-//		empty = json->at(key).empty();
-//	}
-//	catch (nlohmann::json::type_error)
-//	{
-//		DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
-//		throw 1;
-//	}
-//}
-
-//bool JSON::isNull(std::string key)
-//{
-//	
-//}
-//
-//bool JSON::isNull(int key)
-//{
-//	bool empty;
-//	try
-//	{
-//		empty = json->at(key).is_null();
-//	}
-//	catch (nlohmann::json::type_error)
-//	{
-//		DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
-//		throw 1;
-//	}
-//}
-
 int JSON::length()
 {
 	return json->size();

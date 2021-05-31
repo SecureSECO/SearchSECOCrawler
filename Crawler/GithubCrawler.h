@@ -50,7 +50,7 @@ public:
 
 	int getStars(std::string repoUrl);
 
-	float getParseablePercentage(std::string repoUrl);
+	float getParseableRatio(std::string repoUrl);
 
 	int getImportanceMeasure(std::string repoUrl);
 };
