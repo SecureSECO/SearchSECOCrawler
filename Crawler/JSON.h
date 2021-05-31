@@ -189,7 +189,21 @@ public:
 	/// <returns>A JSON variable which is branched on the key.</returns>
 	template <class T> JSON branch(T key)
 	{
-		nlohmann::json *result = new nlohmann::json(json->at(key)); 
+		nlohmann::json* result;
+		try
+		{
+			result = new nlohmann::json(json->at(key));
+		}
+		catch (nlohmann::json::out_of_range)
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::outOfRangeError, __FILE__, __LINE__);
+			throw 1;
+		}
+		catch (nlohmann::json::parse_error)
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
+			throw 1;
+		}
 		return JSON(result);
 	}
 
@@ -208,9 +222,14 @@ public:
 		{
 			empty = json->at(key).empty();
 		}
-		catch (nlohmann::json::type_error)
+		catch (nlohmann::json::out_of_range)
 		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::outOfRangeError, __FILE__, __LINE__);
+			throw 1;
+		}
+		catch (nlohmann::json::parse_error)
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
 			throw 1;
 		}
 		return empty;
@@ -228,9 +247,14 @@ public:
 		{
 			empty = json->at(key).is_null();
 		}
-		catch (nlohmann::json::type_error)
+		catch (nlohmann::json::out_of_range)
 		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::outOfRangeError, __FILE__, __LINE__);
+			throw 1;
+		}
+		catch (nlohmann::json::parse_error)
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
 			throw 1;
 		}
 		return empty;
@@ -244,17 +268,7 @@ public:
 	/// <returns>A boolean indicating whether the key was found in the JSON structure.</returns>
 	template<class T> bool contains(T key)
 	{
-		bool empty;
-		try
-		{
-			empty = json->contains(key);
-		}
-		catch (nlohmann::json::type_error)
-		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
-			throw 1;
-		}
-		return empty;
+		return json->contains(key);
 	}
 
 	/// <summary>

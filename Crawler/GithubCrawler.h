@@ -21,6 +21,27 @@ private:
 	/// <returns>A tuple consisting of the owner name and repository name in place one and two respectively.</returns>
 	std::tuple<std::string, std::string> getOwnerAndRepo(std::string const& url);
 
+	/// <summary>
+	/// Get the number of stars of the given project.
+	/// </summary>
+	/// <param name="repoUrl">The project URL (with api. in front).</param>
+	/// <returns>A number indicating the number of stars in the project.</returns>
+	int getStars(std::string repoUrl);
+
+	/// <summary>
+	/// Gets the fraction of parseable lines of code to the total number of lines of code.
+	/// </summary>
+	/// <param name="repoUrl">The project URL (with api. in front).</param>
+	/// <returns>The total number of parseable lines divided by the total number of lines, and 0 if the total is 0.</returns>
+	float getParseableRatio(std::string repoUrl);
+
+	/// <summary>
+	/// Gets the importance measure of a given project.
+	/// </summary>
+	/// <param name="repoUrl">The project URL (with api. in front).</param>
+	/// <returns>An int representing the importance measure.</returns>
+	int getImportanceMeasure(std::string repoUrl);
+
 public:
 	GithubCrawler(GithubInterface *githubInterface)
 	{
@@ -48,9 +69,5 @@ public:
 	/// <returns>A project metadata file.</returns>
 	ProjectMetadata getProjectMetadata(std::string url);
 
-	int getStars(std::string repoUrl);
 
-	float getParseableRatio(std::string repoUrl);
-
-	int getImportanceMeasure(std::string repoUrl);
 };

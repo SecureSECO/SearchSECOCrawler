@@ -11,7 +11,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	CrawlData crawlData;
 	int currentId;
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + std::to_string(start)));
-	for (int i = 0; i < maxResultsPerPage; i++)
+	for (int i = 0; i < json->length(); i++)
 	{
 		if (!json->isEmpty(i))
 		{
@@ -74,7 +74,6 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	}
 	projectMetadata.version = json->get<std::string, std::string>("pushed_at");
 	projectMetadata.defaultBranch = json->get<std::string, std::string>("default_branch");
-	getImportanceMeasure(repoUrl);
 	return projectMetadata;
 }
 
@@ -96,7 +95,7 @@ float GithubCrawler::getParseableRatio(std::string repoUrl)
 {
 	std::string languagesUrl = repoUrl + "/languages";
 	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl));
-	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "Python", "C#", "Ruby"};
+	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "Python"};
 	int total = 0;
 	int parseable = 0;
 	int length = json->length();
