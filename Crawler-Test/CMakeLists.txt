@@ -3,6 +3,7 @@
 # © Copyright Utrecht University (Department of Information and Computing Sciences)
 
 # Required by FetchContent_MakeAvailable
+set(CMAKE_CXX_STANDARD 17)
 cmake_minimum_required(VERSION 3.13)
 project(crawler_tests)
 
