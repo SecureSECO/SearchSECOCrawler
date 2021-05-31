@@ -73,6 +73,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	}
 	projectMetadata.version = json->get<std::string, std::string>("pushed_at");
 	projectMetadata.defaultBranch = json->get<std::string, std::string>("default_branch");
+	getImportanceMeasure(repoUrl);
 	return projectMetadata;
 }
 
@@ -94,16 +95,17 @@ float GithubCrawler::getParseablePercentage(std::string repoUrl)
 {
 	std::string languagesUrl = repoUrl + "/languages";
 	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl));
-	std::vector<std::string> listOfParseableLanguages = {};
+	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "Python", "C#"};
 	int total = 0;
 	int parseable = 0;
-	for (int i = 0; i < json->length(); i++)
+	int length = json->length();
+	for (int i = 0; i < length; i++)
 	{
 		total += json->getIndex<int>(i);
 	}
 	for (std::string language : listOfParseableLanguages)
 	{
-		if (!json->isEmpty(language))
+		if (json->exists(language))
 		{
 			parseable += json->get<std::string, int>(language);
 		}

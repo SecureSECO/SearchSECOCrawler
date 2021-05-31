@@ -107,6 +107,7 @@ public:
 				vec.push_back(*it);
 			}
 			items = vec;
+			return items.value()[index];
 		}
 	}
 
@@ -200,16 +201,78 @@ public:
 	/// </summary>
 	/// <param name="key">The key on which needs to be indexed.</param>
 	/// <returns>A boolean indicating whether the field found was empty or not.</returns>
-	bool isEmpty(std::string key);
-	bool isEmpty(int key);
+	template<class T> bool isEmpty(T key)
+	{
+		bool empty;
+		try
+		{
+			empty = json->at(key).empty();
+		}
+		catch (nlohmann::json::type_error)
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+			throw 1;
+		}
+		return empty;
+	}
 
-
+	/// <summary>
 	/// Checks whether the given key returns a null field. 
 	/// </summary>
 	/// <param name="key">The key on which needs to be indexed.</param>
 	/// <returns>A boolean indicating whether the field found was null or not.</returns>
-	bool isNull(std::string key);
-	bool isNull(int key);
+	template<class T> bool isNull(T key)
+	{
+		bool empty;
+		try
+		{
+			empty = json->at(key).is_null();
+		}
+		catch (nlohmann::json::type_error)
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+			throw 1;
+		}
+		return empty;
+	}
+
+	/// <summary>
+	/// Checks whether the given key is contained in the JSON structure.
+	/// </summary>
+	/// <typeparam name="T">The type of the key.</typeparam>
+	/// <param name="key">The key.</param>
+	/// <returns>A boolean indicating whether the key was found in the JSON structure.</returns>
+	template<class T> bool contains(T key)
+	{
+		bool empty;
+		try
+		{
+			empty = json->contains(key);
+		}
+		catch (nlohmann::json::type_error)
+		{
+			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+			throw 1;
+		}
+		return empty;
+	}
+
+	/// <summary>
+	/// Checks whether the given key is contained in the JSON structure and 
+	/// whether it is associated with a null/empty field.
+	/// </summary>
+	/// <typeparam name="T"> The type of the key.</typeparam>
+	/// <param name="key">The key on which needs to be indexed.</param>
+	/// <returns>A boolean which is true when the key was found in the JSON structure,
+	/// the value associated to the key was not null and the value was not empty. This boolean is false otherwise.</returns>
+	template<class T> bool exists(T key)
+	{
+		if (contains(key))
+		{
+			return (!isNull(key) && !isEmpty(key));
+		}
+		return false;
+	}
 
 
 	/// <summary>
