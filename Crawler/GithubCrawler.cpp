@@ -112,7 +112,7 @@ float GithubCrawler::getParseableRatio(std::string repoUrl)
 	}
 	if (total != 0)
 	{
-		return parseable / total;
+		return (float) ((float) (parseable) / (float) (total));
 	}
 	return 0;
 }
