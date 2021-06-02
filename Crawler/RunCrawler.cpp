@@ -14,7 +14,18 @@ Utrecht University within the Software Project course.
 
 CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 {
-	return CrawlableSource::GITHUB;
+	if (url.find("github") != std::string::npos)
+	{
+		return CrawlableSource::GITHUB;
+	}
+	else if (url.find("gitlab") != std::string::npos)
+	{
+		return CrawlableSource::GITLAB;
+	}
+	else
+	{
+		return CrawlableSource::NOT_IMPLEMENTED;
+	}
 }
 
 CrawlData RunCrawler::crawlRepositories(std::string const& url, int start)

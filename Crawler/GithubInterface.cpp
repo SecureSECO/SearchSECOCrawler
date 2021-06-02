@@ -33,7 +33,7 @@ JSON *GithubInterface::getRequest(std::string query)
 	catch (curl::curl_easy_exception error)
 	{
 		LoggerCrawler::logWarn("CURL ran into a problem", __FILE__, __LINE__);
-		auto errors = error.get_traceback();
+		//auto errors = error.get_traceback();
 		error.print_traceback();
 	}
 	long responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
