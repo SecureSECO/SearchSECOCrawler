@@ -7,7 +7,6 @@ Utrecht University within the Software Project course.
 #include "RunCrawler.h"
 int main() 
 {
-	int c;
-	RunCrawler::crawlRepositories("github.com", 100, c);
-	RunCrawler::findMetadata("github.com/manicolosi/manico-crumbs", c);
+	RunCrawler::crawlRepositories("github.com", 100);
+	RunCrawler::findMetadata("github.com/manicolosi/manico-crumbs");
 }

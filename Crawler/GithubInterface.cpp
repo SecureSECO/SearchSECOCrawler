@@ -27,10 +27,12 @@ JSON *GithubInterface::getRequest(std::string query)
 	// Send query
 	try
 	{
+		LoggerCrawler::logDebug("Executing CURL query", __FILE__, __LINE__);
 		easy.perform();
 	}
 	catch (curl::curl_easy_exception error)
 	{
+		LoggerCrawler::logWarn("CURL ran into a problem", __FILE__, __LINE__);
 		auto errors = error.get_traceback();
 		error.print_traceback();
 	}
