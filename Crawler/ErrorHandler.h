@@ -90,7 +90,9 @@ private:
 			{JSONError::typeError,
 			 "Error while converting JSON type to standard type. Perhaps something is wrong in the program code?"},
 			{JSONError::fieldEmptyError, 
-			"Field was empty in JSON structure while it shouldn't have been. Perhaps something changed in the external API?"}
+			"Field was empty in JSON structure while it shouldn't have been. Perhaps something changed in the external API?"},
+			{JSONError::outOfRangeError, "Index was out of range in JSON structure."},
+			{JSONError::indexNotArrayError, "Tried to index a JSON structure that was not an array."}
 		};
 
 		std::map<JSONError, IndividualErrorHandler *> handlers;
