@@ -19,7 +19,9 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 		previousLog = 0,
 		percentageSteps = 10;
 	
-	for (int i = 0; i < maxResultsPerPage; i++)
+	int length = json->length();
+	int bound = std::min(length, maxResultsPerPage);
+	for (int i = 0; i < bound; i++)
 	{
 		progress = (i / double(maxResultsPerPage)) * 100;
 		if (previousLog + percentageSteps < progress)
@@ -28,18 +30,12 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 			LoggerCrawler::logInfo(std::to_string(previousLog) + "% done...", __FILE__, __LINE__);
 		}
 
-		if (!json->isEmpty(std::to_string(i)))
-		{
-			JSON branch = json->branch(i);
-			currentId = branch.get<std::string, int>("id", true);
-			std::string url = branch.get<std::string, std::string>("html_url", true);
-			std::string repoUrl = branch.get<std::string, std::string>("url", true);
-			crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(repoUrl)));
-		}
-		else
-		{
-			break;
-		}
+		JSON branch = json->branch(i);
+		currentId = branch.get<std::string, int>("id", true);
+		std::string url = branch.get<std::string, std::string>("html_url", true);
+		std::string repoUrl = branch.get<std::string, std::string>("url", true);
+		crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(repoUrl)));
+
 	}
 	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(maxResultsPerPage) + " repositories)", __FILE__, __LINE__);
 	crawlData.finalProjectId = currentId;
