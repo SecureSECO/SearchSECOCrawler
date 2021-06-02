@@ -37,6 +37,7 @@ TEST(TestJSONGet, JSONGetEmpty)
 {
 	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {}})"));
 	EXPECT_EQ((json->get<std::string, std::string>("commit")), "");
+	EXPECT_TRUE(json->isEmpty("commit"));
 }
 
 TEST(TestJSONGet, JSONGetEmptyInt)
@@ -72,4 +73,40 @@ TEST(TestJSONExist, JSONNull)
 {
 	std::unique_ptr<JSON> json(JSON::parse("{\"test1\": null}"));
 	EXPECT_EQ((json->get<std::string, std::string>("test1")), "");
+	EXPECT_TRUE(json->isNull("test1"));
+}
+
+TEST(TestJSONExist, JSONContains)
+{
+	std::unique_ptr<JSON> json(JSON::parse("{\"test1\": null}"));
+	EXPECT_FALSE(json->contains("test2"));
+}
+
+TEST(TestJSONExist, JSONExists)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"({"test1": null, "commit": {}})"));
+	EXPECT_FALSE(json->exists("test1"));
+	EXPECT_FALSE(json->exists("commit"));
+	EXPECT_FALSE(json->exists("doesNotExist"));
+}
+
+TEST(TestJSONProperty, JSONLength)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"({"test1": null, "commit": {}})"));
+	EXPECT_EQ(json->length(), 2);
+}
+
+TEST(TestJSONGet, JSONGetIndex)
+{
+	std::vector<std::string> vec;
+	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": "testvalue", "commit3": "testvalue3"})"));
+	for (int i = 0; i < json->length(); i++)
+	{
+		vec.push_back(json->getIndex<std::string>(i));
+	}
+	bool b1 = (std::find(vec.begin(), vec.end(), "testvalue") != vec.end());
+	bool b2 = (std::find(vec.begin(), vec.end(), "testvalue3") != vec.end());
+	EXPECT_TRUE(b1);
+	EXPECT_TRUE(b2);
+
 }

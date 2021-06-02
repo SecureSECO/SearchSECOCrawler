@@ -27,7 +27,7 @@ JSON *JSON::parse(std::string s)
 {
 	try
 	{
-		nlohmann::json *parsed = new nlohmann::json(nlohmann::json::parse(s));
+		nlohmann::json*parsed = new nlohmann::json(nlohmann::json::parse(s));
 		return new JSON(parsed);
 	}
 	catch (nlohmann::json::parse_error &e)

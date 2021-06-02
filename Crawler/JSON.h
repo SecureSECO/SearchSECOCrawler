@@ -16,7 +16,7 @@ Utrecht University within the Software Project course.
 class JSON
 {
 private:
-	nlohmann::json *json;
+	nlohmann::json*json;
 
 	std::optional<std::vector<nlohmann::json>> items; // An optional list of items.
 	// Allows us to check with if(items) whether the variable is intialized.
@@ -69,7 +69,7 @@ private:
 
 
 public:
-	JSON(nlohmann::json *json)
+	JSON(nlohmann::json*json)
 	{
 		this->json = json;
 	}
@@ -87,6 +87,7 @@ public:
 
 	/// <summary>
 	/// Gets the value sitting at position "index". Constructs a new list of items if none was present.
+	/// NOTE: order of items does not necessarily equal the order of input!
 	/// </summary>
 	/// <typeparam name="O">The type of the output.</typeparam>
 	/// <param name="index">The index.</param>

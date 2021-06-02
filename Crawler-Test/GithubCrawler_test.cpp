@@ -32,7 +32,7 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	for (int i = 0; i < 100; i++)
 	{
 		EXPECT_EQ(data.URLImportanceList[i].first, std::to_string(i));
-		EXPECT_EQ(data.URLImportanceList[i].second, std::floor(50.0*((1.0 + 8.0 + 16.0) / 31.0)));
+		EXPECT_EQ(data.URLImportanceList[i].second, std::floor(50.0*((1.0 + 4.0 + 16.0) / 31.0)));
 	}
 }
 
