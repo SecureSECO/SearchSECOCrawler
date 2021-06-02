@@ -33,14 +33,9 @@ private:
 	/// </summary>
 	/// <param name="repoUrl">The project URL (with api. in front).</param>
 	/// <returns>The total number of parseable lines divided by the total number of lines, and 0 if the total is 0.</returns>
-	float getParseableRatio(std::string repoUrl);
+	std::pair<float, int> getParseableRatio(std::string repoUrl);
 
-	/// <summary>
-	/// Gets the importance measure of a given project.
-	/// </summary>
-	/// <param name="repoUrl">The project URL (with api. in front).</param>
-	/// <returns>An int representing the importance measure.</returns>
-	int getImportanceMeasure(std::string repoUrl);
+
 
 public:
 	GithubCrawler(GithubInterface *githubInterface)
@@ -69,5 +64,10 @@ public:
 	/// <returns>A project metadata file.</returns>
 	ProjectMetadata getProjectMetadata(std::string url);
 
-
+	/// <summary>
+	/// Gets the importance measure of a given project.
+	/// </summary>
+	/// <param name="repoUrl">The project URL (with api. in front).</param>
+	/// <returns>An int representing the importance measure.</returns>
+	int getImportanceMeasure(std::string repoUrl);
 };

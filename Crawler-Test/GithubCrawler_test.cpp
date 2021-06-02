@@ -29,10 +29,14 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	mock->defaultJSON = languagesString;
 	GithubCrawler githubCrawler(mock);
 	CrawlData data = githubCrawler.crawlRepositories(0);
+	float percentage = (1.0 + 4.0 + 16.0) / 31.0;
+	int stars = 50;
+	int bytes = (int)(1.0 + 4.0 + 16.0);
+	int finalval = 20000000 * percentage * std::log(stars + 1) * std::log(std::log(bytes + 1) + 1); 
 	for (int i = 0; i < 100; i++)
 	{
 		EXPECT_EQ(data.URLImportanceList[i].first, std::to_string(i));
-		EXPECT_EQ(data.URLImportanceList[i].second, std::floor(50.0*((1.0 + 4.0 + 16.0) / 31.0)));
+		EXPECT_EQ(data.URLImportanceList[i].second, finalval);
 	}
 }
 

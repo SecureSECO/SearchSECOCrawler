@@ -80,9 +80,8 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 int GithubCrawler::getImportanceMeasure(std::string repoUrl)
 {
 	int stars = getStars(repoUrl);
-	float parseable = getParseableRatio(repoUrl);
-	time_t now = time(0);
-	return std::floor(stars * parseable);
+	std::pair<float, int> parseable = getParseableRatio(repoUrl);
+	return 20000000 * std::get<0>(parseable) * std::log(stars + 1) * std::log(std::log(std::get<1>(parseable) + 1) + 1);
 }
 
 int GithubCrawler::getStars(std::string repoUrl)
@@ -91,7 +90,7 @@ int GithubCrawler::getStars(std::string repoUrl)
 	return json->get<std::string, int>("stargazers_count");
 }
 
-float GithubCrawler::getParseableRatio(std::string repoUrl)
+std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl)
 {
 	std::string languagesUrl = repoUrl + "/languages";
 	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl));
@@ -112,7 +111,7 @@ float GithubCrawler::getParseableRatio(std::string repoUrl)
 	}
 	if (total != 0)
 	{
-		return (float) ((float) (parseable) / (float) (total));
+		return std::pair((float) ((float) (parseable) / (float) (total)), parseable);
 	}
-	return 0;
+	return std::pair(0.0, 0);
 }
