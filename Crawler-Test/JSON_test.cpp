@@ -30,7 +30,7 @@ TEST(TestJSONGet, LongPath)
 TEST(TestJSONGet, InvalidJSONGet)
 {
 	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": {"tree": {"sha": "testsha"}}}})"));
-	EXPECT_ANY_THROW((json->get<std::string, int>("commit/test|;tes2")));
+	EXPECT_THROW((json->get<std::string, int>("commit/test|;tes2")), int);
 }
 
 TEST(TestJSONGet, JSONGetEmpty)
@@ -49,7 +49,7 @@ TEST(TestJSONGet, JSONGetEmptyInt)
 TEST(TestJSONGet, JSONGetEmptyThrow)
 {
 	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {}})"));
-	EXPECT_ANY_THROW((json->get<std::string, bool>("commit", true)));
+	EXPECT_THROW((json->get<std::string, bool>("commit", true)), int);
 }
 
 TEST(TestJSONGet, JSONArrayGet)
@@ -61,12 +61,12 @@ TEST(TestJSONGet, JSONArrayGet)
 TEST(TestJSONGet, InvalidJSONArrayGet)
 {
 	std::unique_ptr<JSON> json(JSON::parse("[{\"test1\": \"test\"}]"));
-	EXPECT_ANY_THROW((json->get<std::string, std::string>("a/test")));
+	EXPECT_THROW((json->get<std::string, std::string>("a/test")), int);
 }
 
 TEST(TestJSONParse, InvalidJSON)
 {
-	EXPECT_ANY_THROW(JSON::parse(R"(invalid)"));
+	EXPECT_THROW(JSON::parse(R"(invalid)"), int);
 }
 
 TEST(TestJSONExist, JSONNull)
@@ -109,4 +109,48 @@ TEST(TestJSONGet, JSONGetIndex)
 	EXPECT_TRUE(b1);
 	EXPECT_TRUE(b2);
 
+}
+
+TEST(TestJSONGet, JSONGetThrow)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": 1, "commit3": "testvalue3"})"));
+	EXPECT_THROW((json->get<std::string, std::string>("commit")), int);
+}
+
+TEST(TestJSONGet, JSONRepeatedGetInvalidPath)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": {}}, "commit3": "testvalue3"})"));
+	EXPECT_THROW((json->repeatedGet<std::string, std::string>({ "commit", "commitDoesNotExist" })), int);
+}
+
+TEST(TestJSONGet, JSONRepeatedGetEmptyPath)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": {}}, "commit3": "testvalue3"})"));
+	EXPECT_THROW((json->repeatedGet<std::string, std::string>({ "commit", "commit", "cantGoFurther" })), int);
+}
+
+
+TEST(TestJSONGet, JSONRepeatedGetThrowWronConversion)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": 1}, "commit3": "testvalue3"})"));
+	EXPECT_THROW((json->repeatedGet<std::string, std::string>({ "commit", "commit" })), int);
+}
+
+
+TEST(TestJSONGet, JSONRepeatedGetEmpty)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": {}}, "commit3": "testvalue3"})"));
+	EXPECT_EQ((json->repeatedGet<std::string, std::string>({ "commit", "commit" })), "");
+}
+
+TEST(TestJSONBranch, JSONBranchOutOfRangeThrow)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": {}}, "commit3": "testvalue3"})"));
+	EXPECT_THROW((json->branch<std::string>("doesNotExist")), int);
+}
+
+TEST(TestJSONBranch, JSONBranchTypeThrow)
+{
+	std::unique_ptr<JSON> json(JSON::parse(R"([{"commit": "test"}, {"commit": {}}])"));
+	EXPECT_THROW((json->branch<std::string>("thisIsNotSupposedToBeTheKey")), int);
 }
