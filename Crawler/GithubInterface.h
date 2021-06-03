@@ -30,5 +30,5 @@ public:
 	/// <returns>A pointer to a JSON variable.</returns>
 	virtual JSON *getRequest(std::string query, bool shouldErrorsBeFatal);
 
-	virtual JSON* getRequest(std::string query, GithubErrorThrowHandler *handler, bool shouldErrorsBeFatal);
+	virtual JSON *getRequest(std::string query, GithubErrorThrowHandler *handler, bool shouldErrorsBeFatal);
 };

@@ -55,9 +55,10 @@ public:
 	/// <param name="handler"> The handler which should now handle the response. </param>
 	void replaceSingleHandler(TResponse response, IndividualErrorHandler *handler)
 	{
-		IndividualErrorHandler *oldHandler = errorHandlingDictionary[response];
+		//delete errorHandlingDictionary[response];
+		//IndividualErrorHandler *oldHandler = errorHandlingDictionary[response];
 		errorHandlingDictionary[response] = handler;
-		delete oldHandler;
+		//delete oldHandler;
 	}
 
 	int getCode(TResponse response)

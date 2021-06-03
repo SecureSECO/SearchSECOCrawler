@@ -8,9 +8,12 @@ Utrecht University within the Software Project course.
 int main() 
 {
 	int start = 0;
-	CrawlData data = RunCrawler::crawlRepositories("github.com", start);
-	/*start = data.finalProjectId;
-	std::cout << "start: " + (std::to_string(start));*/
+	for (int i = 0; i < 10; i++)
+	{
+		CrawlData data = RunCrawler::crawlRepositories("github.com", start);
+		start = data.finalProjectId;
+		std::cout << "start: " + (std::to_string(start));
+	}
 
 	RunCrawler::findMetadata("github.com/manicolosi/manico-crumbs");
 }
