@@ -72,6 +72,12 @@ public:
 	DefaultGithubErrorHandler();
 };
 
+class GithubErrorThrowHandler : public ErrorHandler<githubAPIResponse>
+{
+public:
+	GithubErrorThrowHandler();
+};
+
 class DefaultGenericErrorHandler : public ErrorHandler<genericError>
 {
 public:

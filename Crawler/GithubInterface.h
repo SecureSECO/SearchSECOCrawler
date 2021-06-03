@@ -14,7 +14,7 @@ class GithubInterface
 private:
 	std::string userAgent;
 	std::string userPWD;
-	DefaultGithubErrorHandler defaultGithubHandler;
+	GithubErrorThrowHandler defaultHandler;
 
 public:
 	GithubInterface(std::string userAgent, std::string userPWD)
@@ -28,5 +28,7 @@ public:
 	/// </summary>
 	/// <param name="query">The query to be send to Github.</param>
 	/// <returns>A pointer to a JSON variable.</returns>
-	virtual JSON *getRequest(std::string query);
+	virtual JSON *getRequest(std::string query, bool shouldErrorsBeFatal);
+
+	virtual JSON* getRequest(std::string query, GithubErrorThrowHandler *handler, bool shouldErrorsBeFatal);
 };

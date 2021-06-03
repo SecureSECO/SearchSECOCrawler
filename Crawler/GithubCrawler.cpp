@@ -9,11 +9,12 @@ Utrecht University within the Software Project course.
 CrawlData GithubCrawler::crawlRepositories(int start)
 {
 	auto strStart = std::to_string(start);
+	GithubErrorThrowHandler* handler = getCorrectHandler();
 
 	LoggerCrawler::logDebug("Starting crawling at index " + strStart, __FILE__, __LINE__);
 	CrawlData crawlData;
 	int currentId;
-	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
+	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart, true));
 	
 	int progress,
 		previousLog = 0,
@@ -32,9 +33,24 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 
 		JSON branch = json->branch(i);
 		currentId = branch.get<std::string, int>("id", true);
-		std::string url = branch.get<std::string, std::string>("html_url", true);
 		std::string repoUrl = branch.get<std::string, std::string>("url", true);
-		int stars = getStars(repoUrl);
+		int stars;
+		try
+		{
+			stars = getStars(repoUrl, handler);
+		}
+		catch (int e)
+		{
+			if (e == 0)
+			{
+				continue;
+			}
+			else if(e == 1)
+			{
+				throw 1;
+			}
+		}
+		std::string url = branch.get<std::string, std::string>("html_url", true);
 		std::pair<float, int> parseable = getParseableRatio(repoUrl);
 		crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
 
@@ -42,7 +58,18 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 
 	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(maxResultsPerPage) + " repositories)", __FILE__, __LINE__);
 	crawlData.finalProjectId = currentId;
+	delete handler;
 	return crawlData;
+}
+
+GithubErrorThrowHandler* GithubCrawler::getCorrectHandler()
+{
+	GithubErrorThrowHandler* handler = new GithubErrorThrowHandler();
+	IndividualErrorHandler* individualHandler1 = new LogThrowHandler("Found URL was inaccesible, skipping...", LogLevel::WARN, Utility::getCode(githubAPIResponse::forbidden));
+	IndividualErrorHandler* individualHandler2 = new LogThrowHandler("Found URL was deleted, skipping...", LogLevel::WARN, Utility::getCode(githubAPIResponse::urlNotFound));
+	handler->replaceSingleHandler(githubAPIResponse::forbidden, individualHandler1);
+	handler->replaceSingleHandler(githubAPIResponse::urlNotFound, individualHandler2);
+	return handler;
 }
 
 std::tuple<std::string, std::string> GithubCrawler::getOwnerAndRepo(std::string const& url)
@@ -69,12 +96,12 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	ProjectMetadata projectMetadata = ProjectMetadata();
 	// Get information about repoUrl.
 	LoggerCrawler::logDebug("Getting information about the repository...", __FILE__, __LINE__);
-	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl));
+	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl, true));
 
 	// Get information about owner.
 	JSON branch = json->branch("owner");
 	LoggerCrawler::logDebug("Getting information about the owner...", __FILE__, __LINE__);
-	std::unique_ptr<JSON> ownerData(githubInterface->getRequest(branch.get<std::string, std::string>("url")));
+	std::unique_ptr<JSON> ownerData(githubInterface->getRequest(branch.get<std::string, std::string>("url"), true));
 
 	std::string email = ownerData->get<std::string, std::string>("email");
 
@@ -103,16 +130,17 @@ int GithubCrawler::getImportanceMeasure(int stars, std::pair<float, int> percent
 	return 20000000 * percentage * std::log(stars + 1) * std::log(std::log(bytes + 1) + 1);
 }
 
-int GithubCrawler::getStars(std::string repoUrl)
+int GithubCrawler::getStars(std::string repoUrl, GithubErrorThrowHandler* handler)
 {
-	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl));
-	return json->get<std::string, int>("stargazers_count");
+	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl, handler, false));
+	int stars = json->get<std::string, int>("stargazers_count");
+	return stars;
 }
 
 std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl)
 {
 	std::string languagesUrl = repoUrl + "/languages";
-	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl));
+	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl, true));
 	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "C#"};
 	int total = 0;
 	int parseable = 0;

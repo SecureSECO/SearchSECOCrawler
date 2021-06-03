@@ -37,7 +37,7 @@ public:
 /// </summary>
 class LogHandler : public IndividualErrorHandler
 {
-private:
+protected:
 	const char *msg;
 	LogLevel level;
 	int code;
@@ -55,6 +55,19 @@ public:
 	/// <param name="file">The file in which this function is called from.</param>
 	/// <param name="line">The line from which this function is called from.</param>
 	void execute(const char *file, unsigned int line) override;
+};
+
+/// <summary>
+/// Similar to loghandler but throws a 1 when logging an error and a 0 when logging a warning.
+/// </summary>
+class LogThrowHandler : public LogHandler
+{
+public:
+	LogThrowHandler(const char* msg, LogLevel level, int code) : LogHandler(msg, level, code)
+	{
+
+	}
+	void execute(const char* file, unsigned int line) override;
 };
 
 /// <summary>
