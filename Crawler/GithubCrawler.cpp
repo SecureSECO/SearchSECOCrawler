@@ -65,8 +65,8 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 GithubErrorThrowHandler* GithubCrawler::getCorrectHandler()
 {
 	GithubErrorThrowHandler* handler = new GithubErrorThrowHandler();
-	IndividualErrorHandler* individualHandler1 = new LogThrowHandler("Found URL was inaccesible, skipping...", LogLevel::WARN, Utility::getCode(githubAPIResponse::forbidden));
-	IndividualErrorHandler* individualHandler2 = new LogThrowHandler("Found URL was deleted, skipping...", LogLevel::WARN, Utility::getCode(githubAPIResponse::urlNotFound));
+	IndividualErrorHandler* individualHandler1 = new LogThrowHandler("Found URL was inaccessible, skipping...", LogLevel::WARN, Utility::getCode(githubAPIResponse::forbidden));
+	IndividualErrorHandler* individualHandler2 = new LogThrowHandler("Found URL was inaccessible, skipping...", LogLevel::WARN, Utility::getCode(githubAPIResponse::urlNotFound));
 	handler->replaceSingleHandler(githubAPIResponse::forbidden, individualHandler1);
 	handler->replaceSingleHandler(githubAPIResponse::urlNotFound, individualHandler2);
 	return handler;
