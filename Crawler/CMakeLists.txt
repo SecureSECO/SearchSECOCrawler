@@ -64,6 +64,7 @@ add_library(crawler
   GithubClientErrorConverter.cpp
   LoggerCrawler.cpp
   LogHandler.cpp
+  LogThrowHandler.cpp
   ${CRAWLER_HEADER_LIST}
   ${LOGURU_FILES}
 )

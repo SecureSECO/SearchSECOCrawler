@@ -26,7 +26,7 @@ private:
 	/// </summary>
 	/// <param name="repoUrl">The project URL (with api. in front).</param>
 	/// <returns>A number indicating the number of stars in the project.</returns>
-	int getStars(std::string repoUrl);
+	int getStars(std::string repoUrl, GithubErrorThrowHandler* handler);
 
 	/// <summary>
 	/// Gets the fraction of parseable lines of code to the total number of lines of code.
@@ -34,6 +34,12 @@ private:
 	/// <param name="repoUrl">The project URL (with api. in front).</param>
 	/// <returns>The total number of parseable lines divided by the total number of lines, and 0 if the total is 0.</returns>
 	std::pair<float, int> getParseableRatio(std::string repoUrl);
+
+
+	/// <summary>
+	/// Constructs a new githuberrorhandler that has the loggers of 403 and 404 replaced.
+	/// </summary>
+	GithubErrorThrowHandler* getCorrectHandler();
 
 
 
