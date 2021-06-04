@@ -6,7 +6,6 @@ const static std::string repoBaseUrl = "https://api.github.com/repos/crawlerinte
 const static std::string emptyRepoUrl = repoBaseUrl + "emptyproject";
 const static std::string projectWithCode = repoBaseUrl + "notemptyproject";
 
-
 TEST(CrawlProjectMetadataTest, TestLiveEmptyProject)
 {
 	ProjectMetadata projectMetadata = RunCrawler::findMetadata(emptyRepoUrl);
@@ -37,7 +36,6 @@ TEST(CrawlRepositoriesTest, TestFindUrl)
 	CrawlData projectMetadata = githubCrawler.crawlRepositories(372482047);
 	EXPECT_EQ(projectMetadata.URLImportanceList[0].first, "https://github.com/crawlerintegrationtesting/emptyproject");
 }
-
 
 TEST(TestCrawlRepositories, TestNotImplemented)
 {

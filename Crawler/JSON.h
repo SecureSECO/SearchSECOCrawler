@@ -21,7 +21,6 @@ private:
 	std::optional<std::vector<nlohmann::json>> items; // An optional list of items.
 	// Allows us to check with if(items) whether the variable is intialized.
 
-
 	template <class T> nlohmann::json internalGet(nlohmann::json current, T key)
 	{
 		return nlohmann::json::parse("{}");
@@ -50,23 +49,15 @@ private:
 		return result;
 	}
 
-
-
-
-
-
 	/// <summary>
 	/// Returns a default value for a given type O. Returns O() if no specialization can be found.
 	/// </summary>
 	/// <typeparam name="O">The type of the output.</typeparam>
 	/// <returns>A default value of the given type.</returns>
-
 	template <class O> O getDefault()
 	{
 		return O();
 	}
-
-
 
 public:
 	JSON(nlohmann::json*json)
@@ -193,7 +184,6 @@ public:
 		return JSON(internalBranch(key));
 	}
 
-
 	/// <summary>
 	/// Branch on a given key. Returns a pointer to a nlohmann::json variable.
 	/// This can be used in functions in this class.
@@ -226,7 +216,6 @@ public:
 
 		return new nlohmann::json(result);
 	}
-
 
 	/// <summary>
 	/// Checks whether the given key returns an empty field. 
@@ -280,7 +269,6 @@ public:
 		return false;
 	}
 
-
 	/// <summary>
 	/// Parses a string/stringstream to JSON.
 	/// </summary>
@@ -293,7 +281,6 @@ public:
 	{
 		delete json;
 	}
-
 };
 
 template <> inline int JSON::getDefault<int>()

@@ -8,10 +8,6 @@ Utrecht University within the Software Project course.
 #include "JSON.h"
 #include "Utility.h"
 
-
-
-
-
 int JSON::length()
 {
 	return json->size();

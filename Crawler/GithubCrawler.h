@@ -35,13 +35,10 @@ private:
 	/// <returns>The total number of parseable lines divided by the total number of lines, and 0 if the total is 0.</returns>
 	std::pair<float, int> getParseableRatio(std::string repoUrl);
 
-
 	/// <summary>
 	/// Constructs a new githuberrorhandler that has the loggers of 403 and 404 replaced.
 	/// </summary>
 	GithubErrorThrowHandler* getCorrectHandler();
-
-
 
 public:
 	GithubCrawler(GithubInterface *githubInterface)
