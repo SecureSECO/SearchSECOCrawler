@@ -69,5 +69,5 @@ public:
 	/// </summary>
 	/// <param name="repoUrl">The project URL (with api. in front).</param>
 	/// <returns>An int representing the importance measure.</returns>
-	int getImportanceMeasure(std::string repoUrl);
+	int getImportanceMeasure(int stars, std::pair<float, int> percentageAndBytes);
 };
