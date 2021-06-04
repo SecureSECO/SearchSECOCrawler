@@ -28,7 +28,7 @@ public:
 	/// </summary>
 	/// <param name="query">The query to be send to Github.</param>
 	/// <returns>A pointer to a JSON variable.</returns>
-	virtual JSON *getRequest(std::string query, bool shouldErrorsBeFatal);
+	virtual JSON *getRequest(std::string query);
 
 	/// <summary>
 	/// Requests data from Github and returns a pointer to a JSON variable.
@@ -36,5 +36,5 @@ public:
 	/// <param name="query">The query to be send to Github.</param>
 	/// <param name="handler">A pointer to a GithubErrorThrowHandler class.</param>
 	/// <returns>A pointer to a JSON variable.</returns>
-	virtual JSON *getRequest(std::string query, GithubErrorThrowHandler *handler, bool shouldErrorsBeFatal);
+	virtual JSON *getRequest(std::string query, GithubErrorThrowHandler *handler);
 };

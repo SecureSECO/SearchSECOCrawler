@@ -16,8 +16,6 @@ const std::map<githubAPIResponse, const char*> messages = {
 	{githubAPIResponse::urlNotFound, "URL not found. Please check if the URL you gave as input is correct."},
 	{githubAPIResponse::unknownError, "An unknown error occured."} };
 
-
-
 DefaultGithubErrorHandler::DefaultGithubErrorHandler()
 {
 	// Partially taken from https://stackoverflow.com/questions/26281979/c-loop-through-map.
