@@ -53,6 +53,13 @@ TEST(TestCrawlRepositories, TestBasicCrawling)
 {
 	CrawlData data = RunCrawler::crawlRepositories("github", 0);
 	EXPECT_EQ(data.URLImportanceList.size(), 100);
+	std::map<std::string, bool> uniqueURLs;
+	for (int i = 0; i < data.URLImportanceList.size(); i++)
+	{
+		std::string url = data.URLImportanceList[i].first;
+		EXPECT_TRUE(uniqueURLs.count(url) == 0);
+		uniqueURLs[url] = true;
+	}
 
 }
 
