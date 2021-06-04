@@ -29,6 +29,5 @@ enum class JSONError
 	typeError,
 	fieldEmptyError,
 	outOfRangeError,
-	indexNotArrayError,
 	count
 };
