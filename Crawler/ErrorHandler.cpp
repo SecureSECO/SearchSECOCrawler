@@ -16,9 +16,7 @@ const std::map<githubAPIResponse, const char*> messages = {
 	{githubAPIResponse::urlNotFound, "URL not found. Please check if the URL you gave as input is correct."},
 	{githubAPIResponse::unknownError, "An unknown error occured."} };
 
-std::map<githubAPIResponse, IndividualErrorHandler*> handlers = { 
-	{githubAPIResponse::OK, new EmptyHandler()} 
-};
+
 
 DefaultGithubErrorHandler::DefaultGithubErrorHandler()
 {

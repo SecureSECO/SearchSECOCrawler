@@ -22,7 +22,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	
 	int length = json->length();
 	int bound = std::min(length, maxResultsPerPage);
-	for (int i = 0; i < bound; i++)
+	for (int i = 0; i <	bound; i++)
 	{
 		progress = (i / double(maxResultsPerPage)) * 100;
 		if (previousLog + percentageSteps < progress)

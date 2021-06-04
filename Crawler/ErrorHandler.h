@@ -55,10 +55,8 @@ public:
 	/// <param name="handler"> The handler which should now handle the response. </param>
 	void replaceSingleHandler(TResponse response, IndividualErrorHandler *handler)
 	{
-		//delete errorHandlingDictionary[response];
-		//IndividualErrorHandler *oldHandler = errorHandlingDictionary[response];
+		delete errorHandlingDictionary[response];
 		errorHandlingDictionary[response] = handler;
-		//delete oldHandler;
 	}
 
 	int getCode(TResponse response)
@@ -69,12 +67,20 @@ public:
 
 class DefaultGithubErrorHandler : public ErrorHandler<githubAPIResponse>
 {
+private:
+	std::map<githubAPIResponse, IndividualErrorHandler*> handlers = {
+		{githubAPIResponse::OK, new EmptyHandler()}
+	};
 public:
 	DefaultGithubErrorHandler();
 };
 
 class GithubErrorThrowHandler : public ErrorHandler<githubAPIResponse>
 {
+private:
+	std::map<githubAPIResponse, IndividualErrorHandler*> handlers = {
+		{githubAPIResponse::OK, new EmptyHandler()}
+	};
 public:
 	GithubErrorThrowHandler();
 };
