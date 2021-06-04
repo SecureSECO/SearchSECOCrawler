@@ -17,7 +17,6 @@ int JSON::length()
 	return json->size();
 }
 
-
 JSON *JSON::parse(std::stringstream s)
 {
 	return parse(s.str());

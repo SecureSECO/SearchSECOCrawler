@@ -40,7 +40,7 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 	githubAPIResponse response = GithubClientErrorConverter::convertResponse(responseCode);
 	if (response != githubAPIResponse::OK)
 	{
-			handler->handle(response, __FILE__, __LINE__);
+		handler->handle(response, __FILE__, __LINE__);
 	}
 
 	return JSON::parse(ss.str());

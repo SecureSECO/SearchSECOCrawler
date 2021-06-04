@@ -65,6 +65,9 @@ public:
 	}
 };
 
+/// <summary>
+/// The default github error handler that uses LogHandlers.
+/// </summary>
 class DefaultGithubErrorHandler : public ErrorHandler<githubAPIResponse>
 {
 private:
@@ -75,6 +78,10 @@ public:
 	DefaultGithubErrorHandler();
 };
 
+/// <summary>
+/// A different github error handler that uses LogThrowHandlers,
+/// which in addition to just logging a message also throw.
+/// </summary>
 class GithubErrorThrowHandler : public ErrorHandler<githubAPIResponse>
 {
 private:
@@ -85,6 +92,9 @@ public:
 	GithubErrorThrowHandler();
 };
 
+/// <summary>
+/// A generic error handler (currently not used).
+/// </summary>
 class DefaultGenericErrorHandler : public ErrorHandler<genericError>
 {
 public:
