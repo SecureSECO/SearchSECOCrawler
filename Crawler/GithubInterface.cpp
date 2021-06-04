@@ -11,7 +11,7 @@ Utrecht University within the Software Project course.
 #include "curl_form.h"
 #include "curl_ios.h"
 
-JSON *GithubInterface::getRequest(std::string query)
+JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler, bool errorShouldBeFatal = true)
 {
 	std::stringstream ss;
 	curl::curl_ios<std::stringstream> writer(ss);
@@ -40,9 +40,13 @@ JSON *GithubInterface::getRequest(std::string query)
 	githubAPIResponse response = GithubClientErrorConverter::convertResponse(responseCode);
 	if (response != githubAPIResponse::OK)
 	{
-		defaultGithubHandler.handle(response, __FILE__, __LINE__);
-		throw 1;
+		handler->handle(response, __FILE__, __LINE__);
 	}
 
 	return JSON::parse(ss.str());
+}
+
+JSON *GithubInterface::getRequest(std::string query, bool errorShouldBeFatal = true)
+{
+	return getRequest(query, &defaultHandler, errorShouldBeFatal);
 }

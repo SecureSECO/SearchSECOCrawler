@@ -166,6 +166,7 @@
     <ClCompile Include="JSON.cpp" />
     <ClCompile Include="LoggerCrawler.cpp" />
     <ClCompile Include="LogHandler.cpp" />
+    <ClCompile Include="LogThrowHandler.cpp" />
     <ClCompile Include="loguru\loguru.cpp" />
     <ClCompile Include="RunCrawler.cpp" />
     <ClCompile Include="Utility.cpp" />

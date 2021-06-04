@@ -57,6 +57,9 @@
     <ClCompile Include="LoggerCrawler.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
+    <ClCompile Include="LogThrowHandler.cpp">
+      <Filter>Source Files\ErrorHandling</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RunCrawler.h">

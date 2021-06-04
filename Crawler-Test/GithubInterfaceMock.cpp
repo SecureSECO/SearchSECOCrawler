@@ -10,7 +10,7 @@ public:
 	{
 	}
 
-	JSON *getRequest(std::string query) override
+	JSON *getRequest(std::string query, bool shouldErrorsBeFatal = true) override
 	{
 		if (queryToJsonMap.find(query) == queryToJsonMap.end())
 		{
@@ -20,5 +20,10 @@ public:
 		{
 			return JSON::parse(queryToJsonMap[query]);
 		}
+	}
+
+	JSON* getRequest(std::string query, GithubErrorThrowHandler* handler, bool errorShouldBeFatal) override
+	{
+		return this->getRequest(query, errorShouldBeFatal);
 	}
 };
