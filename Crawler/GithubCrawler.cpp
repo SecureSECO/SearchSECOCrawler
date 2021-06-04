@@ -14,7 +14,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	LoggerCrawler::logDebug("Starting crawling at index " + strStart, __FILE__, __LINE__);
 	CrawlData crawlData;
 	int currentId;
-	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart, true));
+	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
 	
 	int progress,
 		previousLog = 0,
@@ -96,12 +96,12 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	ProjectMetadata projectMetadata = ProjectMetadata();
 	// Get information about repoUrl.
 	LoggerCrawler::logDebug("Getting information about the repository...", __FILE__, __LINE__);
-	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl, true));
+	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl));
 
 	// Get information about owner.
 	JSON branch = json->branch("owner");
 	LoggerCrawler::logDebug("Getting information about the owner...", __FILE__, __LINE__);
-	std::unique_ptr<JSON> ownerData(githubInterface->getRequest(branch.get<std::string, std::string>("url"), true));
+	std::unique_ptr<JSON> ownerData(githubInterface->getRequest(branch.get<std::string, std::string>("url")));
 
 	std::string email = ownerData->get<std::string, std::string>("email");
 
@@ -132,7 +132,7 @@ int GithubCrawler::getImportanceMeasure(int stars, std::pair<float, int> percent
 
 int GithubCrawler::getStars(std::string repoUrl, GithubErrorThrowHandler* handler)
 {
-	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl, handler, false));
+	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl, handler));
 	int stars = json->get<std::string, int>("stargazers_count");
 	return stars;
 }
@@ -140,7 +140,7 @@ int GithubCrawler::getStars(std::string repoUrl, GithubErrorThrowHandler* handle
 std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl)
 {
 	std::string languagesUrl = repoUrl + "/languages";
-	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl, true));
+	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl));
 	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "C#"};
 	int total = 0;
 	int parseable = 0;

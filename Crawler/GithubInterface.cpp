@@ -11,7 +11,7 @@ Utrecht University within the Software Project course.
 #include "curl_form.h"
 #include "curl_ios.h"
 
-JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler, bool errorShouldBeFatal = true)
+JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler)
 {
 	std::stringstream ss;
 	curl::curl_ios<std::stringstream> writer(ss);
@@ -46,7 +46,7 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 	return JSON::parse(ss.str());
 }
 
-JSON *GithubInterface::getRequest(std::string query, bool errorShouldBeFatal = true)
+JSON *GithubInterface::getRequest(std::string query)
 {
-	return getRequest(query, &defaultHandler, errorShouldBeFatal);
+	return getRequest(query, &defaultHandler);
 }

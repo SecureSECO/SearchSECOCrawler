@@ -36,9 +36,9 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GithubCrawlerIntegrationTesting.cpp" />
     <ClCompile Include="GithubCrawler_test.cpp" />
     <ClCompile Include="GithubInterfaceMock.cpp" />
+    <ClCompile Include="IntegrationTests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

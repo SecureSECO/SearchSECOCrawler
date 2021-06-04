@@ -41,14 +41,12 @@ TEST(CrawlRepositoriesTest, TestFindUrl)
 
 TEST(TestCrawlRepositories, TestNotImplemented)
 {
-	CrawlData data;
-	EXPECT_EQ(RunCrawler::crawlRepositories("NotImplementedCrawlableSite", 0), data);
+	EXPECT_EQ(RunCrawler::crawlRepositories("NotImplementedCrawlableSite", 0).URLImportanceList.size(), 0);
 }
 
 TEST(TestFindMetadata, TestNotImplemented)
 {
-	ProjectMetadata projectMetadata();
-	EXPECT_EQ(RunCrawler::findMetadata("NotImplementedCrawlableSite"), projectMetadata);
+	EXPECT_TRUE(RunCrawler::findMetadata("NotImplementedCrawlableSite").url.empty());
 }
 
 TEST(TestCrawlRepositories, TestBasicCrawling)
