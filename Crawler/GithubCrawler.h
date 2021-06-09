@@ -56,10 +56,10 @@ public:
 		this->githubInterface = std::unique_ptr<GithubInterface>(githubInterface);
 	}
 
-	GithubCrawler()
+	GithubCrawler(std::string username, std::string token)
 	{
 		this->githubInterface = std::unique_ptr<GithubInterface>(
-			new GithubInterface());
+			new GithubInterface(username, token));
 	}
 
 	/// <summary>

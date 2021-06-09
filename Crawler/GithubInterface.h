@@ -23,12 +23,6 @@ public:
 		this->userPWD = userPWD;
 	}
 
-	GithubInterface()
-	{
-		userAgent = "SoftwareProj2021";
-		userPWD = "8486fe6129f2cce8687e5c9ce540918d42f7cb0b";
-	}
-
 	/// <summary>
 	/// Requests data from Github and returns a pointer to a JSON variable.
 	/// </summary>
