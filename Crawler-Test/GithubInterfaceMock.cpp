@@ -21,4 +21,9 @@ public:
 			return JSON::parse(queryToJsonMap[query]);
 		}
 	}
+
+	JSON* getRequest(std::string query, GithubErrorThrowHandler* handler) override
+	{
+		return this->getRequest(query);
+	}
 };

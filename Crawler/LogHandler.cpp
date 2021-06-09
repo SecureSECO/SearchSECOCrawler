@@ -10,16 +10,16 @@ void LogHandler::execute(const char *file, unsigned int line)
 	switch (level)
 	{
 	case LogLevel::INFO:
-		Logger::logInfo(msg, file, line, code);
+		LoggerCrawler::logInfo(msg, file, line);
 		break;
 	case LogLevel::WARN:
-		Logger::logWarn(msg, file, line, code);
+		LoggerCrawler::logWarn(msg, file, line);
 		break;
 	case LogLevel::ERROR:
-		Logger::logFatal(msg, file, line, code);
+		LoggerCrawler::logFatal(msg, file, line, code);
 		break;
 	case LogLevel::DEBUG:
-		Logger::logDebug(msg, file, line, code);
+		LoggerCrawler::logDebug(msg, file, line);
 		break;
 	}
 }

@@ -55,9 +55,8 @@ public:
 	/// <param name="handler"> The handler which should now handle the response. </param>
 	void replaceSingleHandler(TResponse response, IndividualErrorHandler *handler)
 	{
-		IndividualErrorHandler *oldHandler = errorHandlingDictionary[response];
+		delete errorHandlingDictionary[response];
 		errorHandlingDictionary[response] = handler;
-		delete oldHandler;
 	}
 
 	int getCode(TResponse response)
@@ -66,12 +65,36 @@ public:
 	}
 };
 
+/// <summary>
+/// The default github error handler that uses LogHandlers.
+/// </summary>
 class DefaultGithubErrorHandler : public ErrorHandler<githubAPIResponse>
 {
+private:
+	std::map<githubAPIResponse, IndividualErrorHandler*> handlers = {
+		{githubAPIResponse::OK, new EmptyHandler()}
+	};
 public:
 	DefaultGithubErrorHandler();
 };
 
+/// <summary>
+/// A different github error handler that uses LogThrowHandlers,
+/// which in addition to just logging a message also throw.
+/// </summary>
+class GithubErrorThrowHandler : public ErrorHandler<githubAPIResponse>
+{
+private:
+	std::map<githubAPIResponse, IndividualErrorHandler*> handlers = {
+		{githubAPIResponse::OK, new EmptyHandler()}
+	};
+public:
+	GithubErrorThrowHandler();
+};
+
+/// <summary>
+/// A generic error handler (currently not used).
+/// </summary>
 class DefaultGenericErrorHandler : public ErrorHandler<genericError>
 {
 public:
@@ -90,7 +113,8 @@ private:
 			{JSONError::typeError,
 			 "Error while converting JSON type to standard type. Perhaps something is wrong in the program code?"},
 			{JSONError::fieldEmptyError, 
-			"Field was empty in JSON structure while it shouldn't have been. Perhaps something changed in the external API?"}
+			"Field was empty in JSON structure while it shouldn't have been. Perhaps something changed in the external API?"},
+			{JSONError::outOfRangeError, "Index was out of range in JSON structure."}
 		};
 
 		std::map<JSONError, IndividualErrorHandler *> handlers;

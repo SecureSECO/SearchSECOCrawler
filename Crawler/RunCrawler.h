@@ -16,6 +16,17 @@ enum class CrawlableSource
 	GITHUB
 };
 
+
+/// <summary>
+/// Data which is returned when crawling. First value in the pair is the URL found, 
+/// second is the importance of the given URL. The finalProjectId is the last project id found while crawling.
+/// </summary>
+struct CrawlData
+{
+	std::vector<std::pair<std::string, int>> URLImportanceList;
+	int finalProjectId;
+};
+
 class RunCrawler
 {
 private:
@@ -32,14 +43,13 @@ public:
 	/// </summary>
 	/// <param name="url">An URL to the site from which needs to be crawled.</param>
 	/// <param name="start">The start project ID.</param>
-	/// <param name="code">A code, where 0 indicates that this function succeeded and 1 indicates a failure.</param>
-	/// <returns>A list of urls.</returns>
-	static std::vector<std::string> crawlRepositories(std::string const &url, int start, int &code);
+	/// <returns>A list of urls, together with their importance measure (represented by an int), and a final project ID.</returns>
+	static CrawlData crawlRepositories(std::string const& url, int start);
 
 	/// <summary>
 	/// Finds project metadata.
 	/// </summary>
 	/// <param name="url">An URL to a project.</param>
 	/// <returns>A string that represents a path to the project metadata file.</returns>
-	static ProjectMetadata findMetadata(std::string const& url, int &code);
+	static ProjectMetadata findMetadata(std::string const& url);
 };
