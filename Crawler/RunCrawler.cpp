@@ -33,6 +33,13 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, std::
 	loguru::set_thread_name(THREAD_NAME);
 
 	CrawlData data;
+
+	if (username == "" || token == "")
+	{
+		LoggerCrawler::logWarn("No valid github authentication supplied", __FILE__, __LINE__);
+		return data;
+	}
+
 	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::NOT_IMPLEMENTED:
@@ -70,6 +77,12 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, std::
 ProjectMetadata RunCrawler::findMetadata(std::string const& url, std::string username, std::string token)
 {
 	loguru::set_thread_name(THREAD_NAME);
+
+	if (username == "" || token == "")
+	{
+		LoggerCrawler::logWarn("No valid github authentication supplied", __FILE__, __LINE__);
+		return ProjectMetadata();
+	}
 
 	LoggerCrawler::logInfo("Finding metadata for the repository at \"" + url + "\"", __FILE__, __LINE__);
 
