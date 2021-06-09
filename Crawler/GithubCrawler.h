@@ -41,6 +41,11 @@ private:
 	GithubErrorThrowHandler* getCorrectGithubHandler();
 
 	/// <summary>
+	/// Constructs a new githuberrorhandler that has the logger of 422 replaced.
+	/// </summary>
+	GithubErrorThrowHandler* getGithubHandlerForJSONError();
+
+	/// <summary>
 	/// Constructs a new JSONErrorHandler that gives a warning for the parse error instead of an error
 	/// </summary>
 	JSONErrorHandler* getCorrectJSONHandler();

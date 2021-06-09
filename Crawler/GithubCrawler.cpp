@@ -83,6 +83,13 @@ JSONErrorHandler* GithubCrawler::getCorrectJSONHandler()
 	return handler;
 }
 
+GithubErrorThrowHandler* GithubCrawler::getGithubHandlerForJSONError()
+{
+	GithubErrorThrowHandler* githubHandler = new GithubErrorThrowHandler();
+	IndividualErrorHandler* individualHandler = new LogThrowHandler("Github returned a JSON error, skipping this url...", LogLevel::WARN, Utility::getCode(githubAPIResponse::JSONError));
+	githubHandler->replaceSingleHandler(githubAPIResponse::JSONError, individualHandler);
+	return githubHandler;
+}
 
 std::tuple<std::string, std::string> GithubCrawler::getOwnerAndRepo(std::string const& url)
 {
@@ -109,9 +116,10 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	// Get information about repoUrl.
 	LoggerCrawler::logDebug("Getting information about the repository...", __FILE__, __LINE__);
 	JSONErrorHandler* handler = getCorrectJSONHandler();
+	GithubErrorThrowHandler* githubHandler = getGithubHandlerForJSONError();
 	JSON* json = NULL;
 	try {
-		json = githubInterface->getRequest(repoUrl, handler);
+		json = githubInterface->getRequest(repoUrl, githubHandler, handler);
 	}
 	catch (int e)
 	{
@@ -148,6 +156,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	LoggerCrawler::logInfo("Successfully found all relevant metadata, returning.", __FILE__, __LINE__);
 	delete json;
 	delete handler;
+	delete githubHandler;
 	return projectMetadata;
 }
 
