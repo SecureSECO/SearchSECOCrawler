@@ -53,7 +53,6 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 		std::string url = branch.get<std::string, std::string>("html_url", true);
 		std::pair<float, int> parseable = getParseableRatio(repoUrl);
 		crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
-
 	}
 
 	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(maxResultsPerPage) + " repositories)", __FILE__, __LINE__);
