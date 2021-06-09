@@ -9,7 +9,7 @@ Utrecht University within the Software Project course.
 CrawlData GithubCrawler::crawlRepositories(int start)
 {
 	auto strStart = std::to_string(start);
-	GithubErrorThrowHandler* handler = getCorrectHandler();
+	GithubErrorThrowHandler* handler = getCorrectGithubHandler();
 
 	LoggerCrawler::logDebug("Starting crawling at index " + strStart, __FILE__, __LINE__);
 	CrawlData crawlData;
@@ -52,7 +52,11 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 		}
 		std::string url = branch.get<std::string, std::string>("html_url", true);
 		std::pair<float, int> parseable = getParseableRatio(repoUrl);
-		crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
+		if (std::get<1>(parseable) != 0)
+		{
+			crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
+		}
+
 	}
 
 	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(maxResultsPerPage) + " repositories)", __FILE__, __LINE__);
@@ -61,7 +65,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	return crawlData;
 }
 
-GithubErrorThrowHandler* GithubCrawler::getCorrectHandler()
+GithubErrorThrowHandler* GithubCrawler::getCorrectGithubHandler()
 {
 	GithubErrorThrowHandler* handler = new GithubErrorThrowHandler();
 	IndividualErrorHandler* individualHandler1 = new LogThrowHandler("Found URL was inaccessible, skipping...", LogLevel::WARN, Utility::getCode(githubAPIResponse::forbidden));
@@ -69,6 +73,22 @@ GithubErrorThrowHandler* GithubCrawler::getCorrectHandler()
 	handler->replaceSingleHandler(githubAPIResponse::forbidden, individualHandler1);
 	handler->replaceSingleHandler(githubAPIResponse::urlNotFound, individualHandler2);
 	return handler;
+}
+
+JSONErrorHandler* GithubCrawler::getCorrectJSONHandler()
+{
+	JSONErrorHandler* handler = new JSONErrorHandler();
+	IndividualErrorHandler* individualHandler = new LogThrowHandler("Trying to parse the JSON structure returned by the given URL returned a parse error, skipping...", LogLevel::WARN, Utility::getCode(JSONError::parseError));
+	handler->replaceSingleHandler(JSONError::parseError, individualHandler);
+	return handler;
+}
+
+GithubErrorThrowHandler* GithubCrawler::getGithubHandlerForJSONError()
+{
+	GithubErrorThrowHandler* githubHandler = new GithubErrorThrowHandler();
+	IndividualErrorHandler* individualHandler = new LogThrowHandler("Github returned a JSON error, skipping this url...", LogLevel::WARN, Utility::getCode(githubAPIResponse::JSONError));
+	githubHandler->replaceSingleHandler(githubAPIResponse::JSONError, individualHandler);
+	return githubHandler;
 }
 
 std::tuple<std::string, std::string> GithubCrawler::getOwnerAndRepo(std::string const& url)
@@ -95,8 +115,23 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	ProjectMetadata projectMetadata = ProjectMetadata();
 	// Get information about repoUrl.
 	LoggerCrawler::logDebug("Getting information about the repository...", __FILE__, __LINE__);
-	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl));
-
+	JSONErrorHandler* handler = getCorrectJSONHandler();
+	GithubErrorThrowHandler* githubHandler = getGithubHandlerForJSONError();
+	JSON* json = NULL;
+	try {
+		json = githubInterface->getRequest(repoUrl, githubHandler, handler);
+	}
+	catch (int e)
+	{
+		if (e == 0)
+		{
+			return projectMetadata;
+		}
+		else if (e == 1)
+		{
+			throw 1;
+		}
+	}
 	// Get information about owner.
 	JSON branch = json->branch("owner");
 	LoggerCrawler::logDebug("Getting information about the owner...", __FILE__, __LINE__);
@@ -119,6 +154,9 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	projectMetadata.version = json->get<std::string, std::string>("pushed_at");
 	projectMetadata.defaultBranch = json->get<std::string, std::string>("default_branch");
 	LoggerCrawler::logInfo("Successfully found all relevant metadata, returning.", __FILE__, __LINE__);
+	delete json;
+	delete handler;
+	delete githubHandler;
 	return projectMetadata;
 }
 
@@ -140,7 +178,7 @@ std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl)
 {
 	std::string languagesUrl = repoUrl + "/languages";
 	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl));
-	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "C#"};
+	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "C#", "Python"};
 	int total = 0;
 	int parseable = 0;
 	int length = json->length();

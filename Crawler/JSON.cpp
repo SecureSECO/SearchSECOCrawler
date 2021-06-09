@@ -13,21 +13,21 @@ int JSON::length()
 	return json->size();
 }
 
-JSON *JSON::parse(std::stringstream s)
+JSON *JSON::parse(std::string s)
 {
-	return parse(s.str());
+	return parse(s, &JSONSingletonErrorHandler::getInstance());
 }
 
-JSON *JSON::parse(std::string s)
+JSON* JSON::parse(std::string s, JSONErrorHandler *handler)
 {
 	try
 	{
-		nlohmann::json*parsed = new nlohmann::json(nlohmann::json::parse(s));
+		nlohmann::json* parsed = new nlohmann::json(nlohmann::json::parse(s));
 		return new JSON(parsed);
 	}
-	catch (nlohmann::json::parse_error &e)
+	catch (nlohmann::json::parse_error& e)
 	{
-		DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
+		handler->handle(JSONError::parseError, __FILE__, __LINE__);
 		throw 1;
 	}
 }

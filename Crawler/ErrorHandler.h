@@ -101,38 +101,47 @@ public:
 	DefaultGenericErrorHandler();
 };
 
-// C++ singleton design pattern taken from https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
-class DefaultJSONErrorHandler : public ErrorHandler<JSONError>
+class JSONErrorHandler : public ErrorHandler<JSONError>
 {
-private:
-	DefaultJSONErrorHandler()
+public:
+	JSONErrorHandler()
 	{
-		std::map<JSONError, const char *> messages = {
+		std::map<JSONError, const char*> messages = {
 			{JSONError::branchError, "Couldn't find the given index in JSON structure."},
 			{JSONError::parseError, "Error while parsing JSON structure."},
 			{JSONError::typeError,
 			 "Error while converting JSON type to standard type. Perhaps something is wrong in the program code?"},
-			{JSONError::fieldEmptyError, 
+			{JSONError::fieldEmptyError,
 			"Field was empty in JSON structure while it shouldn't have been. Perhaps something changed in the external API?"},
 			{JSONError::outOfRangeError, "Index was out of range in JSON structure."}
 		};
 
-		std::map<JSONError, IndividualErrorHandler *> handlers;
+		std::map<JSONError, IndividualErrorHandler*> handlers;
 
 		// Partially Taken from https://stackoverflow.com/questions/26281979/c-loop-through-map.
-		for (auto const &keyvalue : messages)
+		for (auto const& keyvalue : messages)
 		{
 			handlers.insert(
-				{keyvalue.first, new LogHandler(keyvalue.second, LogLevel::ERROR, getCode(keyvalue.first))});
+				{ keyvalue.first, new LogHandler(keyvalue.second, LogLevel::ERROR, getCode(keyvalue.first)) });
 		}
 
 		replaceAllHandlers(handlers);
 	}
+};
+
+// C++ singleton design pattern taken from https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
+class JSONSingletonErrorHandler : public JSONErrorHandler
+{
+private:
+	JSONSingletonErrorHandler() : JSONErrorHandler()
+	{
+
+	}
 
 public:
-	static DefaultJSONErrorHandler &getInstance()
+	static JSONSingletonErrorHandler &getInstance()
 	{
-		static DefaultJSONErrorHandler instance; // Guaranteed to be destroyed.
+		static JSONSingletonErrorHandler instance; // Guaranteed to be destroyed.
 												 // Instantiated on first use.
 		return instance;
 	}
