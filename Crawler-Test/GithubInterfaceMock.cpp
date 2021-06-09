@@ -31,4 +31,9 @@ public:
 	{
 		return this->getRequest(query);
 	}
+
+	JSON* getRequest(std::string query, GithubErrorThrowHandler* handler, JSONErrorHandler* handler2) override
+	{
+		return this->getRequest(query);
+	}
 };
