@@ -178,7 +178,7 @@ std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl)
 {
 	std::string languagesUrl = repoUrl + "/languages";
 	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl));
-	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "C#"};
+	std::vector<std::string> listOfParseableLanguages = {"C", "C++", "Java", "C#", "Python"};
 	int total = 0;
 	int parseable = 0;
 	int length = json->length();

@@ -46,7 +46,7 @@ private:
 	GithubErrorThrowHandler* getGithubHandlerForJSONError();
 
 	/// <summary>
-	/// Constructs a new JSONErrorHandler that gives a warning for the parse error instead of an error
+	/// Constructs a new JSONErrorHandler that gives a warning for the parse error instead of an error.
 	/// </summary>
 	JSONErrorHandler* getCorrectJSONHandler();
 

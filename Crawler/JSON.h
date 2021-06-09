@@ -281,7 +281,7 @@ public:
 	/// </summary>
 	/// <param name="s">The string.</param>
 	/// <param name="handler">The error handler.</param>
-	/// <returns></returns>
+	/// <returns>A pointer to a JSON variable.</returns>
 	static JSON* parse(std::string s, JSONErrorHandler *handler);
 
 	~JSON()
