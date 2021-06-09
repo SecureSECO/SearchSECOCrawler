@@ -1,7 +1,9 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "RunCrawler.h"
 #include <GithubCrawler.h>
 #include <string>
+#include <chrono>
+#include "GithubInterface.h"
 const static std::string repoBaseUrl = "https://api.github.com/repos/crawlerintegrationtesting/";
 const static std::string emptyRepoUrl = repoBaseUrl + "emptyproject";
 const static std::string projectWithCode = repoBaseUrl + "notemptyproject";
@@ -33,8 +35,8 @@ TEST(CrawlProjectMetadataTest, TestLiveNonEmptyProject)
 TEST(CrawlRepositoriesTest, TestFindUrl)
 {
 	GithubCrawler githubCrawler;
-	CrawlData projectMetadata = githubCrawler.crawlRepositories(372482047);
-	EXPECT_EQ(projectMetadata.URLImportanceList[0].first, "https://github.com/crawlerintegrationtesting/emptyproject");
+	CrawlData projectMetadata = githubCrawler.crawlRepositories(372484242);
+	EXPECT_EQ(projectMetadata.URLImportanceList[0].first, "https://github.com/crawlerintegrationtesting/notemptyproject");
 }
 
 TEST(TestCrawlRepositories, TestNotImplemented)
@@ -50,7 +52,7 @@ TEST(TestFindMetadata, TestNotImplemented)
 TEST(TestCrawlRepositories, TestBasicCrawling)
 {
 	CrawlData data = RunCrawler::crawlRepositories("github", 0);
-	EXPECT_EQ(data.URLImportanceList.size(), 100);
+	EXPECT_TRUE(data.URLImportanceList.size() <= 100);
 	std::map<std::string, bool> uniqueURLs;
 	for (int i = 0; i < data.URLImportanceList.size(); i++)
 	{
@@ -60,4 +62,3 @@ TEST(TestCrawlRepositories, TestBasicCrawling)
 	}
 
 }
-

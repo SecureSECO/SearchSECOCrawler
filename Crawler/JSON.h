@@ -42,7 +42,7 @@ private:
 		{
 			if (expectNonEmpty)
 			{
-				DefaultJSONErrorHandler::getInstance().handle(JSONError::fieldEmptyError, __FILE__, __LINE__);
+				JSONSingletonErrorHandler::getInstance().handle(JSONError::fieldEmptyError, __FILE__, __LINE__);
 				throw 1;
 			}
 		}
@@ -125,7 +125,7 @@ public:
 		}
 		catch (nlohmann::json::type_error)
 		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+			JSONSingletonErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
 			throw 1;
 		}
 		return finalResult;
@@ -155,7 +155,7 @@ public:
 				}
 				else
 				{
-					DefaultJSONErrorHandler::getInstance().handle(JSONError::fieldEmptyError, __FILE__, __LINE__);
+					JSONSingletonErrorHandler::getInstance().handle(JSONError::fieldEmptyError, __FILE__, __LINE__);
 					throw 1;
 				}
 			}
@@ -167,7 +167,7 @@ public:
 		}
 		catch (nlohmann::json::type_error)
 		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+			JSONSingletonErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
 			throw 1;
 		}
 		return finalResult;
@@ -200,17 +200,17 @@ public:
 		}
 		catch (nlohmann::json::parse_error& e)
 		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
+			JSONSingletonErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
 			throw 1;
 		}
 		catch (nlohmann::json::type_error& e)
 		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+			JSONSingletonErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
 			throw 1;
 		}
 		catch (nlohmann::json::out_of_range& e)
 		{
-			DefaultJSONErrorHandler::getInstance().handle(JSONError::outOfRangeError, __FILE__, __LINE__);
+			JSONSingletonErrorHandler::getInstance().handle(JSONError::outOfRangeError, __FILE__, __LINE__);
 			throw 1;
 		}
 
@@ -270,12 +270,19 @@ public:
 	}
 
 	/// <summary>
-	/// Parses a string/stringstream to JSON.
+	/// Parses a string to JSON.
 	/// </summary>
-	/// <param name="s">The stringstream/string.</param>
+	/// <param name="s">The string.</param>
 	/// <returns>A pointer to a JSON variable.</returns>
-	static JSON *parse(std::stringstream s);
 	static JSON *parse(std::string s);
+
+	/// <summary>
+	/// Parses a string to JSON, using a JSONErrorHandler.
+	/// </summary>
+	/// <param name="s">The string.</param>
+	/// <param name="handler">The error handler.</param>
+	/// <returns></returns>
+	static JSON* parse(std::string s, JSONErrorHandler *handler);
 
 	~JSON()
 	{
@@ -308,7 +315,7 @@ template <> inline nlohmann::json JSON::internalGet<int>(nlohmann::json current,
 	}
 	else
 	{
-		DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+		JSONSingletonErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
 		throw 1;
 	}
 }
@@ -321,7 +328,7 @@ template <> inline nlohmann::json JSON::internalGet<const char *>(nlohmann::json
 	}
 	else
 	{
-		DefaultJSONErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+		JSONSingletonErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
 		throw 1;
 	}
 }

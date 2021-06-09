@@ -23,6 +23,12 @@ public:
 		this->userPWD = userPWD;
 	}
 
+	GithubInterface()
+	{
+		userAgent = "SoftwareProj2021";
+		userPWD = "8486fe6129f2cce8687e5c9ce540918d42f7cb0b";
+	}
+
 	/// <summary>
 	/// Requests data from Github and returns a pointer to a JSON variable.
 	/// </summary>
@@ -36,5 +42,7 @@ public:
 	/// <param name="query">The query to be send to Github.</param>
 	/// <param name="handler">A pointer to a GithubErrorThrowHandler class.</param>
 	/// <returns>A pointer to a JSON variable.</returns>
-	virtual JSON *getRequest(std::string query, GithubErrorThrowHandler *handler);
+	virtual JSON *getRequest(std::string query, GithubErrorThrowHandler *handler, JSONErrorHandler* jsonHandler);
+	virtual JSON* getRequest(std::string query, GithubErrorThrowHandler* handler);
+	virtual JSON* getRequest(std::string query, JSONErrorHandler* jsonHandler);
 };

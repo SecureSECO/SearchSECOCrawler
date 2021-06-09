@@ -38,7 +38,12 @@ private:
 	/// <summary>
 	/// Constructs a new githuberrorhandler that has the loggers of 403 and 404 replaced.
 	/// </summary>
-	GithubErrorThrowHandler* getCorrectHandler();
+	GithubErrorThrowHandler* getCorrectGithubHandler();
+
+	/// <summary>
+	/// Constructs a new JSONErrorHandler that gives a warning for the parse error instead of an error
+	/// </summary>
+	JSONErrorHandler* getCorrectJSONHandler();
 
 public:
 	GithubCrawler(GithubInterface *githubInterface)
@@ -49,7 +54,7 @@ public:
 	GithubCrawler()
 	{
 		this->githubInterface = std::unique_ptr<GithubInterface>(
-			new GithubInterface("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b"));
+			new GithubInterface());
 	}
 
 	/// <summary>

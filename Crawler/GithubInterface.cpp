@@ -11,7 +11,7 @@ Utrecht University within the Software Project course.
 #include "curl_form.h"
 #include "curl_ios.h"
 
-JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler)
+JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler, JSONErrorHandler *jsonHandler)
 {
 	std::stringstream ss;
 	curl::curl_ios<std::stringstream> writer(ss);
@@ -23,6 +23,7 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 	easy.add<CURLOPT_FOLLOWLOCATION>(1L);
 	easy.add<CURLOPT_USERAGENT>(userAgent.data());
 	easy.add<CURLOPT_USERPWD>(userPWD.data());
+	easy.add<CURLOPT_TIMEOUT>(5L);
 
 	// Send query
 	try
@@ -42,10 +43,20 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 		handler->handle(response, __FILE__, __LINE__);
 	}
 
-	return JSON::parse(ss.str());
+	return JSON::parse(ss.str(), jsonHandler);
 }
 
 JSON *GithubInterface::getRequest(std::string query)
 {
-	return getRequest(query, &defaultHandler);
+	return getRequest(query, &defaultHandler, &JSONSingletonErrorHandler::getInstance());
+}
+
+JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler* handler)
+{
+	return getRequest(query, handler, &JSONSingletonErrorHandler::getInstance());
+}
+
+JSON* GithubInterface::getRequest(std::string query, JSONErrorHandler* handler)
+{
+	return getRequest(query, &defaultHandler, handler);
 }
