@@ -28,11 +28,18 @@ CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 	}
 }
 
-CrawlData RunCrawler::crawlRepositories(std::string const& url, int start)
+CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, std::string username, std::string token)
 {
 	loguru::set_thread_name(THREAD_NAME);
 
 	CrawlData data;
+
+	if (username == "" || token == "")
+	{
+		LoggerCrawler::logWarn("No valid github authentication supplied", __FILE__, __LINE__);
+		return data;
+	}
+
 	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::NOT_IMPLEMENTED:
@@ -46,7 +53,7 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start)
 		LoggerCrawler::logDebug("Detected GitHub as the source to crawl repositories from", __FILE__, __LINE__);
 		try
 		{
-			GithubCrawler githubCrawler;
+			GithubCrawler githubCrawler(username, token);
 			CrawlData data = githubCrawler.crawlRepositories(start);
 			LoggerCrawler::logInfo("Returning successful", __FILE__, __LINE__);
 			return data;
@@ -67,9 +74,15 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start)
 	}
 }
 
-ProjectMetadata RunCrawler::findMetadata(std::string const& url)
+ProjectMetadata RunCrawler::findMetadata(std::string const& url, std::string username, std::string token)
 {
 	loguru::set_thread_name(THREAD_NAME);
+
+	if (username == "" || token == "")
+	{
+		LoggerCrawler::logWarn("No valid github authentication supplied", __FILE__, __LINE__);
+		return ProjectMetadata();
+	}
 
 	LoggerCrawler::logInfo("Finding metadata for the repository at \"" + url + "\"", __FILE__, __LINE__);
 
@@ -80,7 +93,7 @@ ProjectMetadata RunCrawler::findMetadata(std::string const& url)
 		{
 			LoggerCrawler::logDebug("Detected GitHub as the source of the repository", __FILE__, __LINE__);
 
-			GithubCrawler githubCrawler;
+			GithubCrawler githubCrawler(username, token);
 			ProjectMetadata p = githubCrawler.getProjectMetadata(url);
 			errno = 0;
 			return p;

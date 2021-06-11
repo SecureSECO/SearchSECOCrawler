@@ -43,13 +43,17 @@ public:
 	/// </summary>
 	/// <param name="url">An URL to the site from which needs to be crawled.</param>
 	/// <param name="start">The start project ID.</param>
+	/// <param name="username">Github username.</param>
+	/// <param name="token">Github authentication token.</param>
 	/// <returns>A list of urls, together with their importance measure (represented by an int), and a final project ID.</returns>
-	static CrawlData crawlRepositories(std::string const& url, int start);
+	static CrawlData crawlRepositories(std::string const& url, int start, std::string username, std::string token);
 
 	/// <summary>
 	/// Finds project metadata.
 	/// </summary>
 	/// <param name="url">An URL to a project.</param>
+	/// <param name="username">Github username.</param>
+	/// <param name="token">Github authentication token.</param>
 	/// <returns>A string that represents a path to the project metadata file.</returns>
-	static ProjectMetadata findMetadata(std::string const& url);
+	static ProjectMetadata findMetadata(std::string const& url, std::string username, std::string token);
 };

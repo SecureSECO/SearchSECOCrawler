@@ -5,15 +5,20 @@ Utrecht University within the Software Project course.
 */
 #include <iostream>
 #include "RunCrawler.h"
+
+// Input token for debugging, remember to delete when done
+#define username "username"
+#define token "token"
+
 int main() 
 {
 	int start = 0;
 	for (int i = 0; i < 10; i++)
 	{
-		CrawlData data = RunCrawler::crawlRepositories("github.com", start);
+		CrawlData data = RunCrawler::crawlRepositories("github.com", start, username, token);
 		start = data.finalProjectId;
 		std::cout << "start: " + (std::to_string(start));
 	}
 
-	RunCrawler::findMetadata("github.com/manicolosi/manico-crumbs");
+	RunCrawler::findMetadata("github.com/manicolosi/manico-crumbs", username, token);
 }
