@@ -24,6 +24,7 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 	easy.add<CURLOPT_USERAGENT>(userAgent.data());
 	easy.add<CURLOPT_USERPWD>(userPWD.data());
 	easy.add<CURLOPT_TIMEOUT>(5L);
+	easy.add<CURLOPT_CONNECTTIMEOUT>(10L);
 
 	// Send query
 	try
@@ -36,6 +37,7 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 		LoggerCrawler::logWarn("CURL ran into a problem", __FILE__, __LINE__);
 		error.print_traceback();
 	}
+	LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
 	long responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
 	githubAPIResponse response = GithubClientErrorConverter::convertResponse(responseCode);
 	if (response != githubAPIResponse::OK)
