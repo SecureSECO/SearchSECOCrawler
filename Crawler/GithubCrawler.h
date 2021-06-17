@@ -21,6 +21,15 @@ private:
 	/// <returns>A tuple consisting of the owner name and repository name in place one and two respectively.</returns>
 	std::tuple<std::string, std::string> getOwnerAndRepo(std::string const& url);
 
+
+	/// <summary>
+	/// Uses getOwnerAndRepo() to construct a repoUrl from a standard URL.
+	/// </summary>
+	/// <param name="url">The URL.</param>
+	/// <returns>An URL to a repository.</returns>
+	std::string getRepoUrl(std::string url);
+
+
 	/// <summary>
 	/// Get the number of stars of the given project.
 	/// </summary>
@@ -34,6 +43,14 @@ private:
 	/// <param name="repoUrl">The project URL (with api. in front).</param>
 	/// <returns>The total number of parseable lines divided by the total number of lines, and 0 if the total is 0.</returns>
 	std::pair<float, int> getParseableRatio(std::string repoUrl);
+
+	/// <summary>
+	/// Creates a project metadata variable and fills it with the necessary information.
+	/// </summary>
+	/// <param name="json">The JSON from which the data has to be taken.</param>
+	/// <param name="ownerAndRepo">A tuple from which the owner and repository name can be found.</param>
+	/// <returns>A project metadata variable.</returns>
+	ProjectMetadata constructProjectMetadata(JSON* json, std::tuple<std::string, std::string> ownerAndRepo);
 
 	/// <summary>
 	/// Constructs a new githuberrorhandler that has the loggers of 403 and 404 replaced.
