@@ -29,6 +29,7 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, std::
 	loguru::set_thread_name(THREAD_NAME);
 
 	CrawlData data;
+	data.finalProjectId = start;
 
 	if (username == "" || token == "")
 	{
