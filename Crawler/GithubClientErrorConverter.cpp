@@ -23,10 +23,7 @@ githubAPIResponse GithubClientErrorConverter::convertResponse(long code, std::st
 		{
 			return githubAPIResponse::rateLimitExceeded;
 		}
-		else
-		{
-			return githubAPIResponse::forbidden;
-		}
+		return githubAPIResponse::forbidden;
 	case 404: // Url not found.
 		return githubAPIResponse::urlNotFound;
 	case 502: // Bad gateway (can happen when executing too many queries at once).
