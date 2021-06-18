@@ -36,7 +36,13 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 		int stars;
 		try
 		{
-			stars = getStars(repoUrl, handler);
+			std::pair<float, int> parseable = getParseableRatio(repoUrl);
+			std::string url = branch.get<std::string, std::string>("html_url", true);
+			if (std::get<1>(parseable) != 0)
+			{
+				stars = getStars(repoUrl, handler);
+				crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
+			}
 		}
 		catch (int e)
 		{
@@ -49,12 +55,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 				throw 1;
 			}
 		}
-		std::string url = branch.get<std::string, std::string>("html_url", true);
-		std::pair<float, int> parseable = getParseableRatio(repoUrl);
-		if (std::get<1>(parseable) != 0)
-		{
-			crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
-		}
+		
 
 	}
 

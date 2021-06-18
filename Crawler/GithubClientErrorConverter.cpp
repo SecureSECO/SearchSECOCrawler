@@ -6,7 +6,7 @@ Utrecht University within the Software Project course.
 
 #include "GithubClientErrorConverter.h"
 
-githubAPIResponse GithubClientErrorConverter::convertResponse(long code)
+githubAPIResponse GithubClientErrorConverter::convertResponse(long code, std::string message)
 {
 	switch ((int)code)
 	{
@@ -19,7 +19,14 @@ githubAPIResponse GithubClientErrorConverter::convertResponse(long code)
 	case 401: // Wrong credentials.
 		return githubAPIResponse::badCredentials;
 	case 403: // Max login attempts exceeded.
-		return githubAPIResponse::forbidden;
+		if (message.find("API rate limit exceeded") != std::string::npos)
+		{
+			return githubAPIResponse::rateLimitExceeded;
+		}
+		else
+		{
+			return githubAPIResponse::forbidden;
+		}
 	case 404: // Url not found.
 		return githubAPIResponse::urlNotFound;
 	case 502: // Bad gateway (can happen when executing too many queries at once).

@@ -10,6 +10,7 @@ enum class githubAPIResponse
 	OK,
 	JSONError,
 	badCredentials,
+	rateLimitExceeded,
 	forbidden,
 	badGateway,
 	urlNotFound,

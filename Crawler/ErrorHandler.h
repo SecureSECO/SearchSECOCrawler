@@ -68,15 +68,15 @@ public:
 /// <summary>
 /// The default github error handler that uses LogHandlers.
 /// </summary>
-class DefaultGithubErrorHandler : public ErrorHandler<githubAPIResponse>
-{
-private:
-	std::map<githubAPIResponse, IndividualErrorHandler*> handlers = {
-		{githubAPIResponse::OK, new EmptyHandler()}
-	};
-public:
-	DefaultGithubErrorHandler();
-};
+//class DefaultGithubErrorHandler : public ErrorHandler<githubAPIResponse>
+//{
+//private:
+//	std::map<githubAPIResponse, IndividualErrorHandler*> handlers = {
+//		{githubAPIResponse::OK, new EmptyHandler()}
+//	};
+//public:
+//	DefaultGithubErrorHandler();
+//};
 
 /// <summary>
 /// A different github error handler that uses LogThrowHandlers,

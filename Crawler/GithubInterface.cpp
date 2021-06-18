@@ -39,9 +39,22 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 	}
 	LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
 	long responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
-	githubAPIResponse response = GithubClientErrorConverter::convertResponse(responseCode);
-	if (response != githubAPIResponse::OK)
+	std::string type = easy.get_info<CURLINFO_CONTENT_TYPE>().get();
+
+	if (responseCode != 200)
 	{
+		githubAPIResponse response;
+		if (type.find("application/json") != std::string::npos)
+		{
+			JSON *json = JSON::parse(ss.str(), jsonHandler);
+			std::string msg = json->get<std::string, std::string>("message");
+			response = GithubClientErrorConverter::convertResponse(responseCode, msg);
+			delete json;
+		}
+		else
+		{
+			response = GithubClientErrorConverter::convertResponse(responseCode, "");
+		}
 		handler->handle(response, __FILE__, __LINE__);
 	}
 

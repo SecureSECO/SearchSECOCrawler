@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 
 #include "ErrorList.h"
+#include <string>
 class GithubClientErrorConverter
 {
 public:
@@ -15,5 +16,5 @@ public:
 	/// </summary>
 	/// <param name="code">The GitHub code to convert.</param>
 	/// <returns>A githubAPIResponse enum.</returns>
-	static githubAPIResponse convertResponse(long code);
+	static githubAPIResponse convertResponse(long code, std::string message);
 };
