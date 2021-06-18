@@ -10,7 +10,7 @@ const static std::string projectWithCode = repoBaseUrl + "notemptyproject";
 
 TEST(CrawlProjectMetadataTest, TestLiveEmptyProject)
 {
-	ProjectMetadata projectMetadata = RunCrawler::findMetadata(emptyRepoUrl);
+	ProjectMetadata projectMetadata = RunCrawler::findMetadata(emptyRepoUrl, "SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b");
 	EXPECT_EQ(projectMetadata.authorMail, "");
 	EXPECT_EQ(projectMetadata.authorName, "crawlerintegrationtesting");
 	EXPECT_EQ(projectMetadata.defaultBranch, "main");
@@ -22,7 +22,7 @@ TEST(CrawlProjectMetadataTest, TestLiveEmptyProject)
 
 TEST(CrawlProjectMetadataTest, TestLiveNonEmptyProject)
 {
-	ProjectMetadata projectMetadata = RunCrawler::findMetadata(projectWithCode);
+	ProjectMetadata projectMetadata = RunCrawler::findMetadata(projectWithCode, "SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b");
 	EXPECT_EQ(projectMetadata.authorMail, "");
 	EXPECT_EQ(projectMetadata.authorName, "crawlerintegrationtesting");
 	EXPECT_EQ(projectMetadata.defaultBranch, "master");
@@ -34,24 +34,24 @@ TEST(CrawlProjectMetadataTest, TestLiveNonEmptyProject)
 
 TEST(CrawlRepositoriesTest, TestFindUrl)
 {
-	GithubCrawler githubCrawler;
+	GithubCrawler githubCrawler("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b");
 	CrawlData projectMetadata = githubCrawler.crawlRepositories(372484242);
 	EXPECT_EQ(projectMetadata.URLImportanceList[0].first, "https://github.com/crawlerintegrationtesting/notemptyproject");
 }
 
 TEST(TestCrawlRepositories, TestNotImplemented)
 {
-	EXPECT_EQ(RunCrawler::crawlRepositories("NotImplementedCrawlableSite", 0).URLImportanceList.size(), 0);
+	EXPECT_EQ(RunCrawler::crawlRepositories("NotImplementedCrawlableSite", 0, "SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b").URLImportanceList.size(), 0);
 }
 
 TEST(TestFindMetadata, TestNotImplemented)
 {
-	EXPECT_TRUE(RunCrawler::findMetadata("NotImplementedCrawlableSite").url.empty());
+	EXPECT_TRUE(RunCrawler::findMetadata("NotImplementedCrawlableSite", "SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b").url.empty());
 }
 
 TEST(TestCrawlRepositories, TestBasicCrawling)
 {
-	CrawlData data = RunCrawler::crawlRepositories("github", 0);
+	CrawlData data = RunCrawler::crawlRepositories("github", 0, "SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b");
 	EXPECT_TRUE(data.URLImportanceList.size() <= 100);
 	std::map<std::string, bool> uniqueURLs;
 	for (int i = 0; i < data.URLImportanceList.size(); i++)

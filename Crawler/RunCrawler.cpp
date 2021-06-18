@@ -18,10 +18,6 @@ CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 	{
 		return CrawlableSource::GITHUB;
 	}
-	else if (url.find("gitlab") != std::string::npos)
-	{
-		return CrawlableSource::GITLAB;
-	}
 	else
 	{
 		return CrawlableSource::NOT_IMPLEMENTED;

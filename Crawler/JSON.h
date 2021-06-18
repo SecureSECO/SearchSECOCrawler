@@ -21,10 +21,7 @@ private:
 	std::optional<std::vector<nlohmann::json>> items; // An optional list of items.
 	// Allows us to check with if(items) whether the variable is intialized.
 
-	template <class T> nlohmann::json internalGet(nlohmann::json current, T key)
-	{
-		return nlohmann::json::parse("{}");
-	}
+	template <class T> nlohmann::json internalGet(nlohmann::json current, T key);
 
 	/// <summary>
 	/// Gets the given value and checks whether it is empty. Uses internalGet().
@@ -54,10 +51,7 @@ private:
 	/// </summary>
 	/// <typeparam name="O">The type of the output.</typeparam>
 	/// <returns>A default value of the given type.</returns>
-	template <class O> O getDefault()
-	{
-		return O();
-	}
+	template <class O> O getDefault();
 
 public:
 	JSON(nlohmann::json*json)
@@ -289,51 +283,3 @@ public:
 		delete json;
 	}
 };
-
-template <> inline int JSON::getDefault<int>()
-{
-	return 0;
-}
-template <> inline std::string JSON::getDefault<std::string>()
-{
-	return "";
-}
-template <> inline const char * JSON::getDefault<const char *>()
-{
-	return "";
-}
-template <> inline bool JSON::getDefault<bool>()
-{
-	return false;
-}
-
-template <> inline nlohmann::json JSON::internalGet<int>(nlohmann::json current, int key)
-{
-	if (key < current.size())
-	{
-		return current[key];
-	}
-	else
-	{
-		JSONSingletonErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
-		throw 1;
-	}
-}
-
-template <> inline nlohmann::json JSON::internalGet<const char *>(nlohmann::json current, const char *key)
-{
-	if (current.find(key) != current.end())
-	{
-		return current[key];
-	}
-	else
-	{
-		JSONSingletonErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
-		throw 1;
-	}
-}
-
-template <> inline nlohmann::json JSON::internalGet<std::string>(nlohmann::json current, std::string key)
-{
-	return internalGet<const char *>(current, key.c_str());
-}

@@ -31,3 +31,65 @@ JSON* JSON::parse(std::string s, JSONErrorHandler *handler)
 		throw 1;
 	}
 }
+
+
+
+template <class O>
+O JSON::getDefault()
+{
+	return O();
+}
+
+template <>
+int JSON::getDefault<int>()
+{
+	return 0;
+}
+template <> std::string JSON::getDefault<std::string>()
+{
+	return "";
+}
+template <> const char* JSON::getDefault<const char*>()
+{
+	return "";
+}
+template <> bool JSON::getDefault<bool>()
+{
+	return false;
+}
+
+template <class T> nlohmann::json internalGet(nlohmann::json current, T key)
+{
+	return nlohmann::json::parse("{}");
+}
+
+template <> nlohmann::json JSON::internalGet<int>(nlohmann::json current, int key)
+{
+	if (key < current.size())
+	{
+		return current[key];
+	}
+	else
+	{
+		JSONSingletonErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+		throw 1;
+	}
+}
+
+template <> nlohmann::json JSON::internalGet<const char*>(nlohmann::json current, const char* key)
+{
+	if (current.find(key) != current.end())
+	{
+		return current[key];
+	}
+	else
+	{
+		JSONSingletonErrorHandler::getInstance().handle(JSONError::branchError, __FILE__, __LINE__);
+		throw 1;
+	}
+}
+
+template <> nlohmann::json JSON::internalGet<std::string>(nlohmann::json current, std::string key)
+{
+	return internalGet<const char*>(current, key.c_str());
+}

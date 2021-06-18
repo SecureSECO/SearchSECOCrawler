@@ -19,9 +19,8 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	int progress,
 		previousLog = 0,
 		percentageSteps = 10;
-	
-	int length = json->length();
-	int bound = std::min(length, maxResultsPerPage);
+
+	int bound = std::min(json->length(), maxResultsPerPage);
 	for (int i = 0; i < bound; i++)
 	{
 		progress = (i / double(maxResultsPerPage)) * 100;
@@ -45,7 +44,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 			{
 				continue;
 			}
-			else if(e == 1)
+			else if (e == 1)
 			{
 				throw 1;
 			}
@@ -102,17 +101,20 @@ std::tuple<std::string, std::string> GithubCrawler::getOwnerAndRepo(std::string 
 	return std::tuple<std::string, std::string>{ownername, reponame};
 }
 
-ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
+std::string GithubCrawler::getRepoUrl(std::string url)
 {
 	LoggerCrawler::logDebug("Finding owner and repository...", __FILE__, __LINE__);
 	std::tuple<std::string, std::string> ownerAndRepo = getOwnerAndRepo(url);
 	std::string ownername = std::get<0>(ownerAndRepo);
 	std::string reponame = std::get<1>(ownerAndRepo);
 
-	std::string repoUrl = "https://api.github.com/repos/" + ownername + "/" + reponame;
+	return "https://api.github.com/repos/" + ownername + "/" + reponame;
 
+}
 
-	ProjectMetadata projectMetadata = ProjectMetadata();
+ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
+{
+	std::string repoUrl = getRepoUrl(url);
 	// Get information about repoUrl.
 	LoggerCrawler::logDebug("Getting information about the repository...", __FILE__, __LINE__);
 	JSONErrorHandler* handler = getCorrectJSONHandler();
@@ -125,7 +127,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	{
 		if (e == 0)
 		{
-			return projectMetadata;
+			return ProjectMetadata();
 		}
 		else if (e == 1)
 		{
@@ -133,15 +135,28 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 		}
 	}
 	// Get information about owner.
-	JSON branch = json->branch("owner");
-	LoggerCrawler::logDebug("Getting information about the owner...", __FILE__, __LINE__);
-	std::unique_ptr<JSON> ownerData(githubInterface->getRequest(branch.get<std::string, std::string>("url")));
+	ProjectMetadata projectMetadata = constructProjectMetadata(json, getOwnerAndRepo(url));
 
+	LoggerCrawler::logInfo("Successfully found all relevant metadata, returning.", __FILE__, __LINE__);
+	delete json;
+	delete handler;
+	delete githubHandler;
+	return projectMetadata;
+}
+
+
+ProjectMetadata GithubCrawler::constructProjectMetadata(JSON *json, std::tuple<std::string, std::string> ownerAndRepo)
+{
+	JSON branch = json->branch("owner");
+	JSON *ownerData = githubInterface->getRequest(branch.get<std::string, std::string>("url"));
+	ProjectMetadata projectMetadata;
+
+	LoggerCrawler::logDebug("Getting information about the owner...", __FILE__, __LINE__);
 	std::string email = ownerData->get<std::string, std::string>("email");
 
-	projectMetadata.authorName = ownername;
+	projectMetadata.authorName = std::get<0>(ownerAndRepo);
 	projectMetadata.authorMail = email;
-	projectMetadata.name = reponame;
+	projectMetadata.name = std::get<1>(ownerAndRepo);
 	projectMetadata.url = json->get<std::string, std::string>("html_url", true);
 	if (json->exists("license"))
 	{
@@ -153,12 +168,11 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	}
 	projectMetadata.version = json->get<std::string, std::string>("pushed_at");
 	projectMetadata.defaultBranch = json->get<std::string, std::string>("default_branch");
-	LoggerCrawler::logInfo("Successfully found all relevant metadata, returning.", __FILE__, __LINE__);
-	delete json;
-	delete handler;
-	delete githubHandler;
+	
+	delete ownerData;
 	return projectMetadata;
 }
+
 
 int GithubCrawler::getImportanceMeasure(int stars, std::pair<float, int> percentageAndBytes)
 {
