@@ -7,6 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 #include "Crawler.h"
 #include "GithubInterface.h"
+#define listOfParseableLanguages {"C", "C++", "Java", "C#", "Python", "JavaScript" };
 
 class GithubCrawler : public Crawler
 {
