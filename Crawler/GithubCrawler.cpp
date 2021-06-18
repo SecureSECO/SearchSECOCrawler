@@ -36,7 +36,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 		int stars;
 		try
 		{
-			std::pair<float, int> parseable = getParseableRatio(repoUrl);
+			std::pair<float, int> parseable = getParseableRatio(repoUrl, handler);
 			std::string url = branch.get<std::string, std::string>("html_url", true);
 			if (std::get<1>(parseable) != 0)
 			{
@@ -189,10 +189,10 @@ int GithubCrawler::getStars(std::string repoUrl, GithubErrorThrowHandler* handle
 	return stars;
 }
 
-std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl)
+std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl, GithubErrorThrowHandler* handler)
 {
 	std::string languagesUrl = repoUrl + "/languages";
-	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl));
+	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl, handler));
 	int total = 0;
 	int parseable = 0;
 	int length = json->length();
