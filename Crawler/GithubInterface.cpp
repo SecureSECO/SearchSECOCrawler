@@ -36,6 +36,7 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 		{
 			LoggerCrawler::logWarn("CURL ran into a problem", __FILE__, __LINE__);
 			error.print_traceback();
+			throw 0;
 		}
 	});
 	std::future_status status;
