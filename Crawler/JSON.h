@@ -53,6 +53,40 @@ private:
 	/// <returns>A default value of the given type.</returns>
 	template <class O> O getDefault();
 
+	/// <summary>
+	/// Branch on a given key. Returns a pointer to a nlohmann::json variable.
+	/// This can be used in functions in this class.
+	/// </summary>
+	/// <typeparam name="T">The type of the key.</typeparam>
+	/// <param name="key">The key.</param>
+	/// <returns>A nlohmann::json variable which is branched on the key.</returns>
+	template<class T> nlohmann::json* internalBranch(T key)
+	{
+		nlohmann::json result;
+		try
+		{
+			result = json->at(key);
+		}
+		catch (nlohmann::json::parse_error& e)
+		{
+			JSONSingletonErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
+			throw 1;
+		}
+		catch (nlohmann::json::type_error& e)
+		{
+			JSONSingletonErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
+			throw 1;
+		}
+		catch (nlohmann::json::out_of_range& e)
+		{
+			JSONSingletonErrorHandler::getInstance().handle(JSONError::outOfRangeError, __FILE__, __LINE__);
+			throw 1;
+		}
+
+		return new nlohmann::json(result);
+	}
+
+
 public:
 	JSON(nlohmann::json*json)
 	{
@@ -176,39 +210,6 @@ public:
 	template <class T> JSON branch(T key)
 	{
 		return JSON(internalBranch(key));
-	}
-
-	/// <summary>
-	/// Branch on a given key. Returns a pointer to a nlohmann::json variable.
-	/// This can be used in functions in this class.
-	/// </summary>
-	/// <typeparam name="T">The type of the key.</typeparam>
-	/// <param name="key">The key.</param>
-	/// <returns>A nlohmann::json variable which is branched on the key.</returns>
-	template<class T> nlohmann::json* internalBranch(T key)
-	{
-		nlohmann::json result;
-		try
-		{
-			result = json->at(key);
-		}
-		catch (nlohmann::json::parse_error& e)
-		{
-			JSONSingletonErrorHandler::getInstance().handle(JSONError::parseError, __FILE__, __LINE__);
-			throw 1;
-		}
-		catch (nlohmann::json::type_error& e)
-		{
-			JSONSingletonErrorHandler::getInstance().handle(JSONError::typeError, __FILE__, __LINE__);
-			throw 1;
-		}
-		catch (nlohmann::json::out_of_range& e)
-		{
-			JSONSingletonErrorHandler::getInstance().handle(JSONError::outOfRangeError, __FILE__, __LINE__);
-			throw 1;
-		}
-
-		return new nlohmann::json(result);
 	}
 
 	/// <summary>
