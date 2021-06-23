@@ -45,7 +45,8 @@ public:
 	/// <param name="start">The start project ID.</param>
 	/// <param name="username">Github username.</param>
 	/// <param name="token">Github authentication token.</param>
-	/// <returns>A list of urls, together with their importance measure (represented by an int), and a final project ID.</returns>
+	/// <returns>A list of urls, together with their importance measure (represented by an int),
+	/// and a final project ID.</returns>
 	static CrawlData crawlRepositories(std::string const& url, int start, std::string username, std::string token);
 
 	/// <summary>

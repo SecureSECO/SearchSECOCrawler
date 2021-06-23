@@ -69,7 +69,6 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 		}
 		handler->handle(response, __FILE__, __LINE__);
 	}
-
 	return JSON::parse(ss.str(), jsonHandler);
 }
 

@@ -29,7 +29,8 @@ private:
 	/// <typeparam name="T">The type of the key.</typeparam>
 	/// <param name="current">The json variable in which needs to be indexed.</param>
 	/// <param name="key">The key.</param>
-	/// <param name="expectNonEmpty">Whether the program should throw an error to the user when the field found is empty.</param>
+	/// <param name="expectNonEmpty">Whether the program should throw an error to the user
+	/// when the field found is empty.</param>
 	/// <returns>A nlohmann::json variable.</returns>
 	template <class T>
 	nlohmann::json internalSafeGet(nlohmann::json current, T key, bool expectNonEmpty)
@@ -82,7 +83,6 @@ private:
 			JSONSingletonErrorHandler::getInstance().handle(JSONError::outOfRangeError, __FILE__, __LINE__);
 			throw 1;
 		}
-
 		return new nlohmann::json(result);
 	}
 
@@ -254,7 +254,8 @@ public:
 	/// <typeparam name="T"> The type of the key.</typeparam>
 	/// <param name="key">The key on which needs to be indexed.</param>
 	/// <returns>A boolean which is true when the key was found in the JSON structure,
-	/// the value associated to the key was not null and the value was not empty. This boolean is false otherwise.</returns>
+	/// the value associated to the key was not null and the value was not empty.
+	/// This boolean is false otherwise.</returns>
 	template<class T> bool exists(T key)
 	{
 		if (contains(key))
