@@ -9,6 +9,8 @@ Utrecht University within the Software Project course.
 #include "JSON.h"
 #include <string>
 
+#define waitTime 15
+
 class GithubInterface
 {
 private:
