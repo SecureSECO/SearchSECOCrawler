@@ -104,6 +104,9 @@ public:
 	/// <returns>A vector consisting of strings representing URLs to repositories.</returns>
 	CrawlData crawlRepositories(int start);
 
+	CrawlData getCrawlData(std::unique_ptr<JSON>& json, GithubErrorThrowHandler* handler, int& currentId);
+
+
 	/// <summary>
 	/// Gets project metadata from the given repository URL.
 	/// </summary>

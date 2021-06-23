@@ -12,10 +12,19 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	GithubErrorThrowHandler* handler = getCorrectGithubHandler();
 
 	LoggerCrawler::logDebug("Starting crawling at index " + strStart, __FILE__, __LINE__);
-	CrawlData crawlData;
 	int currentId;
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
+	CrawlData crawlData = getCrawlData(json, handler, currentId);
+	
+	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(maxResultsPerPage) + " repositories)", __FILE__, __LINE__);
+	crawlData.finalProjectId = currentId;
+	delete handler;
+	return crawlData;
+}
 
+CrawlData GithubCrawler::getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler* handler, int &currentId)
+{
+	CrawlData crawlData;
 	int bound = std::min(json->length(), maxResultsPerPage);
 	for (int i = 0; i < bound; i++)
 	{
@@ -39,9 +48,6 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 			}
 		}
 	}
-	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(maxResultsPerPage) + " repositories)", __FILE__, __LINE__);
-	crawlData.finalProjectId = currentId;
-	delete handler;
 	return crawlData;
 }
 
@@ -58,7 +64,7 @@ void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowH
 }
 
 
-void GithubCrawler::logProgress(int step, int stepSize, int max)
+void GithubCrawler::logProgress(int step, int max, int stepSize)
 {
 	double progressPerStep = 100.0 / ((double) max);
 	double progress = step * progressPerStep;
