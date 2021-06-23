@@ -23,8 +23,6 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 	easy.add<CURLOPT_FOLLOWLOCATION>(1L);
 	easy.add<CURLOPT_USERAGENT>(userAgent.data());
 	easy.add<CURLOPT_USERPWD>(userPWD.data());
-	easy.add<CURLOPT_TIMEOUT>(5L);
-	easy.add<CURLOPT_CONNECTTIMEOUT>(10L);
 	
 	std::future<void> future = std::async(std::launch::async, [&easy]()
 	{
