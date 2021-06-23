@@ -4,9 +4,9 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+#include "pch.h"
 #include "GithubInterface.h"
 #include "RunCrawler.h"
-#include "pch.h"
 #include <GithubCrawler.h>
 #include <chrono>
 #include <string>

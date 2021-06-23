@@ -4,12 +4,12 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "GithubInterface.h"
 #include "pch.h"
+#include "GithubInterface.h"
 
 class GithubInterfaceMock : public GithubInterface
 {
-  public:
+public:
 	std::map<std::string, std::string> queryToJsonMap = std::map<std::string, std::string>();
 	std::string defaultJSON;
 	GithubInterfaceMock(std::string userAgent = "", std::string userPWD = "") : GithubInterface(userAgent, userPWD)
