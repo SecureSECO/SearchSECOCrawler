@@ -10,14 +10,14 @@ Utrecht University within the Software Project course.
 #include "curl_exception.h"
 #include "curl_form.h"
 #include "curl_ios.h"
+#include <future>
+#include <thread>
 
 JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler, JSONErrorHandler *jsonHandler)
 {
 	std::stringstream ss;
 	curl::curl_ios<std::stringstream> writer(ss);
-
 	curl::curl_easy easy(writer);
-
 	// Set up data
 	easy.add<CURLOPT_URL>(query.data());
 	easy.add<CURLOPT_FOLLOWLOCATION>(1L);
@@ -25,17 +25,33 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 	easy.add<CURLOPT_USERPWD>(userPWD.data());
 	easy.add<CURLOPT_TIMEOUT>(5L);
 	easy.add<CURLOPT_CONNECTTIMEOUT>(10L);
-
-	// Send query
-	try
+	
+	std::future<void> future = std::async(std::launch::async, [&easy]()
 	{
-		LoggerCrawler::logDebug("Executing CURL query", __FILE__, __LINE__);
-		easy.perform();
-	}
-	catch (curl::curl_easy_exception error)
+		// Send query
+		try
+		{
+			LoggerCrawler::logDebug("Executing CURL query", __FILE__, __LINE__);
+			easy.perform();
+		}
+		catch (curl::curl_easy_exception error)
+		{
+			LoggerCrawler::logWarn("CURL ran into a problem", __FILE__, __LINE__);
+			error.print_traceback();
+		}
+	});
+	for (int i = 0; i < waitTime*checksPerSecond; i++)
 	{
-		LoggerCrawler::logWarn("CURL ran into a problem", __FILE__, __LINE__);
-		error.print_traceback();
+		auto status = future.wait_for(std::chrono::milliseconds((int) (1000/checksPerSecond)));
+		if (status == std::future_status::ready)
+		{
+			break;
+		}
+		else if(i == waitTime * checksPerSecond - 1)
+		{
+			LoggerCrawler::logWarn("CURL ran into a timeout", __FILE__, __LINE__);
+			throw 0;
+		}
 	}
 	LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
 	long responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
