@@ -15,29 +15,17 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	CrawlData crawlData;
 	int currentId;
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
-	
-	int progress,
-		previousLog = 0,
-		percentageSteps = 10;
 
 	int bound = std::min(json->length(), maxResultsPerPage);
 	for (int i = 0; i < bound; i++)
 	{
-		logProgress(i);
+		logProgress(i, bound);
 
 		JSON branch = json->branch(i);
 		currentId = branch.get<std::string, int>("id", true);
-		std::string repoUrl = branch.get<std::string, std::string>("url", true);
-		int stars;
 		try
 		{
-			std::pair<float, int> parseable = getParseableRatio(repoUrl, handler);
-			std::string url = branch.get<std::string, std::string>("html_url", true);
-			if (std::get<1>(parseable) != 0)
-			{
-				stars = getStars(repoUrl, handler);
-				crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
-			}
+			addURL(branch, crawlData, handler);
 		}
 		catch (int e)
 		{
@@ -56,6 +44,19 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	delete handler;
 	return crawlData;
 }
+
+void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowHandler *handler)
+{
+	std::string repoUrl = branch.get<std::string, std::string>("url", true);
+	std::pair<float, int> parseable = getParseableRatio(repoUrl, handler);
+	if (std::get<1>(parseable) != 0)
+	{
+		int stars = getStars(repoUrl, handler);
+		std::string url = branch.get<std::string, std::string>("html_url", true);
+		crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
+	}
+}
+
 
 void GithubCrawler::logProgress(int step, int stepSize, int max)
 {

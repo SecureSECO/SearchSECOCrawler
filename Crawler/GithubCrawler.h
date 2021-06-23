@@ -68,7 +68,21 @@ private:
 	/// </summary>
 	JSONErrorHandler* getCorrectJSONHandler();
 
-	void logProgress(int step, int stepSize = 10, int max = 100);
+	/// <summary>
+	/// Logs the progress of a process.
+	/// </summary>
+	/// <param name="step">The current step the process is at.</param>
+	/// <param name="max">The total amount of steps the process has to do.</param>
+	/// <param name="stepSize">The amount of steps it should take before the progress has to be logged again.</param>
+	void logProgress(int step, int max = 100, int stepSize = 10);
+
+	/// <summary>
+	/// Adds an URL to the crawlData list.
+	/// </summary>
+	/// <param name="branch">The current branched JSON the data has to be retrieved from.</param>
+	/// <param name="crawlData">The CrawlData the data has to be added to.</param>
+	/// <param name="handler">The error handler needed for when retrieving this data.</param>
+	void addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowHandler* handler);
 
 public:
 	GithubCrawler(GithubInterface *githubInterface)
