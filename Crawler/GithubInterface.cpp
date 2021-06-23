@@ -40,18 +40,15 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 			error.print_traceback();
 		}
 	});
-	for (int i = 0; i < waitTime*checksPerSecond; i++)
+	std::future_status status;
+	do
 	{
-		auto status = future.wait_for(std::chrono::milliseconds((int) (1000/checksPerSecond)));
-		if (status == std::future_status::ready)
-		{
-			break;
-		}
-		else if(i == waitTime * checksPerSecond - 1)
-		{
-			LoggerCrawler::logWarn("CURL ran into a timeout", __FILE__, __LINE__);
-			throw 0;
-		}
+		status = future.wait_for(std::chrono::seconds(waitTime));
+	} while (status == std::future_status::deferred);
+	if (status != std::future_status::ready)
+	{
+		LoggerCrawler::logWarn("CURL ran into a timeout", __FILE__, __LINE__);
+		throw 0;
 	}
 	LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
 	long responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();

@@ -10,7 +10,6 @@ Utrecht University within the Software Project course.
 #include <string>
 
 #define waitTime 15
-#define checksPerSecond 4
 
 class GithubInterface
 {
