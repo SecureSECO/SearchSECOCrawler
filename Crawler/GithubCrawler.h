@@ -68,6 +68,8 @@ private:
 	/// </summary>
 	JSONErrorHandler* getCorrectJSONHandler();
 
+	void logProgress(int step, int stepSize = 10, int max = 100);
+
 public:
 	GithubCrawler(GithubInterface *githubInterface)
 	{

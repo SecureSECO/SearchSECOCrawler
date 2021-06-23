@@ -23,12 +23,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	int bound = std::min(json->length(), maxResultsPerPage);
 	for (int i = 0; i < bound; i++)
 	{
-		progress = (i / double(maxResultsPerPage)) * 100;
-		if (previousLog + percentageSteps < progress)
-		{
-			previousLog += percentageSteps;
-			LoggerCrawler::logInfo(std::to_string(previousLog) + "% done...", __FILE__, __LINE__);
-		}
+		logProgress(i);
 
 		JSON branch = json->branch(i);
 		currentId = branch.get<std::string, int>("id", true);
@@ -55,14 +50,24 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 				throw 1;
 			}
 		}
-		
-
 	}
-
 	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(maxResultsPerPage) + " repositories)", __FILE__, __LINE__);
 	crawlData.finalProjectId = currentId;
 	delete handler;
 	return crawlData;
+}
+
+void GithubCrawler::logProgress(int step, int stepSize, int max)
+{
+	double progressPerStep = 100.0 / ((double) max);
+	double progress = step * progressPerStep;
+	double previousProgress = progress - progressPerStep;
+	int k = std::floor(progress / ((double) stepSize));
+	if (progress > k*stepSize && previousProgress <= k*stepSize && k > 0)
+	{
+		LoggerCrawler::logInfo(std::to_string(k*stepSize) + "% done...", __FILE__, __LINE__);
+	}
+
 }
 
 GithubErrorThrowHandler* GithubCrawler::getCorrectGithubHandler()
