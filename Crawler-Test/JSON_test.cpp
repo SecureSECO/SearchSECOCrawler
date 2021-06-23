@@ -4,8 +4,8 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "pch.h"
 #include "JSON.h"
+#include "pch.h"
 TEST(TestJSONGet, ShortPath)
 {
 	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": {"tree": {"sha": "testsha"}}}})"));
@@ -108,7 +108,6 @@ TEST(TestJSONGet, JSONGetIndex)
 	bool b2 = (std::find(vec.begin(), vec.end(), "testvalue3") != vec.end());
 	EXPECT_TRUE(b1);
 	EXPECT_TRUE(b2);
-
 }
 
 TEST(TestJSONGet, JSONGetThrow)
@@ -120,27 +119,25 @@ TEST(TestJSONGet, JSONGetThrow)
 TEST(TestJSONGet, JSONRepeatedGetInvalidPath)
 {
 	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": {}}, "commit3": "testvalue3"})"));
-	EXPECT_THROW((json->repeatedGet<std::string, std::string>({ "commit", "commitDoesNotExist" })), int);
+	EXPECT_THROW((json->repeatedGet<std::string, std::string>({"commit", "commitDoesNotExist"})), int);
 }
 
 TEST(TestJSONGet, JSONRepeatedGetEmptyPath)
 {
 	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": {}}, "commit3": "testvalue3"})"));
-	EXPECT_THROW((json->repeatedGet<std::string, std::string>({ "commit", "commit", "cantGoFurther" })), int);
+	EXPECT_THROW((json->repeatedGet<std::string, std::string>({"commit", "commit", "cantGoFurther"})), int);
 }
-
 
 TEST(TestJSONGet, JSONRepeatedGetThrowWronConversion)
 {
 	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": 1}, "commit3": "testvalue3"})"));
-	EXPECT_THROW((json->repeatedGet<std::string, std::string>({ "commit", "commit" })), int);
+	EXPECT_THROW((json->repeatedGet<std::string, std::string>({"commit", "commit"})), int);
 }
-
 
 TEST(TestJSONGet, JSONRepeatedGetEmpty)
 {
 	std::unique_ptr<JSON> json(JSON::parse(R"({"commit": {"commit": {}}, "commit3": "testvalue3"})"));
-	EXPECT_EQ((json->repeatedGet<std::string, std::string>({ "commit", "commit" })), "");
+	EXPECT_EQ((json->repeatedGet<std::string, std::string>({"commit", "commit"})), "");
 }
 
 TEST(TestJSONBranch, JSONBranchOutOfRangeThrow)

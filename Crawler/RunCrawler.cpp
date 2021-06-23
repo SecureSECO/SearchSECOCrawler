@@ -12,7 +12,7 @@ Utrecht University within the Software Project course.
 
 #define THREAD_NAME "crawler"
 
-CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
+CrawlableSource RunCrawler::makeCrawlableSource(std::string const &url)
 {
 	if (url.find("github") != std::string::npos)
 	{
@@ -24,7 +24,7 @@ CrawlableSource RunCrawler::makeCrawlableSource(std::string const& url)
 	}
 }
 
-CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, std::string username, std::string token)
+CrawlData RunCrawler::crawlRepositories(std::string const &url, int start, std::string username, std::string token)
 {
 	loguru::set_thread_name(THREAD_NAME);
 
@@ -71,7 +71,7 @@ CrawlData RunCrawler::crawlRepositories(std::string const& url, int start, std::
 	}
 }
 
-ProjectMetadata RunCrawler::findMetadata(std::string const& url, std::string username, std::string token)
+ProjectMetadata RunCrawler::findMetadata(std::string const &url, std::string username, std::string token)
 {
 	loguru::set_thread_name(THREAD_NAME);
 
@@ -102,7 +102,8 @@ ProjectMetadata RunCrawler::findMetadata(std::string const& url, std::string use
 			return ProjectMetadata();
 		}
 	default:
-		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source. Returning empty", __FILE__, __LINE__);
+		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source. Returning empty", __FILE__,
+							   __LINE__);
 		errno = 1;
 		return ProjectMetadata();
 	}

@@ -4,12 +4,12 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "pch.h"
 #include "GithubInterface.h"
+#include "pch.h"
 
 class GithubInterfaceMock : public GithubInterface
 {
-public:
+  public:
 	std::map<std::string, std::string> queryToJsonMap = std::map<std::string, std::string>();
 	std::string defaultJSON;
 	GithubInterfaceMock(std::string userAgent = "", std::string userPWD = "") : GithubInterface(userAgent, userPWD)
@@ -28,17 +28,17 @@ public:
 		}
 	}
 
-	JSON* getRequest(std::string query, GithubErrorThrowHandler* handler) override
+	JSON *getRequest(std::string query, GithubErrorThrowHandler *handler) override
 	{
 		return this->getRequest(query);
 	}
 
-	JSON* getRequest(std::string query, JSONErrorHandler* handler) override
+	JSON *getRequest(std::string query, JSONErrorHandler *handler) override
 	{
 		return this->getRequest(query);
 	}
 
-	JSON* getRequest(std::string query, GithubErrorThrowHandler* handler, JSONErrorHandler* handler2) override
+	JSON *getRequest(std::string query, GithubErrorThrowHandler *handler, JSONErrorHandler *handler2) override
 	{
 		return this->getRequest(query);
 	}

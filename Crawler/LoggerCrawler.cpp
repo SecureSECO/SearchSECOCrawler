@@ -11,27 +11,27 @@ Utrecht University within the Software Project course.
 
 #define BASE 100
 
-void LoggerCrawler::logDebug(std::string message, const char* file, unsigned int line)
+void LoggerCrawler::logDebug(std::string message, const char *file, unsigned int line)
 {
 	loguru::log(loguru::Verbosity_1, file, line, "%s", message.c_str());
 }
 
-void LoggerCrawler::logInfo(std::string message, const char* file, unsigned int line)
+void LoggerCrawler::logInfo(std::string message, const char *file, unsigned int line)
 {
 	loguru::log(loguru::Verbosity_INFO, file, line, "%s", message.c_str());
 }
 
-void LoggerCrawler::logWarn(std::string message, const char* file, unsigned int line)
+void LoggerCrawler::logWarn(std::string message, const char *file, unsigned int line)
 {
 	loguru::log(loguru::Verbosity_WARNING, file, line, "%s", message.c_str());
 }
 
-void LoggerCrawler::logFatal(std::string message, const char* file, unsigned int line, int code)
+void LoggerCrawler::logFatal(std::string message, const char *file, unsigned int line, int code)
 {
 	loguru::log(loguru::Verbosity_ERROR, file, line, "%s", message.c_str());
 }
 
-std::string LoggerCrawler::getMessage(const char* message, int code)
+std::string LoggerCrawler::getMessage(const char *message, int code)
 {
 	std::string c = std::to_string(BASE + code);
 	std::string s = "E" + c + " - " + message;

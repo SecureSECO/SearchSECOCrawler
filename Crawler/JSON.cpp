@@ -4,8 +4,8 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "ErrorHandler.h"
 #include "JSON.h"
+#include "ErrorHandler.h"
 #include "Utility.h"
 
 int JSON::length()
@@ -18,30 +18,26 @@ JSON *JSON::parse(std::string s)
 	return parse(s, &JSONSingletonErrorHandler::getInstance());
 }
 
-JSON* JSON::parse(std::string s, JSONErrorHandler *handler)
+JSON *JSON::parse(std::string s, JSONErrorHandler *handler)
 {
 	try
 	{
-		nlohmann::json* parsed = new nlohmann::json(nlohmann::json::parse(s));
+		nlohmann::json *parsed = new nlohmann::json(nlohmann::json::parse(s));
 		return new JSON(parsed);
 	}
-	catch (nlohmann::json::parse_error& e)
+	catch (nlohmann::json::parse_error &e)
 	{
 		handler->handle(JSONError::parseError, __FILE__, __LINE__);
 		throw 1;
 	}
 }
 
-
-
-template <class O>
-O JSON::getDefault()
+template <class O> O JSON::getDefault()
 {
 	return O();
 }
 
-template <>
-int JSON::getDefault<int>()
+template <> int JSON::getDefault<int>()
 {
 	return 0;
 }
@@ -49,7 +45,7 @@ template <> std::string JSON::getDefault<std::string>()
 {
 	return "";
 }
-template <> const char* JSON::getDefault<const char*>()
+template <> const char *JSON::getDefault<const char *>()
 {
 	return "";
 }
@@ -76,7 +72,7 @@ template <> nlohmann::json JSON::internalGet<int>(nlohmann::json current, int ke
 	}
 }
 
-template <> nlohmann::json JSON::internalGet<const char*>(nlohmann::json current, const char* key)
+template <> nlohmann::json JSON::internalGet<const char *>(nlohmann::json current, const char *key)
 {
 	if (current.find(key) != current.end())
 	{
@@ -91,5 +87,5 @@ template <> nlohmann::json JSON::internalGet<const char*>(nlohmann::json current
 
 template <> nlohmann::json JSON::internalGet<std::string>(nlohmann::json current, std::string key)
 {
-	return internalGet<const char*>(current, key.c_str());
+	return internalGet<const char *>(current, key.c_str());
 }

@@ -6,23 +6,23 @@ Utrecht University within the Software Project course.
 
 #include "ErrorHandler.h"
 
-const std::map<githubAPIResponse, const char*> messages = {
+const std::map<githubAPIResponse, const char *> messages = {
 	{githubAPIResponse::JSONError, "Fatal error in JSON code."},
 	{githubAPIResponse::badCredentials, "Wrong credentials, check if the token is correct."},
-	{githubAPIResponse::rateLimitExceeded, 
-	"This could be because you are not authenticated, because you already made too "
+	{githubAPIResponse::rateLimitExceeded,
+	 "This could be because you are not authenticated, because you already made too "
 	 "many login attempts or because your token has exceeded the rate limit."},
-	{githubAPIResponse::forbidden, "You aren't allowed to access this repository." },
+	{githubAPIResponse::forbidden, "You aren't allowed to access this repository."},
 	{githubAPIResponse::badGateway, "Bad gateway error."},
 	{githubAPIResponse::urlNotFound, "URL not found. Please check if the URL you gave as input is correct."},
-	{githubAPIResponse::unknownError, "An unknown error occured."} };
-
+	{githubAPIResponse::unknownError, "An unknown error occured."}};
 
 GithubErrorThrowHandler::GithubErrorThrowHandler()
 {
-	for (auto const& keyvalue : messages)
+	for (auto const &keyvalue : messages)
 	{
-		handlers.insert({ keyvalue.first, new LogThrowHandler(keyvalue.second, LogLevel::ERROR, getCode(keyvalue.first)) });
+		handlers.insert(
+			{keyvalue.first, new LogThrowHandler(keyvalue.second, LogLevel::ERROR, getCode(keyvalue.first))});
 	}
 	replaceAllHandlers(handlers);
 }
