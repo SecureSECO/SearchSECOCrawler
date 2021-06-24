@@ -10,9 +10,10 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 {
 	auto strStart = std::to_string(start);
 	GithubErrorThrowHandler *handler = getCorrectGithubHandler();
-
 	LoggerCrawler::logDebug("Starting crawling at index " + strStart, __FILE__, __LINE__);
 	int currentId;
+
+	// Create an unique_ptr from a github request asking for a list of repositories, and use that to get the CrawlData.
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
 	CrawlData crawlData = getCrawlData(json, handler, currentId);
 
@@ -27,13 +28,17 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 CrawlData GithubCrawler::getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler *handler, int &currentId)
 {
 	CrawlData crawlData;
+	// The maximum amount of URLs we can crawl.
 	int bound = std::min(json->length(), maxResultsPerPage);
+
 	for (int i = 0; i < bound; i++)
 	{
 		logProgress(i, bound);
 
 		JSON branch = json->branch(i);
 		currentId = branch.get<std::string, int>("id", true);
+
+		// Add URL if possible, if we get a 0 skip this URL, if we get a 1 we have a fatal error.
 		try
 		{
 			addURL(branch, crawlData, handler);
@@ -57,6 +62,8 @@ void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowH
 {
 	std::string repoUrl = branch.get<std::string, std::string>("url", true);
 	std::pair<float, int> parseable = getParseableRatio(repoUrl, handler);
+
+	// Only add URLs which contain data that we can parse.
 	if (std::get<1>(parseable) != 0)
 	{
 		int stars = getStars(repoUrl, handler);
@@ -71,6 +78,8 @@ void GithubCrawler::logProgress(int step, int max, int stepSize)
 	double progress = step * progressPerStep;
 	double previousProgress = progress - progressPerStep;
 	int k = std::floor(progress / ((double)stepSize));
+
+	// Log the percentage of work we have done every time we have completed k times procentLog work.
 	if (progress > k * stepSize && previousProgress <= k * stepSize && k > 0)
 	{
 		LoggerCrawler::logInfo(std::to_string(k * stepSize) + "% done...", __FILE__, __LINE__);
@@ -133,11 +142,11 @@ std::string GithubCrawler::getRepoUrl(std::string url)
 ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 {
 	std::string repoUrl = getRepoUrl(url);
-	// Get information about repoUrl.
 	LoggerCrawler::logDebug("Getting information about the repository...", __FILE__, __LINE__);
 	JSONErrorHandler *handler = getCorrectJSONHandler();
 	GithubErrorThrowHandler *githubHandler = getGithubHandlerForJSONError();
 	JSON *json = NULL;
+
 	try
 	{
 		json = githubInterface->getRequest(repoUrl, githubHandler, handler);
@@ -153,7 +162,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 			throw 1;
 		}
 	}
-	// Get information about owner.
+	// Construct projectMetadata using the owner and repo and the json variable we just found.
 	ProjectMetadata projectMetadata = constructProjectMetadata(json, getOwnerAndRepo(url));
 
 	LoggerCrawler::logInfo("Successfully found all relevant metadata, returning.", __FILE__, __LINE__);
@@ -172,18 +181,16 @@ ProjectMetadata GithubCrawler::constructProjectMetadata(JSON *json, std::tuple<s
 	LoggerCrawler::logDebug("Getting information about the owner...", __FILE__, __LINE__);
 	std::string email = ownerData->get<std::string, std::string>("email");
 
+	// Add known information.
 	projectMetadata.authorName = std::get<0>(ownerAndRepo);
 	projectMetadata.authorMail = email;
 	projectMetadata.name = std::get<1>(ownerAndRepo);
+
+	// We always need an URL.
 	projectMetadata.url = json->get<std::string, std::string>("html_url", true);
-	if (json->exists("license"))
-	{
-		projectMetadata.license = json->branch("license").get<std::string, std::string>("name");
-	}
-	else
-	{
-		projectMetadata.license = "";
-	}
+
+	// However, these other fields are not as important and as such we do not require them to exist.
+	projectMetadata.license = json->branch("license").get<std::string, std::string>("name");
 	projectMetadata.version = json->get<std::string, std::string>("pushed_at");
 	projectMetadata.defaultBranch = json->get<std::string, std::string>("default_branch");
 
@@ -212,12 +219,14 @@ std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl, Gith
 	int total = 0;
 	int parseable = 0;
 	int length = json->length();
+
+	// Loop through all the languages in the json variable, and retrieve the amount of bytes of code in that language.
 	for (int i = 0; i < length; i++)
 	{
 		total += json->getIndex<int>(i);
 	}
-	std::vector<std::string> exts = listOfParseableLanguages;
-	for (std::string language : exts)
+	// Loop through the list of languages we can actually parse and retrieve the amount of parseable bytes.
+	for (std::string language : listOfParseableLanguages)
 	{
 		if (json->exists(language))
 		{

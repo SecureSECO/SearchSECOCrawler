@@ -7,7 +7,7 @@ Utrecht University within the Software Project course.
 #pragma once
 #include "Crawler.h"
 #include "GithubInterface.h"
-#define listOfParseableLanguages {"C", "C++", "Java", "C#", "Python", "JavaScript" };
+#define listOfParseableLanguages {"C", "C++", "Java", "C#", "Python", "JavaScript" }
 
 class GithubCrawler : public Crawler
 {
@@ -42,7 +42,8 @@ private:
 	/// Gets the fraction of parseable lines of code to the total number of lines of code.
 	/// </summary>
 	/// <param name="repoUrl">The project URL (with api. in front).</param>
-	/// <returns>The total number of parseable lines divided by the total number of lines, and 0 if the total is 0.</returns>
+	/// <returns>The total number of parseable lines divided by the total number of lines,
+	/// and 0 if the total is 0.</returns>
 	std::pair<float, int> getParseableRatio(std::string repoUrl, GithubErrorThrowHandler* handler);
 
 	/// <summary>
@@ -104,6 +105,13 @@ public:
 	/// <returns>A vector consisting of strings representing URLs to repositories.</returns>
 	CrawlData crawlRepositories(int start);
 
+	/// <summary>
+	/// Gets the crawl data of a json variable containing a list of 100 github repositories.
+	/// </summary>
+	/// <param name="json">The json variable.</param>
+	/// <param name="handler">The github error handler.</param>
+	/// <param name="currentId">The current ID.</param>
+	/// <returns>The crawldata retrieved from the json variable.</returns>
 	CrawlData getCrawlData(std::unique_ptr<JSON>& json, GithubErrorThrowHandler* handler, int& currentId);
 
 	/// <summary>

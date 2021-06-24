@@ -82,8 +82,3 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler* ha
 {
 	return getRequest(query, handler, &JSONSingletonErrorHandler::getInstance());
 }
-//
-//JSON* GithubInterface::getRequest(std::string query, JSONErrorHandler* handler)
-//{
-//	return getRequest(query, &defaultHandler, handler);
-//}
