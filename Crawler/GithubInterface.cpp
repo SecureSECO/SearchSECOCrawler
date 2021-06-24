@@ -69,6 +69,7 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 		}
 		handler->handle(response, __FILE__, __LINE__);
 	}
+
 	return JSON::parse(ss.str(), jsonHandler);
 }
 
@@ -81,8 +82,8 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler* ha
 {
 	return getRequest(query, handler, &JSONSingletonErrorHandler::getInstance());
 }
-
-JSON* GithubInterface::getRequest(std::string query, JSONErrorHandler* handler)
-{
-	return getRequest(query, &defaultHandler, handler);
-}
+//
+//JSON* GithubInterface::getRequest(std::string query, JSONErrorHandler* handler)
+//{
+//	return getRequest(query, &defaultHandler, handler);
+//}

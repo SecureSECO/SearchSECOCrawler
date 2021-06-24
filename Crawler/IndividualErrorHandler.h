@@ -27,8 +27,8 @@ public:
 	/// <summary>
 	/// A generic execute function which reacts to when an error occurs.
 	/// </summary>
-	/// <param name="file">The file in which this function is called from.</param>
-	/// <param name="line">The line from which this function is called from.</param>
+	/// <param name="file">The file in which this function is called.</param>
+	/// <param name="line">The line from which this function is called.</param>
 	virtual void execute(const char *file, unsigned int line){};
 };
 
@@ -52,8 +52,8 @@ public:
 	/// <summary>
 	/// A generic execute function which reacts to when an error occurs.
 	/// </summary>
-	/// <param name="file">The file in which this function is called from.</param>
-	/// <param name="line">The line from which this function is called from.</param>
+	/// <param name="file">The file in which this function is called.</param>
+	/// <param name="line">The line from which this function is called.</param>
 	void execute(const char *file, unsigned int line) override;
 };
 
@@ -67,6 +67,11 @@ public:
 	{
 
 	}
+	/// <summary>
+	/// A generic execute function which reacts to when an error occurs.
+	/// </summary>
+	/// <param name="file">The file in which this function is called.</param>
+	/// <param name="line">The line from which this function is called.</param>
 	void execute(const char* file, unsigned int line) override;
 };
 
@@ -79,7 +84,7 @@ public:
 	/// <summary>
 	/// A generic execute function which reacts to when an error occurs.
 	/// </summary>
-	/// <param name="file">The file in which this function is called from.</param>
-	/// <param name="line">The line from which this function is called from.</param>
+	/// <param name="file">The file in which this function is called.</param>
+	/// <param name="line">The line from which this function is called.</param>
 	void execute(const char *file, unsigned int line) override;
 };

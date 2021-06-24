@@ -51,8 +51,8 @@ public:
 	/// <summary>
 	/// Replace a single handler for a given response with a new one.
 	/// </summary>
-	/// <param name="response"> The response for which a new handler needs to be set.</param>
-	/// <param name="handler"> The handler which should now handle the response.</param>
+	/// <param name="response">The response for which a new handler needs to be set.</param>
+	/// <param name="handler">The handler which should now handle the response.</param>
 	void replaceSingleHandler(TResponse response, IndividualErrorHandler *handler)
 	{
 		delete errorHandlingDictionary[response];
