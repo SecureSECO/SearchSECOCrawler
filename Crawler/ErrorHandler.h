@@ -9,8 +9,6 @@ Utrecht University within the Software Project course.
 #include "IndividualErrorHandler.h"
 #include "Utility.h"
 #include <map>
-#include <string>
-#include <vector>
 
 /// <summary>
 /// Template class for error handling so we can for different enums handle the error differently.

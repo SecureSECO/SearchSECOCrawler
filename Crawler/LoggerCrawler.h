@@ -5,19 +5,10 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-
 #include <string>
 
 class LoggerCrawler
 {
-private:
-	/// <summary>
-	/// Formats a string and an error code to a correctly formatted error message.
-	/// </summary>
-	/// <param name="file">The file in which this function is called.</param>
-	/// <param name="line">The line from which this function is called.</param>
-	static std::string getMessage(const char *message, int code);
-
 public:
 	/// <summary>
 	/// Logs a message at Debug-level verbosity.

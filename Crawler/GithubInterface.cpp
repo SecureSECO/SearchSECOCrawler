@@ -6,34 +6,18 @@ Utrecht University within the Software Project course.
 
 #include "GithubInterface.h"
 #include "GithubClientErrorConverter.h"
+#include "LoggerCrawler.h"
+
 #include "curl_easy.h"
-#include "curl_exception.h"
-#include "curl_form.h"
-#include "curl_ios.h"
 #include <future>
-#include <thread>
 
-JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler, JSONErrorHandler *jsonHandler)
-{
-	std::stringstream ss;
-	curl::curl_ios<std::stringstream> writer(ss);
-	curl::curl_easy easy(writer);
-	// Set up data
-	addEasyInformation(query, easy);
-	
-	executeCurlQueryWithTimeout(easy);
-	LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
-	long responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
-	
-	if (responseCode != 200)
-	{
-		handleGithubError(easy, ss, handler, jsonHandler);
-	}
+// The following three functions are only defined in this .cpp file as curl_easy can not be included in the header.
 
-	return JSON::parse(ss.str(), jsonHandler);
-}
-
-void GithubInterface::executeCurlQueryWithTimeout(curl::curl_easy &easy)
+/// <summary>
+/// Execute a curl query in a try catch, with a timeout to ensure that it always stops after a certain time.
+/// </summary>
+/// <param name="easy">The curl object.</param>
+void executeCurlQueryWithTimeout(curl::curl_easy &easy)
 {
 	// Put the curl query in an async task to allow for a timeout.
 	std::future<void> future = std::async(std::launch::async, [&easy]() {
@@ -54,10 +38,10 @@ void GithubInterface::executeCurlQueryWithTimeout(curl::curl_easy &easy)
 	// If the status is 'deferred', then our async task has not yet started.
 	do
 	{
-		status = future.wait_for(std::chrono::seconds(waitTime));
+		status = future.wait_for(std::chrono::seconds(WAITTIME));
 	} while (status == std::future_status::deferred);
 
-	// If the status is not ready (and not deferred either as we have already started the curl query), 
+	// If the status is not ready (and not deferred either as we have already started the curl query),
 	// we have a timeout.
 	if (status != std::future_status::ready)
 	{
@@ -66,7 +50,12 @@ void GithubInterface::executeCurlQueryWithTimeout(curl::curl_easy &easy)
 	}
 }
 
-void GithubInterface::addEasyInformation(std::string query, curl::curl_easy &easy)
+/// <summary>
+/// Add information to the curl query.
+/// </summary>
+/// <param name="query">The query that has to be added to the curl object.</param>
+/// <param name="easy">The curl object.</param>
+void addEasyInformation(std::string query, curl::curl_easy &easy, std::string userAgent, std::string userPWD)
 {
 	easy.add<CURLOPT_URL>(query.data());
 	easy.add<CURLOPT_FOLLOWLOCATION>(1L);
@@ -74,7 +63,14 @@ void GithubInterface::addEasyInformation(std::string query, curl::curl_easy &eas
 	easy.add<CURLOPT_USERPWD>(userPWD.data());
 }
 
-void GithubInterface::handleGithubError(curl::curl_easy &easy, std::stringstream &ss, GithubErrorThrowHandler *handler,
+/// <summary>
+/// Handles a GitHub error if one happened during the execution of the curl query.
+/// </summary>
+/// <param name="easy">The curl object.</param>
+/// <param name="ss">The stringstream that is written to by the curl object.</param>
+/// <param name="handler">The GitHub handler.</param>
+/// <param name="jsonHandler">The JSON handler.</param>
+void handleGithubError(curl::curl_easy &easy, std::stringstream &ss, GithubErrorThrowHandler *handler,
 					   JSONErrorHandler *jsonHandler)
 {
 	std::string type = easy.get_info<CURLINFO_CONTENT_TYPE>().get();
@@ -91,12 +87,32 @@ void GithubInterface::handleGithubError(curl::curl_easy &easy, std::stringstream
 		response = GithubClientErrorConverter::convertResponse(responseCode, msg);
 		delete json;
 	}
-	else //Otherwise, we can just use the responsecode to see what has happened.
+	else // Otherwise, we can just use the responsecode to see what has happened.
 	{
 		response = GithubClientErrorConverter::convertResponse(responseCode, "");
 	}
 	handler->handle(response, __FILE__, __LINE__);
 } 
+
+JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *handler, JSONErrorHandler *jsonHandler)
+{
+	std::stringstream ss;
+	curl::curl_ios<std::stringstream> writer(ss);
+	curl::curl_easy easy(writer);
+	// Set up data
+	addEasyInformation(query, easy, userAgent, userPWD);
+	
+	executeCurlQueryWithTimeout(easy);
+	LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
+	long responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
+	
+	if (responseCode != 200)
+	{
+		handleGithubError(easy, ss, handler, jsonHandler);
+	}
+
+	return JSON::parse(ss.str(), jsonHandler);
+}
 
 JSON *GithubInterface::getRequest(std::string query)
 {

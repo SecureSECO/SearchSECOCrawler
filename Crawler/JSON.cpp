@@ -6,7 +6,6 @@ Utrecht University within the Software Project course.
 
 #include "JSON.h"
 #include "ErrorHandler.h"
-#include "Utility.h"
 
 int JSON::length()
 {

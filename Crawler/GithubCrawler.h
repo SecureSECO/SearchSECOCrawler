@@ -5,11 +5,12 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include "Crawler.h"
 #include "GithubInterface.h"
-#define listOfParseableLanguages {"C", "C++", "Java", "C#", "Python", "JavaScript" }
+#include "ProjectMetadata.h"
+#include "CrawlData.h"
+#define PARSEABLELANGUAGES {"C", "C++", "Java", "C#", "Python", "JavaScript" }
 
-class GithubCrawler : public Crawler
+class GithubCrawler
 {
 private:
 	const int maxResultsPerPage = 100;
@@ -109,7 +110,7 @@ public:
 	/// Gets the crawl data of a json variable containing a list of 100 github repositories.
 	/// </summary>
 	/// <param name="json">The json variable.</param>
-	/// <param name="handler">The github error handler.</param>
+	/// <param name="handler">The GitHub error handler.</param>
 	/// <param name="currentId">The current ID.</param>
 	/// <returns>The crawldata retrieved from the json variable.</returns>
 	CrawlData getCrawlData(std::unique_ptr<JSON>& json, GithubErrorThrowHandler* handler, int& currentId);

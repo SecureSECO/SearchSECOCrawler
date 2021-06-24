@@ -5,6 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 #include "IndividualErrorHandler.h"
+#include "LoggerCrawler.h"
 void LogThrowHandler::execute(const char* file, unsigned int line)
 {
 	switch (level)

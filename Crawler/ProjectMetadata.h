@@ -6,6 +6,10 @@ Utrecht University within the Software Project course.
 
 #pragma once
 #include <string>
+
+/// <summary>
+/// A struct having fields for all the data that we need from a GitHub repository.
+/// </summary>
 struct ProjectMetadata
 {
 	std::string version;
@@ -15,10 +19,4 @@ struct ProjectMetadata
 	std::string authorName;
 	std::string authorMail;
 	std::string defaultBranch;
-
-	/// <summary>
-	/// Converts this ProjectMetadata to a string.
-	/// </summary>
-	/// <returns>A string representing the project metadata. </returns>
-	std::string toString();
 };

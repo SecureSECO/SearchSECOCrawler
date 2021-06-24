@@ -5,6 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 #include "Utility.h"
+#include <sstream>
 
 // Copied from https://stackoverflow.com/questions/10058606/splitting-a-string-by-a-character/10058756.
 std::vector<std::string> Utility::split(std::string string, char delimiter)

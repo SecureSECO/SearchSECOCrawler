@@ -6,10 +6,7 @@ Utrecht University within the Software Project course.
 
 #include "LoggerCrawler.h"
 #include "loguru/loguru.hpp"
-#include <stdlib.h>
 #include <string>
-
-#define BASE 100
 
 void LoggerCrawler::logDebug(std::string message, const char *file, unsigned int line)
 {

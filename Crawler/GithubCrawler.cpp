@@ -5,7 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 #include "GithubCrawler.h"
-#include <iostream>
+#include "LoggerCrawler.h"
 CrawlData GithubCrawler::crawlRepositories(int start)
 {
 	auto strStart = std::to_string(start);
@@ -13,7 +13,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	LoggerCrawler::logDebug("Starting crawling at index " + strStart, __FILE__, __LINE__);
 	int currentId;
 
-	// Create an unique_ptr from a github request asking for a list of repositories, and use that to get the CrawlData.
+	// Create an unique_ptr from a GitHub request asking for a list of repositories, and use that to get the CrawlData.
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
 	CrawlData crawlData = getCrawlData(json, handler, currentId);
 
@@ -226,7 +226,7 @@ std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl, Gith
 		total += json->getIndex<int>(i);
 	}
 	// Loop through the list of languages we can actually parse and retrieve the amount of parseable bytes.
-	for (std::string language : listOfParseableLanguages)
+	for (std::string language : PARSEABLELANGUAGES)
 	{
 		if (json->exists(language))
 		{

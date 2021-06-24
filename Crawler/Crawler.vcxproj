@@ -157,7 +157,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Crawler.cpp" />
     <ClCompile Include="EmptyHandler.cpp" />
     <ClCompile Include="ErrorHandler.cpp" />
     <ClCompile Include="GithubClientErrorConverter.cpp" />
@@ -172,7 +171,7 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Crawler.h" />
+    <ClInclude Include="CrawlData.h" />
     <ClInclude Include="ErrorHandler.h" />
     <ClInclude Include="ErrorList.h" />
     <ClInclude Include="GithubClientErrorConverter.h" />
@@ -181,6 +180,7 @@
     <ClInclude Include="IndividualErrorHandler.h" />
     <ClInclude Include="JSON.h" />
     <ClInclude Include="LoggerCrawler.h" />
+    <ClInclude Include="ProjectMetadata.h" />
     <ClInclude Include="RunCrawler.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>

@@ -12,7 +12,7 @@ class GithubClientErrorConverter
 {
 public:
 	/// <summary>
-	/// Converts most errors that can be received by using the github REST API
+	/// Converts most errors that can be received by using the GitHub REST API
 	/// and converts them into a readable format.
 	/// </summary>
 	/// <param name="code">The GitHub code to convert.</param>
