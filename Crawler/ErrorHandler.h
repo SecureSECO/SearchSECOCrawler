@@ -15,7 +15,7 @@ Utrecht University within the Software Project course.
 /// <summary>
 /// Template class for error handling so we can for different enums handle the error differently.
 /// </summary>
-/// <typeparam name="TResponse"> The template class.</typeparam>
+/// <typeparam name="TResponse">The template class.</typeparam>
 template <class TResponse> class ErrorHandler
 {
 private:
@@ -39,9 +39,9 @@ public:
 	/// <summary>
 	/// Handle a given response.
 	/// </summary>
-	/// <param name="response"> The response that needs to be handled. </param>
-	/// <param name="file"> The file location this function is called from. </param>
-	/// <param name="line"> The line number this function is called from. </param>
+	/// <param name="response">The response that needs to be handled.</param>
+	/// <param name="file">The file location this function is called from.</param>
+	/// <param name="line">The line number this function is called from.</param>
 	void handle(TResponse response, const char *file, unsigned int line)
 	{
 		auto *handler = errorHandlingDictionary[response];
@@ -51,8 +51,8 @@ public:
 	/// <summary>
 	/// Replace a single handler for a given response with a new one.
 	/// </summary>
-	/// <param name="response"> The response for which a new handler needs to be set. </param>
-	/// <param name="handler"> The handler which should now handle the response. </param>
+	/// <param name="response"> The response for which a new handler needs to be set.</param>
+	/// <param name="handler"> The handler which should now handle the response.</param>
 	void replaceSingleHandler(TResponse response, IndividualErrorHandler *handler)
 	{
 		delete errorHandlingDictionary[response];
@@ -79,6 +79,9 @@ public:
 	GithubErrorThrowHandler();
 };
 
+/// <summary>
+/// An error handler that handles JSON errors.
+/// </summary>
 class JSONErrorHandler : public ErrorHandler<JSONError>
 {
 public:
@@ -107,7 +110,10 @@ public:
 	}
 };
 
-// C++ singleton design pattern taken from https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
+/// <summary>
+/// An error handler that handles JSON errors and is a singleton error handler.
+/// We use this as the default JSON error handler that every JSON variable has access to.
+/// </summary>
 class JSONSingletonErrorHandler : public JSONErrorHandler
 {
 private:
@@ -117,6 +123,8 @@ private:
 	}
 
 public:
+	// C++ singleton design pattern is taken from:
+	// https://stackoverflow.com/questions/1008019/c-singleton-design-pattern.
 	static JSONSingletonErrorHandler &getInstance()
 	{
 		static JSONSingletonErrorHandler instance; // Guaranteed to be destroyed.

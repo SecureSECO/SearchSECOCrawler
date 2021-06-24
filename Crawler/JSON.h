@@ -21,6 +21,13 @@ private:
 	std::optional<std::vector<nlohmann::json>> items; // An optional list of items.
 	// Allows us to check with if(items) whether the variable is intialized.
 
+	/// <summary>
+	/// A function that performs a simple get with a try catch around it.
+	/// </summary>
+	/// <typeparam name="T">The type of the key.</typeparam>
+	/// <param name="current">The nlohmann::json variable to get from.</param>
+	/// <param name="key">The key on which needs to be indexed.</param>
+	/// <returns>The current nlohmann::json variable branched on the key.</returns>
 	template <class T> nlohmann::json internalGet(nlohmann::json current, T key);
 
 	/// <summary>
@@ -101,7 +108,7 @@ public:
 	/// <summary>
 	/// Gets the length of the nlohmann::json inside this JSON variable.
 	/// </summary>
-	/// <returns>The length of the nlohmann::json variable.</returns>
+	/// <returns>An int representing the length of the nlohmann::json variable.</returns>
 	int length();
 
 	/// <summary>
@@ -132,7 +139,7 @@ public:
 	}
 
 	/// <summary>
-	/// Can get a value from a JSON structure. In case the field is empty returns a default value. Uses internalGet().
+	/// Can get a value from a JSON structure. In case the field is empty returns a default value.
 	/// </summary>
 	/// <param name="key">The key on which needs to be indexed.</param>
 	/// <param name="expectNonEmpty">

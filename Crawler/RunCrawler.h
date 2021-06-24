@@ -27,6 +27,9 @@ struct CrawlData
 	int finalProjectId;
 };
 
+/// <summary>
+/// The entry point of the crawler.
+/// </summary>
 class RunCrawler
 {
 private:
