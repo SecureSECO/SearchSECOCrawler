@@ -44,7 +44,7 @@ TEST(CrawlRepositoriesTest, TestFindUrl)
 {
 	GithubCrawler githubCrawler("SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b");
 	CrawlData projectMetadata = githubCrawler.crawlRepositories(372484242);
-	EXPECT_EQ(projectMetadata.URLImportanceList[0].first,
+	EXPECT_EQ(projectMetadata.urlImportanceList[0].first,
 			  "https://github.com/crawlerintegrationtesting/notemptyproject");
 }
 
@@ -52,7 +52,7 @@ TEST(TestCrawlRepositories, TestNotImplemented)
 {
 	EXPECT_EQ(RunCrawler::crawlRepositories("NotImplementedCrawlableSite", 0, "SoftwareProj2021",
 											"8486fe6129f2cce8687e5c9ce540918d42f7cb0b")
-				  .URLImportanceList.size(),
+				  .urlImportanceList.size(),
 			  0);
 }
 
@@ -67,11 +67,11 @@ TEST(TestCrawlRepositories, TestBasicCrawling)
 {
 	CrawlData data =
 		RunCrawler::crawlRepositories("github", 0, "SoftwareProj2021", "8486fe6129f2cce8687e5c9ce540918d42f7cb0b");
-	EXPECT_TRUE(data.URLImportanceList.size() <= 100);
+	EXPECT_TRUE(data.urlImportanceList.size() <= 100);
 	std::map<std::string, bool> uniqueURLs;
-	for (int i = 0; i < data.URLImportanceList.size(); i++)
+	for (int i = 0; i < data.urlImportanceList.size(); i++)
 	{
-		std::string url = data.URLImportanceList[i].first;
+		std::string url = data.urlImportanceList[i].first;
 		EXPECT_TRUE(uniqueURLs.count(url) == 0);
 		uniqueURLs[url] = true;
 	}
