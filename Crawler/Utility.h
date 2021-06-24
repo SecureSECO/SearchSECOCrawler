@@ -47,14 +47,4 @@ public:
 	{
 		return (int)error + getCode(githubAPIResponse::count);
 	}
-
-	/// <summary>
-	/// Converts an enum to a specific code so that we can specify that code in the error message.
-	/// </summary>
-	/// <param name="response">The generic error.</param>
-	/// <returns>An int representing an error code.</returns>
-	static int getCode(genericError error)
-	{
-		return (int)error + getCode(genericError::count);
-	}
 };
