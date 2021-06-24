@@ -107,18 +107,18 @@ public:
 	CrawlData crawlRepositories(int start);
 
 	/// <summary>
-	/// Gets the crawl data of a json variable containing a list of 100 github repositories.
+	/// Gets the crawl data of a JSON variable containing a list of 100 github repositories.
 	/// </summary>
-	/// <param name="json">The json variable.</param>
+	/// <param name="json">The JSON variable.</param>
 	/// <param name="handler">The GitHub error handler.</param>
 	/// <param name="currentId">The current ID.</param>
-	/// <returns>The crawldata retrieved from the json variable.</returns>
+	/// <returns>The crawldata retrieved from the JSON variable.</returns>
 	CrawlData getCrawlData(std::unique_ptr<JSON>& json, GithubErrorThrowHandler* handler, int& currentId);
 
 	/// <summary>
 	/// Gets project metadata from the given repository URL.
 	/// </summary>
-	/// <param name="url">The url to a repository.</param>
+	/// <param name="url">The URL to a repository.</param>
 	/// <returns>A project metadata file.</returns>
 	ProjectMetadata getProjectMetadata(std::string url);
 

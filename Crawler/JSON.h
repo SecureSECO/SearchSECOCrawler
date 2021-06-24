@@ -34,7 +34,7 @@ private:
 	/// Gets the given value and checks whether it is empty. Uses internalGet().
 	/// </summary>
 	/// <typeparam name="T">The type of the key.</typeparam>
-	/// <param name="current">The json variable in which needs to be indexed.</param>
+	/// <param name="current">The JSON variable in which needs to be indexed.</param>
 	/// <param name="key">The key.</param>
 	/// <param name="expectNonEmpty">Whether the program should throw an error to the user
 	/// when the field found is empty.</param>

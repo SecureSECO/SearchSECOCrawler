@@ -162,7 +162,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 			throw 1;
 		}
 	}
-	// Construct projectMetadata using the owner and repo and the json variable we just found.
+	// Construct projectMetadata using the owner and repo and the JSON variable we just found.
 	ProjectMetadata projectMetadata = constructProjectMetadata(json, getOwnerAndRepo(url));
 
 	LoggerCrawler::logInfo("Successfully found all relevant metadata, returning.", __FILE__, __LINE__);
@@ -220,7 +220,7 @@ std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl, Gith
 	int parseable = 0;
 	int length = json->length();
 
-	// Loop through all the languages in the json variable, and retrieve the amount of bytes of code in that language.
+	// Loop through all the languages in the JSON variable, and retrieve the amount of bytes of code in that language.
 	for (int i = 0; i < length; i++)
 	{
 		total += json->getIndex<int>(i);

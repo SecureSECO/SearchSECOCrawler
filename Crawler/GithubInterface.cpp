@@ -99,13 +99,13 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 	std::stringstream ss;
 	curl::curl_ios<std::stringstream> writer(ss);
 	curl::curl_easy easy(writer);
-	// Set up data
+
 	addEasyInformation(query, easy, userAgent, userPWD);
-	
+
 	executeCurlQueryWithTimeout(easy);
 	LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
+
 	long responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
-	
 	if (responseCode != 200)
 	{
 		handleGithubError(easy, ss, handler, jsonHandler);
