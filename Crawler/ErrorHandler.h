@@ -79,15 +79,6 @@ public:
 	GithubErrorThrowHandler();
 };
 
-/// <summary>
-/// A generic error handler (currently not used).
-/// </summary>
-class DefaultGenericErrorHandler : public ErrorHandler<genericError>
-{
-public:
-	DefaultGenericErrorHandler();
-};
-
 class JSONErrorHandler : public ErrorHandler<JSONError>
 {
 public:

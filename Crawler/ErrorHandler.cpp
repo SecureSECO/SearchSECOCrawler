@@ -26,12 +26,3 @@ GithubErrorThrowHandler::GithubErrorThrowHandler()
 	}
 	replaceAllHandlers(handlers);
 }
-
-DefaultGenericErrorHandler::DefaultGenericErrorHandler()
-{
-	std::map<genericError, IndividualErrorHandler *> handlers = {
-		{genericError::basicError, new EmptyHandler()},
-
-	};
-	replaceAllHandlers(handlers);
-}

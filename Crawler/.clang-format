@@ -5,5 +5,5 @@ TabWidth: 4
 BreakBeforeBraces: Allman
 SpaceBeforeParens: ControlStatements
 AllowShortFunctionsOnASingleLine: None
-SortIncludes:false
+SortIncludes: false
 NamespaceIndentation: All

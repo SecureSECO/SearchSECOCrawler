@@ -17,11 +17,6 @@ enum class githubAPIResponse
 	unknownError,
 	count // Should always be last.
 };
-enum class genericError
-{
-	basicError,
-	count
-};
 
 enum class JSONError
 {
