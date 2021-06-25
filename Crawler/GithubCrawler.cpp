@@ -189,10 +189,19 @@ ProjectMetadata GithubCrawler::constructProjectMetadata(JSON *json, std::tuple<s
 	// We always need an URL.
 	projectMetadata.url = json->get<std::string, std::string>("html_url", true);
 
-	// However, these other fields are not as important and as such we do not require them to exist.
-	projectMetadata.license = json->branch("license").get<std::string, std::string>("name");
+	// However, these other fields are not as important and as such we do not require them to be filled in.
 	projectMetadata.version = json->get<std::string, std::string>("pushed_at");
 	projectMetadata.defaultBranch = json->get<std::string, std::string>("default_branch");
+
+	// We may not be able to branch on the license field, so make sure it exists first.
+	if (json->exists<std::string>("license"))
+	{
+		projectMetadata.license = json->branch("license").get<std::string, std::string>("name");
+	}
+	else
+	{
+		projectMetadata.license = "";
+	}
 
 	delete ownerData;
 	return projectMetadata;
