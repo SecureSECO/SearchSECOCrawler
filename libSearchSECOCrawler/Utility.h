@@ -21,13 +21,6 @@ public:
 	static std::vector<std::string> split(std::string string, char delimiter);
 
 	/// <summary>
-	/// Checks if a string consists only of digits.
-	/// </summary>
-	/// <param name="s">The string that needs to be checked.</param>
-	/// <returns>A boolean indicating whether the given string only consists of digits.</returns>
-	static bool hasOnlyDigits(std::string s);
-
-	/// <summary>
 	/// Converts an enum to a specific code so that we can specify that code in the error message.
 	/// </summary>
 	/// <param name="response">The GitHub error.</param>
