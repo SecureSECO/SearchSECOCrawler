@@ -83,30 +83,7 @@ public:
 class JSONErrorHandler : public ErrorHandler<JSONError>
 {
 public:
-	JSONErrorHandler()
-	{
-		std::map<JSONError, const char*> messages = {
-			{JSONError::branchError, "Couldn't find the given index in JSON structure."},
-			{JSONError::parseError, "Error while parsing JSON structure."},
-			{JSONError::typeError,
-			 "Error while converting JSON type to standard type. Perhaps something is wrong in the program code?"},
-			{JSONError::fieldEmptyError,
-			"Field was empty in JSON structure while it shouldn't have been."
-			"Perhaps something changed in the external API?"},
-			{JSONError::outOfRangeError, "Index was out of range in JSON structure."}
-		};
-
-		std::map<JSONError, IndividualErrorHandler*> handlers;
-
-		// Partially Taken from https://stackoverflow.com/questions/26281979/c-loop-through-map.
-		for (auto const& keyvalue : messages)
-		{
-			handlers.insert(
-				{ keyvalue.first, new LogHandler(keyvalue.second, LogLevel::ERROR, getCode(keyvalue.first)) });
-		}
-
-		replaceAllHandlers(handlers);
-	}
+	JSONErrorHandler();
 };
 
 /// <summary>

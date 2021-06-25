@@ -71,6 +71,13 @@ private:
 	JSONErrorHandler* getCorrectJSONHandler();
 
 	/// <summary>
+	/// Gets the importance measure of a given project.
+	/// </summary>
+	/// <param name="repoUrl">The project URL (with api. in front).</param>
+	/// <returns>An int representing the importance measure.</returns>
+	int getImportanceMeasure(int stars, std::pair<float, int> percentageAndBytes);
+
+	/// <summary>
 	/// Logs the progress of a process.
 	/// </summary>
 	/// <param name="step">The current step the process is at.</param>
@@ -85,6 +92,15 @@ private:
 	/// <param name="crawlData">The CrawlData the data has to be added to.</param>
 	/// <param name="handler">The error handler needed for when retrieving this data.</param>
 	void addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowHandler* handler);
+
+	/// <summary>
+	/// Gets the crawl data of a JSON variable containing a list of 100 github repositories.
+	/// </summary>
+	/// <param name="json">The JSON variable.</param>
+	/// <param name="handler">The GitHub error handler.</param>
+	/// <param name="currentId">The current ID.</param>
+	/// <returns>The crawldata retrieved from the JSON variable.</returns>
+	CrawlData getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler *handler, int &currentId);
 
 public:
 	GithubCrawler(GithubInterface *githubInterface)
@@ -107,25 +123,9 @@ public:
 	CrawlData crawlRepositories(int start);
 
 	/// <summary>
-	/// Gets the crawl data of a JSON variable containing a list of 100 github repositories.
-	/// </summary>
-	/// <param name="json">The JSON variable.</param>
-	/// <param name="handler">The GitHub error handler.</param>
-	/// <param name="currentId">The current ID.</param>
-	/// <returns>The crawldata retrieved from the JSON variable.</returns>
-	CrawlData getCrawlData(std::unique_ptr<JSON>& json, GithubErrorThrowHandler* handler, int& currentId);
-
-	/// <summary>
 	/// Gets project metadata from the given repository URL.
 	/// </summary>
 	/// <param name="url">The URL to a repository.</param>
 	/// <returns>A project metadata file.</returns>
 	ProjectMetadata getProjectMetadata(std::string url);
-
-	/// <summary>
-	/// Gets the importance measure of a given project.
-	/// </summary>
-	/// <param name="repoUrl">The project URL (with api. in front).</param>
-	/// <returns>An int representing the importance measure.</returns>
-	int getImportanceMeasure(int stars, std::pair<float, int> percentageAndBytes);
 };
