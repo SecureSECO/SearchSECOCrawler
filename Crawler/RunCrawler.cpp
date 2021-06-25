@@ -48,19 +48,7 @@ CrawlData RunCrawler::crawlRepositories(std::string const &url, int start, std::
 	case CrawlableSource::GITHUB:
 	{
 		LoggerCrawler::logDebug("Detected GitHub as the source to crawl repositories from", __FILE__, __LINE__);
-		try
-		{
-			GithubCrawler githubCrawler(username, token);
-			CrawlData data = githubCrawler.crawlRepositories(start);
-			LoggerCrawler::logInfo("Returning successful", __FILE__, __LINE__);
-			return data;
-		}
-		catch (int e)
-		{
-			LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
-			errno = e;
-			return data;
-		}
+		crawlGithub(data, start, username, token);
 	}
 	default:
 	{
@@ -68,6 +56,23 @@ CrawlData RunCrawler::crawlRepositories(std::string const &url, int start, std::
 		errno = 1;
 		return data;
 	}
+	}
+}
+
+CrawlData RunCrawler::crawlGithub(CrawlData data, int start, std::string username, std::string token)
+{
+	try
+	{
+		GithubCrawler githubCrawler(username, token);
+		CrawlData foundData = githubCrawler.crawlRepositories(start);
+		LoggerCrawler::logInfo("Returning successful", __FILE__, __LINE__);
+		return foundData;
+	}
+	catch (int e)
+	{
+		LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+		errno = e;
+		return data;
 	}
 }
 
@@ -86,25 +91,31 @@ ProjectMetadata RunCrawler::findMetadata(std::string const &url, std::string use
 	switch (makeCrawlableSource(url))
 	{
 	case CrawlableSource::GITHUB:
-		try
-		{
-			LoggerCrawler::logDebug("Detected GitHub as the source of the repository", __FILE__, __LINE__);
-
-			GithubCrawler githubCrawler(username, token);
-			ProjectMetadata p = githubCrawler.getProjectMetadata(url);
-			errno = 0;
-			return p;
-		}
-		catch (int e)
-		{
-			LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
-			errno = e;
-			return ProjectMetadata();
-		}
+	{
+		LoggerCrawler::logDebug("Detected GitHub as the source of the repository", __FILE__, __LINE__);
+		return findMetadataFromGithub(url, username, token);
+	}
 	default:
 		LoggerCrawler::logWarn("URL \"" + url + "\" is from an unsupported source. Returning empty", __FILE__,
 							   __LINE__);
 		errno = 1;
+		return ProjectMetadata();
+	}
+}
+
+ProjectMetadata RunCrawler::findMetadataFromGithub(std::string const &url, std::string username, std::string token)
+{
+	try
+	{
+		GithubCrawler githubCrawler(username, token);
+		ProjectMetadata p = githubCrawler.getProjectMetadata(url);
+		errno = 0;
+		return p;
+	}
+	catch (int e)
+	{
+		LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+		errno = e;
 		return ProjectMetadata();
 	}
 }

@@ -8,11 +8,11 @@ Utrecht University within the Software Project course.
 #include "Crawler.h"
 #include "GithubInterface.h"
 #define listOfParseableLanguages {"C", "C++", "Java", "C#", "Python", "JavaScript" }
+#define maxResultsPerPage 100
 
 class GithubCrawler : public Crawler
 {
 private:
-	const int maxResultsPerPage = 100;
 	std::unique_ptr<GithubInterface> githubInterface;
 
 	/// <summary>
