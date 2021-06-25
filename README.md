@@ -22,8 +22,8 @@ we advise to use this project as a library instead.
 
 ## Library
 
-The Crawler has two entry points. The function _crawlRepositories_ returns a list of URLs given a crawlable source (only GitHub at the moment), 
-while the _findMetadata_ function returns project metadata of a given project URL to a GitHub repository. Include _RunCrawler.h_ to use them.
+The Crawler has two entry points. The function `crawlRepositories` returns a list of URLs given a crawlable source (only GitHub at the moment), 
+while the `findMetadata` function returns project metadata of a given project URL to a GitHub repository. Include `RunCrawler.h` to use them.
 # Copyright
 
 This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
