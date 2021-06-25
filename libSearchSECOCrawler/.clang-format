@@ -1,9 +1,0 @@
-ColumnLimit: 120
-IndentWidth: 4
-UseTab: Always
-TabWidth: 4
-BreakBeforeBraces: Allman
-SpaceBeforeParens: ControlStatements
-AllowShortFunctionsOnASingleLine: None
-SortIncludes: false
-NamespaceIndentation: All
