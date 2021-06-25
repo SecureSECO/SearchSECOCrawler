@@ -8,8 +8,8 @@ Utrecht University within the Software Project course.
 #include "GithubInterface.h"
 #include "ProjectMetadata.h"
 #include "CrawlData.h"
-#define listOfParseableLanguages {"C", "C++", "Java", "C#", "Python", "JavaScript" }
-#define maxResultsPerPage 100
+#define PARSEABLELANGUAGES {"C", "C++", "Java", "C#", "Python", "JavaScript" }
+#define MAXRESULTS 100
 
 class GithubCrawler
 {

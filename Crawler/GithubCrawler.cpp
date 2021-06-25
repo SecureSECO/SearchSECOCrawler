@@ -17,7 +17,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
 	CrawlData crawlData = getCrawlData(json, handler, currentId);
 
-	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(maxResultsPerPage) +
+	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(MAXRESULTS) +
 							   " repositories)",
 						   __FILE__, __LINE__);
 	crawlData.finalProjectId = currentId;
@@ -29,7 +29,7 @@ CrawlData GithubCrawler::getCrawlData(std::unique_ptr<JSON> &json, GithubErrorTh
 {
 	CrawlData crawlData;
 	// The maximum amount of URLs we can crawl.
-	int bound = std::min(json->length(), maxResultsPerPage);
+	int bound = std::min(json->length(), MAXRESULTS);
 
 	for (int i = 0; i < bound; i++)
 	{

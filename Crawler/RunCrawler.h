@@ -17,7 +17,7 @@ enum class CrawlableSource
 };
 
 /// <summary>
-/// The entry point of the crawler.
+/// The entry point of the Crawler.
 /// </summary>
 class RunCrawler
 {
@@ -51,7 +51,7 @@ private:
 
 public:
 	/// <summary>
-	/// Finds repositories that can be spidered. Entry point of the crawler.
+	/// Finds repositories that can be spidered.
 	/// </summary>
 	/// <param name="url">An URL to the site from which needs to be crawled.</param>
 	/// <param name="start">The start project ID.</param>
