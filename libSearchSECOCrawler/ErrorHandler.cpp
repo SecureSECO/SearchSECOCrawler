@@ -21,7 +21,7 @@ GithubErrorThrowHandler::GithubErrorThrowHandler()
 	for (auto const &keyvalue : messages)
 	{
 		handlers.insert(
-			{keyvalue.first, new LogThrowHandler(keyvalue.second, LogLevel::ERROR, getCode(keyvalue.first))});
+			{keyvalue.first, new LogThrowHandler(keyvalue.second, LogLevel::ERROR, Utility::getCode(keyvalue.first))});
 	}
 	replaceAllHandlers(handlers);
 }
@@ -43,7 +43,7 @@ JSONErrorHandler::JSONErrorHandler()
 	for (auto const &keyvalue : messages)
 	{
 		handlers.insert(
-			{keyvalue.first, new LogHandler(keyvalue.second, LogLevel::ERROR, getCode(keyvalue.first))});
+			{keyvalue.first, new LogHandler(keyvalue.second, LogLevel::ERROR, Utility::getCode(keyvalue.first))});
 	}
 
 	replaceAllHandlers(handlers);

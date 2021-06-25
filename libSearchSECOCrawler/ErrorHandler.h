@@ -56,11 +56,6 @@ public:
 		delete errorHandlingDictionary[response];
 		errorHandlingDictionary[response] = handler;
 	}
-
-	int getCode(TResponse response)
-	{
-		return Utility::getCode(response);
-	}
 };
 
 /// <summary>
