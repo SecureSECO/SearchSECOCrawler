@@ -36,7 +36,7 @@ add_subdirectory(../curlcpp/src ./curlcpp)
 
 
 set(CRAWLER_HEADER_LIST
-  Crawler.h
+  CrawlData.h
   GithubCrawler.h
   Networking.h
   ProjectMetadata.h
