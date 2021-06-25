@@ -52,7 +52,6 @@ set(CRAWLER_HEADER_LIST
 )
 
 add_library(crawler
-  Crawler.cpp
   GithubCrawler.cpp
   Networking.cpp
   RunCrawler.cpp
