@@ -68,7 +68,7 @@ void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowH
 	{
 		int stars = getStars(repoUrl, handler);
 		std::string url = branch.get<std::string, std::string>("html_url", true);
-		crawlData.urlImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
+		crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
 	}
 }
 

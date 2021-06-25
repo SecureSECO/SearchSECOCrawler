@@ -46,9 +46,9 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	int val = finalVal();
 	for (int i = 0; i < 100; i++)
 	{
-		EXPECT_EQ(data.urlImportanceList[i].first, std::to_string(i));
+		EXPECT_EQ(data.URLImportanceList[i].first, std::to_string(i));
 		
-		EXPECT_EQ(data.urlImportanceList[i].second, val);
+		EXPECT_EQ(data.URLImportanceList[i].second, val);
 	}
 }
 
@@ -69,7 +69,7 @@ TEST(CrawlRepositoriesTest, TestEnd)
 	GithubCrawler githubCrawler(mock);
 	CrawlData data = githubCrawler.crawlRepositories(0);
 
-	EXPECT_EQ(data.urlImportanceList.size(), 3);
+	EXPECT_EQ(data.URLImportanceList.size(), 3);
 	EXPECT_EQ(data.finalProjectId, 250);
 }
 
