@@ -18,7 +18,7 @@ void LogThrowHandler::execute(const char* file, unsigned int line)
 			throw 0;
 			break;
 		case LogLevel::ERROR:
-			LoggerCrawler::logFatal(msg, file, line);
+			LoggerCrawler::logFatal(msg, file, line, code);
 			throw 1;
 			break;
 		case LogLevel::DEBUG:

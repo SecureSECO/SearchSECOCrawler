@@ -9,6 +9,15 @@ Utrecht University within the Software Project course.
 
 class LoggerCrawler
 {
+private:
+	/// <summary>
+	/// Combines a message and an error code into a correctly formatted error message.
+	/// </summary>
+	/// <param name="message">The original message to format.</param>
+	/// <param name="code">The error code.</param>
+	/// <returns>A correctly formatted error message.</returns>
+	static std::string getMessage(std::string message, int code);
+
 public:
 	/// <summary>
 	/// Logs a message at Debug-level verbosity.
@@ -37,5 +46,6 @@ public:
 	/// </summary>
 	/// <param name="file">The file in which this function is called.</param>
 	/// <param name="line">The line from which this function is called.</param>
-	static void logFatal(std::string message, const char* file, unsigned int line);
+	/// <param name="code">The error code.</param>
+	static void logFatal(std::string message, const char* file, unsigned int line, int code);
 };

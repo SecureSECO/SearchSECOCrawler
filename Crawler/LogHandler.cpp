@@ -17,7 +17,7 @@ void LogHandler::execute(const char *file, unsigned int line)
 			LoggerCrawler::logWarn(msg, file, line);
 			break;
 		case LogLevel::ERROR:
-			LoggerCrawler::logFatal(msg, file, line);
+			LoggerCrawler::logFatal(msg, file, line, code);
 			break;
 		case LogLevel::DEBUG:
 			LoggerCrawler::logDebug(msg, file, line);

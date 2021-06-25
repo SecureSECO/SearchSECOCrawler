@@ -8,6 +8,8 @@ Utrecht University within the Software Project course.
 #include "loguru/loguru.hpp"
 #include <string>
 
+#define BASE 100
+
 void LoggerCrawler::logDebug(std::string message, const char *file, unsigned int line)
 {
 	loguru::log(loguru::Verbosity_1, file, line, "%s", message.c_str());
@@ -23,7 +25,14 @@ void LoggerCrawler::logWarn(std::string message, const char *file, unsigned int 
 	loguru::log(loguru::Verbosity_WARNING, file, line, "%s", message.c_str());
 }
 
-void LoggerCrawler::logFatal(std::string message, const char *file, unsigned int line)
+void LoggerCrawler::logFatal(std::string message, const char *file, unsigned int line, int code)
 {
-	loguru::log(loguru::Verbosity_ERROR, file, line, "%s", message.c_str());
+	loguru::log(loguru::Verbosity_ERROR, file, line, "%s", getMessage(message, code).c_str());
+}
+
+std::string LoggerCrawler::getMessage(std::string message, int code)
+{
+	std::string c = std::to_string(BASE + code);
+	std::string s = "E" + c + " - " + message;
+	return s;
 }
