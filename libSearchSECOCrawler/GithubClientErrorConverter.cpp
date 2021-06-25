@@ -4,7 +4,9 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Crawler includes.
 #include "GithubClientErrorConverter.h"
+
 
 githubAPIResponse GithubClientErrorConverter::convertResponse(long code, std::string message)
 {

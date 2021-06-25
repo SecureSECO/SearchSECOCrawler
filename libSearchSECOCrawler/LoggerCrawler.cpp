@@ -4,11 +4,14 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Crawler includes.
 #include "LoggerCrawler.h"
+
+// External includes.
 #include "loguru/loguru.hpp"
-#include <string>
 
 #define BASE 100
+
 
 void LoggerCrawler::logDebug(std::string message, const char *file, unsigned int line)
 {

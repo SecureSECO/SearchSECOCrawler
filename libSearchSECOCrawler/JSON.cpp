@@ -4,8 +4,10 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "JSON.h"
+// Crawler includes.
 #include "ErrorHandler.h"
+#include "JSON.h"
+
 
 int JSON::length()
 {

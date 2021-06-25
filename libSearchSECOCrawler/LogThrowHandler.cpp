@@ -4,8 +4,11 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Crawler includes.
 #include "IndividualErrorHandler.h"
 #include "LoggerCrawler.h"
+
+
 void LogThrowHandler::execute(const char* file, unsigned int line)
 {
 	switch (level)

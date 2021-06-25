@@ -4,8 +4,11 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Crawler includes.
 #include "GithubCrawler.h"
 #include "LoggerCrawler.h"
+
+
 CrawlData GithubCrawler::crawlRepositories(int start)
 {
 	auto strStart = std::to_string(start);

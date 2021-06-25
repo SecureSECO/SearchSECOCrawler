@@ -4,12 +4,15 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Crawler includes.
 #include "GithubInterface.h"
 #include "GithubClientErrorConverter.h"
 #include "LoggerCrawler.h"
 
+// External includes.
 #include "curl_easy.h"
 #include <future>
+
 
 // The following three functions are only defined in this .cpp file as curl_easy can not be included in the header.
 
