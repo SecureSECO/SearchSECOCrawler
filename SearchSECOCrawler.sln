@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Crawler", "vsProjects\Crawler.vcxproj", "{5CD94DA9-B893-4439-8F37-55DF86CD1399}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSearchSECOCrawler", "vsProjects\libSearchSECOCrawler.vcxproj", "{5CD94DA9-B893-4439-8F37-55DF86CD1399}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Crawler-Test", "vsProjects\Crawler-Test.vcxproj", "{817A0E4F-5C5F-4FF0-8CE1-07E8111F449A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "vsProjects\tests.vcxproj", "{817A0E4F-5C5F-4FF0-8CE1-07E8111F449A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Standalone", "vsProjects\Standalone.vcxproj", "{5EE10E53-69C6-4366-A328-58629A688261}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SearchSECOCrawler", "vsProjects\SearchSECOCrawler.vcxproj", "{5EE10E53-69C6-4366-A328-58629A688261}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -21,32 +21,32 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{5ee10e53-69c6-4366-a328-58629a688261}</ProjectGuid>
-    <RootNamespace>Standalone</RootNamespace>
+    <ProjectGuid>{5CD94DA9-B893-4439-8F37-55DF86CD1399}</ProjectGuid>
+    <RootNamespace>Crawler</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -88,7 +88,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../libSearchSECOCrawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -105,7 +104,6 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>../libSearchSECOCrawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,16 +116,21 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;CURL_STATICLIB;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\external\curl\include\;..\external\curlcpp\include\;..\libSearchSECOCrawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external\curl\include\;..\external\curlcpp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurld.lib;curlcppd.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\external\curlcpp\lib\x64\;..\external\curl\build\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libcurld.lib; curlcppd.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\external\curlcpp\lib\curlcpp_x64\;..\external\curl\build\lib\curl_x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -135,9 +138,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;CURL_STATICLIB;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\external\curl\include\;..\external\curlcpp\include\;..\libSearchSECOCrawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external\curl\include\;..\external\curlcpp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -145,28 +148,53 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libcurl.lib; curlcpp.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>..\external\curlcpp\lib\curlcpp_x64\;..\external\curl\build\lib\curl_x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="../SearchSECOCrawler/main.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\EmptyHandler.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\ErrorHandler.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\GithubClientErrorConverter.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\GithubCrawler.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\GithubInterface.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\JSON.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\LoggerCrawler.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\LogHandler.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\LogThrowHandler.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\loguru\loguru.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\RunCrawler.cpp" />
+    <ClCompile Include="..\libSearchSECOCrawler\Utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libSearchSECOCrawler\CrawlData.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\ErrorHandler.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\ErrorList.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\GithubClientErrorConverter.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\GithubCrawler.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\GithubInterface.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\IndividualErrorHandler.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\JSON.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\LoggerCrawler.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\ProjectMetadata.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\RunCrawler.h" />
+    <ClInclude Include="..\libSearchSECOCrawler\Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="SearchSECOCrawler.vcxproj">
-      <Project>{5cd94da9-b893-4439-8f37-55df86cd1399}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets" Condition="Exists('..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" />
+    <Import Project="$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets" Condition="Exists('$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets'))" />
+    <Error Condition="!Exists('$(SolutionDir)packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets'))" />
   </Target>
 </Project>
