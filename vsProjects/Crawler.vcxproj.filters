@@ -21,78 +21,78 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RunCrawler.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\RunCrawler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GithubInterface.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\GithubInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JSON.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\JSON.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utility.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GithubCrawler.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\GithubCrawler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GithubClientErrorConverter.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\GithubClientErrorConverter.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
-    <ClCompile Include="ErrorHandler.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\ErrorHandler.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
-    <ClCompile Include="EmptyHandler.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\EmptyHandler.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
-    <ClCompile Include="LogHandler.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\LogHandler.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
-    <ClCompile Include="loguru\loguru.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\loguru\loguru.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
-    <ClCompile Include="LoggerCrawler.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\LoggerCrawler.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
-    <ClCompile Include="LogThrowHandler.cpp">
+    <ClCompile Include="..\libSearchSECOCrawler\LogThrowHandler.cpp">
       <Filter>Source Files\ErrorHandling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RunCrawler.h">
+    <ClInclude Include="..\libSearchSECOCrawler\RunCrawler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GithubInterface.h">
+    <ClInclude Include="..\libSearchSECOCrawler\GithubInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="JSON.h">
+    <ClInclude Include="..\libSearchSECOCrawler\JSON.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utility.h">
+    <ClInclude Include="..\libSearchSECOCrawler\Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GithubCrawler.h">
+    <ClInclude Include="..\libSearchSECOCrawler\GithubCrawler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GithubClientErrorConverter.h">
+    <ClInclude Include="..\libSearchSECOCrawler\GithubClientErrorConverter.h">
       <Filter>Header Files\ErrorHandling</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorHandler.h">
+    <ClInclude Include="..\libSearchSECOCrawler\ErrorHandler.h">
       <Filter>Header Files\ErrorHandling</Filter>
     </ClInclude>
-    <ClInclude Include="IndividualErrorHandler.h">
+    <ClInclude Include="..\libSearchSECOCrawler\IndividualErrorHandler.h">
       <Filter>Header Files\ErrorHandling</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorList.h">
+    <ClInclude Include="..\libSearchSECOCrawler\ErrorList.h">
       <Filter>Header Files\ErrorHandling</Filter>
     </ClInclude>
-    <ClInclude Include="LoggerCrawler.h">
+    <ClInclude Include="..\libSearchSECOCrawler\LoggerCrawler.h">
       <Filter>Header Files\ErrorHandling</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectMetadata.h">
+    <ClInclude Include="..\libSearchSECOCrawler\ProjectMetadata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CrawlData.h">
+    <ClInclude Include="..\libSearchSECOCrawler\CrawlData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

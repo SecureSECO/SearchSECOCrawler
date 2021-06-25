@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.13)
 set(CMAKE_CXX_STANDARD 17)
 project(crawler_tests)
 
-add_subdirectory(../Crawler ./Crawler)
+add_subdirectory(../libSearchSECOCrawler ./Crawler)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -27,7 +27,7 @@ set(TEST_NAME crawler_tests)
 add_executable(${TEST_NAME} GithubCrawler_test.cpp JSON_test.cpp IndividualErrorHandler_test.cpp GithubInterfaceMock.cpp)
 target_link_libraries(${TEST_NAME} gtest_main crawler)
 
-target_include_directories(${TEST_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ../Crawler)
+target_include_directories(${TEST_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ../libSearchSECOCrawler)
 
 enable_testing()
 include(GoogleTest)

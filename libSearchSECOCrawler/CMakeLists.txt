@@ -32,7 +32,7 @@ else()
   find_package(nlohmann_json REQUIRED)
 endif()
 
-add_subdirectory(../curlcpp/src ./curlcpp)
+add_subdirectory(../external/curlcpp/src ./curlcpp)
 
 
 set(CRAWLER_HEADER_LIST
@@ -69,7 +69,7 @@ add_library(crawler
 )
 
 target_link_libraries(crawler curlcpp nlohmann_json::nlohmann_json)
-target_include_directories(crawler PUBLIC "${PROJECT_BINARY_DIR}" ../curlcpp/include)
+target_include_directories(crawler PUBLIC "${PROJECT_BINARY_DIR}" ../external/curlcpp/include)
 
 if(CMAKE_DL_LIBS)
     target_link_libraries(crawler ${CMAKE_DL_LIBS})

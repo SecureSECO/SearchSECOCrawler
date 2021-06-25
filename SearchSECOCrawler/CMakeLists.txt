@@ -7,15 +7,15 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(crawler)
 
-add_subdirectory(../Crawler ./Crawler)
+add_subdirectory(../libSearchSECOCrawler ./Crawler)
 
 if (UNIX)
   list(APPEND CMAKE_CXX_FLAGS "-pthread ${CMAKE_CXX_FLAGS}")
 endif(UNIX)
 
-set(CMAKE_CXX_STANDARD 20)      
+set(CMAKE_CXX_STANDARD 20)
 set(EXE_NAME crawler_standalone)
 add_executable(${EXE_NAME} main.cpp)
 target_link_libraries(${EXE_NAME} crawler)
 
-target_include_directories(${EXE_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ../Crawler)
+target_include_directories(${EXE_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ../libSearchSECOCrawler)

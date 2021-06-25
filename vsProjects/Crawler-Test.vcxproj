@@ -33,21 +33,21 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClInclude Include="pch.h" />
+    <ClInclude Include="..\tests\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GithubCrawler_test.cpp" />
-    <ClCompile Include="GithubInterfaceMock.cpp" />
-    <ClCompile Include="IndividualErrorHandler_test.cpp" />
-    <ClCompile Include="IntegrationTests.cpp" />
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="..\tests\GithubCrawler_test.cpp" />
+    <ClCompile Include="..\tests\GithubInterfaceMock.cpp" />
+    <ClCompile Include="..\tests\IndividualErrorHandler_test.cpp" />
+    <ClCompile Include="..\tests\IntegrationTests.cpp" />
+    <ClCompile Include="..\tests\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="JSON_test.cpp" />
+    <ClCompile Include="..\tests\JSON_test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Crawler\Crawler.vcxproj">
+    <ProjectReference Include="Crawler.vcxproj">
       <Project>{5cd94da9-b893-4439-8f37-55df86cd1399}</Project>
     </ProjectReference>
   </ItemGroup>
@@ -69,7 +69,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>../Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../libSearchSECOCrawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -86,7 +86,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\Crawler;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../libSearchSECOCrawler;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -102,7 +102,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../Crawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../libSearchSECOCrawler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -120,7 +120,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\Crawler;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../libSearchSECOCrawler;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
