@@ -46,7 +46,7 @@ CrawlData RunCrawler::crawlRepositories(std::string const &url, int start, std::
 	case CrawlableSource::GITHUB:
 	{
 		LoggerCrawler::logDebug("Detected GitHub as the source to crawl repositories from", __FILE__, __LINE__);
-		crawlGithub(data, start, username, token);
+		return crawlGithub(data, start, username, token);
 	}
 	default:
 	{
