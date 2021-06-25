@@ -5,6 +5,7 @@ Utrecht University within the Software Project course.
 */
 #include <iostream>
 #include "RunCrawler.h"
+#include <CrawlData.h>
 
 // Input token for debugging, remember to delete when done
 #define username "username"

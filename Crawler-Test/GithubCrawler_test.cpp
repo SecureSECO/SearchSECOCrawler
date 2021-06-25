@@ -8,6 +8,14 @@ Utrecht University within the Software Project course.
 #include "GithubInterfaceMock.cpp"
 #include <GithubCrawler.h>
 
+int finalVal()
+{
+	float percentage = (1.0 + 4.0 + 8.0 + 16.0) / 31.0;
+	int stars = 50;
+	int bytes = (int)(1.0 + 4.0 + 8.0 + 16.0);
+	return 20000000 * percentage * std::log(stars + 1) * std::log(std::log(bytes + 1) + 1);
+}
+
 TEST(CrawlRepositoriesTest, TestBasic)
 {
 	std::string jsonString = "[";
@@ -35,20 +43,14 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	mock->defaultJSON = languagesString;
 	GithubCrawler githubCrawler(mock);
 	CrawlData data = githubCrawler.crawlRepositories(0);
+	int val = finalVal();
 	for (int i = 0; i < 100; i++)
 	{
-		EXPECT_EQ(data.URLImportanceList[i].first, std::to_string(i));
-		//EXPECT_EQ(data.URLImportanceList[i].second, finalVal());
+		EXPECT_EQ(data.urlImportanceList[i].first, std::to_string(i));
+		
+		EXPECT_EQ(data.urlImportanceList[i].second, val);
 	}
 }
-
-//int finalVal()
-//{
-//	float percentage = (1.0 + 4.0 + 8.0 + 16.0) / 31.0;
-//	int stars = 50;
-//	int bytes = (int)(1.0 + 4.0 + 8.0 + 16.0);
-//	return 20000000 * percentage * std::log(stars + 1) * std::log(std::log(bytes + 1) + 1);
-//}
 
 TEST(CrawlRepositoriesTest, TestEnd)
 {
@@ -67,7 +69,7 @@ TEST(CrawlRepositoriesTest, TestEnd)
 	GithubCrawler githubCrawler(mock);
 	CrawlData data = githubCrawler.crawlRepositories(0);
 
-	EXPECT_EQ(data.URLImportanceList.size(), 3);
+	EXPECT_EQ(data.urlImportanceList.size(), 3);
 	EXPECT_EQ(data.finalProjectId, 250);
 }
 

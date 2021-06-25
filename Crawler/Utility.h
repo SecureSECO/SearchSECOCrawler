@@ -6,7 +6,6 @@ Utrecht University within the Software Project course.
 
 #pragma once
 #include "ErrorList.h"
-#include <sstream>
 #include <string>
 #include <vector>
 

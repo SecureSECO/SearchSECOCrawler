@@ -16,7 +16,9 @@ TEST(TestJSONGet, ShortPath)
 TEST(TestJSONGet, DifferentPaths)
 {
 	std::unique_ptr<JSON> json(JSON::parse(
-		R"({"commit": {"commit": {"tree": {"sha": "testsha"}}}, "test": {"test1": "test2"}, "test3": {"test4": {"test5": "test6"}}})"));
+		R"({"commit": {"commit": {"tree": {"sha": "testsha"}}},
+		"test": {"test1": "test2"},
+		"test3": {"test4": {"test5": "test6"}}})"));
 	std::string result = json->branch("test").get<std::string, std::string>("test1");
 	EXPECT_EQ(result, "test2");
 }

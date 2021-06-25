@@ -5,12 +5,6 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-
-#include <map>
-#include <string>
-#include <vector>
-
-#include "LoggerCrawler.h"
 #include "loguru/loguru.hpp"
 
 enum class LogLevel

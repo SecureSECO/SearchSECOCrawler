@@ -5,7 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 #include "GithubCrawler.h"
-#include <iostream>
+#include "LoggerCrawler.h"
 CrawlData GithubCrawler::crawlRepositories(int start)
 {
 	auto strStart = std::to_string(start);
@@ -13,7 +13,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	LoggerCrawler::logDebug("Starting crawling at index " + strStart, __FILE__, __LINE__);
 	int currentId;
 
-	// Create an unique_ptr from a github request asking for a list of repositories, and use that to get the CrawlData.
+	// Create an unique_ptr from a GitHub request asking for a list of repositories, and use that to get the CrawlData.
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
 	CrawlData crawlData = getCrawlData(json, handler, currentId);
 
@@ -68,7 +68,7 @@ void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowH
 	{
 		int stars = getStars(repoUrl, handler);
 		std::string url = branch.get<std::string, std::string>("html_url", true);
-		crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
+		crawlData.urlImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
 	}
 }
 
@@ -162,7 +162,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 			throw 1;
 		}
 	}
-	// Construct projectMetadata using the owner and repo and the json variable we just found.
+	// Construct projectMetadata using the owner and repo and the JSON variable we just found.
 	ProjectMetadata projectMetadata = constructProjectMetadata(json, getOwnerAndRepo(url));
 
 	LoggerCrawler::logInfo("Successfully found all relevant metadata, returning.", __FILE__, __LINE__);
@@ -189,10 +189,19 @@ ProjectMetadata GithubCrawler::constructProjectMetadata(JSON *json, std::tuple<s
 	// We always need an URL.
 	projectMetadata.url = json->get<std::string, std::string>("html_url", true);
 
-	// However, these other fields are not as important and as such we do not require them to exist.
-	projectMetadata.license = json->branch("license").get<std::string, std::string>("name");
+	// However, these other fields are not as important and as such we do not require them to be filled in.
 	projectMetadata.version = json->get<std::string, std::string>("pushed_at");
 	projectMetadata.defaultBranch = json->get<std::string, std::string>("default_branch");
+
+	// We may not be able to branch on the license field, so make sure it exists first.
+	if (json->exists<std::string>("license"))
+	{
+		projectMetadata.license = json->branch("license").get<std::string, std::string>("name");
+	}
+	else
+	{
+		projectMetadata.license = "";
+	}
 
 	delete ownerData;
 	return projectMetadata;
@@ -220,13 +229,13 @@ std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl, Gith
 	int parseable = 0;
 	int length = json->length();
 
-	// Loop through all the languages in the json variable, and retrieve the amount of bytes of code in that language.
+	// Loop through all the languages in the JSON variable, and retrieve the amount of bytes of code in that language.
 	for (int i = 0; i < length; i++)
 	{
 		total += json->getIndex<int>(i);
 	}
 	// Loop through the list of languages we can actually parse and retrieve the amount of parseable bytes.
-	for (std::string language : listOfParseableLanguages)
+	for (std::string language : PARSEABLELANGUAGES)
 	{
 		if (json->exists(language))
 		{

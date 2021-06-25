@@ -6,9 +6,7 @@ Utrecht University within the Software Project course.
 
 #include "RunCrawler.h"
 #include "GithubCrawler.h"
-#include "GithubInterface.h"
-#include "Utility.h"
-#include <sstream>
+#include "LoggerCrawler.h"
 
 #define THREAD_NAME "crawler"
 
