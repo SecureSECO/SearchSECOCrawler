@@ -6,9 +6,13 @@ Utrecht University within the Software Project course.
 
 #pragma once
 
+// Crawler includes.
 #include "IndividualErrorHandler.h"
 #include "Utility.h"
+
+// External includes.
 #include <map>
+
 
 /// <summary>
 /// Template class for error handling so we can for different enums handle the error differently.

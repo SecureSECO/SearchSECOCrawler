@@ -5,6 +5,8 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
+
+
 enum class githubAPIResponse
 {
 	OK,

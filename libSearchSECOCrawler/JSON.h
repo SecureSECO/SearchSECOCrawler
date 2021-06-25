@@ -5,9 +5,14 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include "nlohmann/json.hpp"
+
+// Crawler includes.
 #include "ErrorHandler.h"
+
+// External includes.
+#include "nlohmann/json.hpp"
 #include <optional>
+
 
 /// <summary>
 /// Adapter class for JSON formatting.

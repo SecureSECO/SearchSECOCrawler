@@ -5,7 +5,7 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include "loguru/loguru.hpp"
+
 
 enum class LogLevel
 {

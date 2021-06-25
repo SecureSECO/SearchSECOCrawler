@@ -5,9 +5,11 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include "ProjectMetadata.h"
+
+// Crawler includes.
 #include "CrawlData.h"
-#include <string>
+#include "ProjectMetadata.h"
+
 
 enum class CrawlableSource
 {

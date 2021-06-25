@@ -5,7 +5,10 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
+
+// External includes.
 #include <string>
+
 
 /// <summary>
 /// A struct having fields for all the data that we need from a GitHub repository.

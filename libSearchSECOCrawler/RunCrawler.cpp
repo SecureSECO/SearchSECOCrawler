@@ -4,11 +4,16 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-#include "RunCrawler.h"
+// Crawler includes
 #include "GithubCrawler.h"
 #include "LoggerCrawler.h"
+#include "RunCrawler.h"
+
+// External includes.
+#include "loguru/loguru.hpp"
 
 #define THREAD_NAME "crawler"
+
 
 CrawlableSource RunCrawler::makeCrawlableSource(std::string const &url)
 {

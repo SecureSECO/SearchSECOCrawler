@@ -5,11 +5,13 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
+
+// Crawler includes.
 #include "ErrorHandler.h"
 #include "JSON.h"
-#include <string>
 
 #define WAITTIME 15
+
 
 class GithubInterface
 {

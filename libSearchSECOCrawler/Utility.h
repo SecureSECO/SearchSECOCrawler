@@ -5,9 +5,14 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
+
+// Crawler includes.
 #include "ErrorList.h"
+
+// External includes.
 #include <string>
 #include <vector>
+
 
 class Utility
 {

@@ -5,8 +5,11 @@ Utrecht University within the Software Project course.
 */
 
 #pragma once
-#include <vector>
+
+// External includes.
 #include <string>
+#include <vector>
+
 
 /// <summary>
 /// Data which is returned when crawling. First value in the pair is the URL found,
