@@ -3,16 +3,20 @@ This program has been developed by students from the bachelor Computer Science a
 Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences) 
 */
-#include <iostream>
+
+// Crawler includes.
 #include "RunCrawler.h"
-#include <CrawlData.h>
+
+// External includes.
+#include <iostream>
 
 // Input token for debugging, remember to delete when done
 #define username "username"
 #define token "token"
 
+
 int main() 
 {
 	int start = 0;
-	CrawlData data = RunCrawler::crawlRepositories("github.com", start, username, token);
+	RunCrawler::crawlRepositories("github.com", start, username, token);
 }
