@@ -27,21 +27,21 @@ public:
 	/// </summary>
 	/// <param name="file">The file in which this function is called.</param>
 	/// <param name="line">The line from which this function is called.</param>
-	static void logDebug(std::string message, const char* file, unsigned int line);
+	static void logDebug(std::string message, const char *file, unsigned int line);
 
 	/// <summary>
 	/// Logs a message at Info-level verbosity.
 	/// </summary>
 	/// <param name="file">The file in which this function is called.</param>
 	/// <param name="line">The line from which this function is called.</param>
-	static void logInfo(std::string message, const char* file, unsigned int line);
+	static void logInfo(std::string message, const char *file, unsigned int line);
 
 	/// <summary>
 	/// Logs a Warning.
 	/// </summary>
 	/// <param name="file">The file in which this function is called.</param>
 	/// <param name="line">The line from which this function is called.</param>
-	static void logWarn(std::string message, const char* file, unsigned int line);
+	static void logWarn(std::string message, const char *file, unsigned int line);
 
 	/// <summary>
 	/// Logs a Fatal (Error) message. This does not terminate execution, that responsibility lies 
@@ -50,5 +50,5 @@ public:
 	/// <param name="file">The file in which this function is called.</param>
 	/// <param name="line">The line from which this function is called.</param>
 	/// <param name="code">The error code.</param>
-	static void logFatal(std::string message, const char* file, unsigned int line, int code);
+	static void logFatal(std::string message, const char *file, unsigned int line, int code);
 };
