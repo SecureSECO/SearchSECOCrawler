@@ -4,7 +4,7 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-// Crawler includes
+// Crawler includes.
 #include "GithubCrawler.h"
 #include "LoggerCrawler.h"
 #include "RunCrawler.h"
