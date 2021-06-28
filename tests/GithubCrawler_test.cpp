@@ -4,9 +4,14 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Test includes.
 #include "pch.h"
-#include "GithubInterfaceMock.cpp"
-#include <GithubCrawler.h>
+
+// Crawler includes.
+#include "ErrorHandler.h"
+#include "GithubCrawler.h"
+#include "GithubInterfaceMock.h"
+
 
 int finalVal()
 {
