@@ -17,7 +17,8 @@ Building the project this way has been confirmed to work on Windows 10.
 
 ##Stand-alone
 
-The standalone project that can be run can be found in the "Standalone" folder. However, as the data that is returned from crawling will not be displayed to the user,
+The standalone project that can be run can be found in the "SearchSECOCrawler" folder.
+However, as the data that is returned from crawling will not be displayed to the user,
 we advise to use this project as a library instead.
 
 ## Library
