@@ -7,7 +7,7 @@ These URLs are then processed by the Spider. Another important function of the C
 
 ## Dependencies
 
-* c++17 (uses std::optional)
+* c++17 (std::optional is used).
 * nlohmann.json from the nuget package manager needs to be installed.
 ## Building
 
