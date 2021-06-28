@@ -29,8 +29,8 @@ TEST(CrawlProjectMetadataTest, TestLiveEmptyProject)
 
 TEST(CrawlProjectMetadataTest, TestLiveNonEmptyProject)
 {
-	ProjectMetadata projectMetadata =
-		RunCrawler::findMetadata(projectWithCode, "crawlerintegrationtesting", "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");
+	ProjectMetadata projectMetadata = RunCrawler::findMetadata(projectWithCode, "crawlerintegrationtesting",
+															   "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");
 	EXPECT_EQ(projectMetadata.authorMail, "");
 	EXPECT_EQ(projectMetadata.authorName, "crawlerintegrationtesting");
 	EXPECT_EQ(projectMetadata.defaultBranch, "master");
@@ -51,22 +51,19 @@ TEST(CrawlRepositoriesTest, TestFindUrl)
 TEST(TestCrawlRepositories, TestNotImplemented)
 {
 	EXPECT_EQ(RunCrawler::crawlRepositories("NotImplementedCrawlableSite", 0, "crawlerintegrationtesting",
-											"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")
-				  .URLImportanceList.size(),
-			  0);
+											"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").URLImportanceList.size(), 0);
 }
 
 TEST(TestFindMetadata, TestNotImplemented)
 {
 	EXPECT_TRUE(RunCrawler::findMetadata("NotImplementedCrawlableSite", "crawlerintegrationtesting",
-										 "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")
-					.url.empty());
+										 "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").url.empty());
 }
 
 TEST(TestCrawlRepositories, TestBasicCrawling)
 {
-	CrawlData data =
-		RunCrawler::crawlRepositories("github", 0, "crawlerintegrationtesting", "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");
+	CrawlData data = RunCrawler::crawlRepositories("github", 0, "crawlerintegrationtesting",
+												   "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");
 	EXPECT_TRUE(data.URLImportanceList.size() <= 100);
 	std::map<std::string, bool> uniqueURLs;
 	for (int i = 0; i < data.URLImportanceList.size(); i++)
