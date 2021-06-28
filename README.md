@@ -17,9 +17,9 @@ Building the project this way has been confirmed to work on Windows 10.
 
 ##Stand-alone
 
-#### Visual-Studio
+### Visual-Studio
 Open the solution, set SearchSECOCrawler as your startup project, and build and run the project.
-#### Cmake
+### Cmake
 Use the Cmakelists.txt file in the SearchSECOCrawler folder to build the executable.
 
 ## Library
