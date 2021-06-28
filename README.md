@@ -17,9 +17,10 @@ Building the project this way has been confirmed to work on Windows 10.
 
 ##Stand-alone
 
-The standalone project that can be run can be found in the "SearchSECOCrawler" folder.
-However, as the data that is returned from crawling will not be displayed to the user,
-we advise to use this project as a library instead.
+#### Visual-Studio
+Open the solution, set SearchSECOCrawler as your startup project, and build and run the project.
+#### Cmake
+Use the Cmakelists.txt file in the SearchSECOCrawler folder to build the executable.
 
 ## Library
 
@@ -29,5 +30,3 @@ while the `findMetadata` function returns project metadata of a given project UR
 
 This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
-
-
