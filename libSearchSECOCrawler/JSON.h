@@ -23,8 +23,9 @@ class JSON
 private:
 	nlohmann::json*json;
 
-	std::optional<std::vector<nlohmann::json>> items; // An optional list of items.
+	// An optional list of items.
 	// Allows us to check with if(items) whether the variable is intialized.
+	std::optional<std::vector<nlohmann::json>> items; 
 
 	/// <summary>
 	/// A function that performs a simple get with a try catch around it.
