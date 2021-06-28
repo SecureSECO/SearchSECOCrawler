@@ -4,36 +4,29 @@ Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
+// Test includes.
 #include "pch.h"
-#include "GithubInterface.h"
+#include "GithubInterfaceMock.h"
 
-class GithubInterfaceMock : public GithubInterface
+
+JSON *GithubInterfaceMock::getRequest(std::string query)
 {
-public:
-	std::map<std::string, std::string> queryToJsonMap = std::map<std::string, std::string>();
-	std::string defaultJSON;
-	GithubInterfaceMock(std::string userAgent = "", std::string userPWD = "") : GithubInterface(userAgent, userPWD)
+	if (queryToJsonMap.find(query) == queryToJsonMap.end())
 	{
+		return JSON::parse(defaultJSON);
 	}
+	else
+	{
+		return JSON::parse(queryToJsonMap[query]);
+	}
+}
 
-	JSON *getRequest(std::string query) override
-	{
-		if (queryToJsonMap.find(query) == queryToJsonMap.end())
-		{
-			return JSON::parse(defaultJSON);
-		}
-		else
-		{
-			return JSON::parse(queryToJsonMap[query]);
-		}
-	}
+JSON *GithubInterfaceMock::getRequest(std::string query, GithubErrorThrowHandler *handler)
+{
+	return this->getRequest(query);
+}
 
-	JSON *getRequest(std::string query, GithubErrorThrowHandler *handler) override
-	{
-		return this->getRequest(query);
-	}
-	JSON *getRequest(std::string query, GithubErrorThrowHandler *handler, JSONErrorHandler *handler2) override
-	{
-		return this->getRequest(query);
-	}
-};
+JSON *GithubInterfaceMock::getRequest(std::string query, GithubErrorThrowHandler *handler, JSONErrorHandler *handler2)
+{
+	return this->getRequest(query);
+}
