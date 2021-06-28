@@ -47,7 +47,7 @@
     <ClCompile Include="..\tests\JSON_test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="SearchSECOCrawler.vcxproj">
+    <ProjectReference Include="libSearchSECOCrawler.vcxproj">
       <Project>{5cd94da9-b893-4439-8f37-55df86cd1399}</Project>
     </ProjectReference>
   </ItemGroup>
