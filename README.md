@@ -15,7 +15,7 @@ The project can be built by opening the solution file and building via Visual St
 Building the project this way has been confirmed to work on Windows 10.
 # Usage
 
-##Stand-alone
+## Stand-alone
 
 ### Visual-Studio
 Open the solution, set SearchSECOCrawler as your startup project, and build and run the project.
