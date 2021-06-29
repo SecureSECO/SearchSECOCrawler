@@ -53,3 +53,4 @@ This program has been developed by students from the bachelor Computer Science a
 ## Licenses for code from other projects
 * [Curl](https://curl.se/). The license for Curl can be found in [external/curl/COPYING](external/curl/COPYING) and is applicable to everything in the [external/curl](external/curl) folder, and any subfolders.
 * [Curlcpp](https://github.com/JosephP91/curlcpp). The license for curlcpp can be found in [external/curlcpp/LICENSE](external/curlcpp/LICENSE) and is applicable to everything in the [external/curlcpp](external/curlcpp) folder, and any subfolders.
+* [GoogleTest](https://github.com/google/googletest). The license for GoogleTest can be found in the GoogleTest [GitHub repository](https://github.com/google/googletest/blob/355d57d90d9744c41ac7c99f1e960778f1c63040/LICENSE), and is applicable to the [pch.h and pch.cpp files](tests/) in the tests directory.
