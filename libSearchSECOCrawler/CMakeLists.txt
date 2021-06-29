@@ -38,7 +38,6 @@ add_subdirectory(../external/curlcpp/src ./curlcpp)
 set(CRAWLER_HEADER_LIST
   CrawlData.h
   GithubCrawler.h
-  Networking.h
   ProjectMetadata.h
   RunCrawler.h
   JSON.h
@@ -53,7 +52,6 @@ set(CRAWLER_HEADER_LIST
 
 add_library(crawler
   GithubCrawler.cpp
-  Networking.cpp
   RunCrawler.cpp
   JSON.cpp
   Utility.cpp
