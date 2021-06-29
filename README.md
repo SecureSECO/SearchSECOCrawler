@@ -43,7 +43,11 @@ while the `findMetadata` function returns project metadata of a given project UR
 ## Stand-alone
 Set the SearchSECOCrawler as startup project and run that project. Do note that this project has no real purpose outside of testing whether the project actually works.
 
-# Copyright
+# License
 
 This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
 © Copyright Utrecht University (Department of Information and Computing Sciences)
+
+## Licenses for code from other projects
+* [Curl](https://curl.se/). The license for Curl can be found in `external/curl/COPYING` and is applicable to everything in the `external/curl` folder.
+* [Curlcpp](https://github.com/JosephP91/curlcpp). The license for curlcpp can be found in `external/curlcpp/LICENSE` and is applicable to everything in the `external/curlcpp` folder.
