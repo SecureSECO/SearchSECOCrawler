@@ -55,7 +55,7 @@ CrawlData RunCrawler::crawlRepositories(std::string const &url, int start, std::
 	}
 	default:
 	{
-		LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+		LoggerCrawler::logWarn("Returning empty", __FILE__, __LINE__);
 		errno = 1;
 		return data;
 	}
@@ -68,12 +68,12 @@ CrawlData RunCrawler::crawlGithub(CrawlData data, int start, std::string usernam
 	{
 		GithubCrawler githubCrawler(username, token);
 		CrawlData foundData = githubCrawler.crawlRepositories(start);
-		LoggerCrawler::logInfo("Returning successful", __FILE__, __LINE__);
+		LoggerCrawler::logDebug("Returning successful", __FILE__, __LINE__);
 		return foundData;
 	}
 	catch (int e)
 	{
-		LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+		LoggerCrawler::logWarn("Returning empty", __FILE__, __LINE__);
 		errno = e;
 		return data;
 	}
@@ -89,7 +89,7 @@ ProjectMetadata RunCrawler::findMetadata(std::string const &url, std::string use
 		return ProjectMetadata();
 	}
 
-	LoggerCrawler::logInfo("Finding metadata for the repository at \"" + url + "\"", __FILE__, __LINE__);
+	LoggerCrawler::logInfo("Getting metadata", __FILE__, __LINE__);
 
 	switch (makeCrawlableSource(url))
 	{
@@ -117,7 +117,7 @@ ProjectMetadata RunCrawler::findMetadataFromGithub(std::string const &url, std::
 	}
 	catch (int e)
 	{
-		LoggerCrawler::logInfo("Returning empty", __FILE__, __LINE__);
+		LoggerCrawler::logWarn("Returning empty", __FILE__, __LINE__);
 		errno = e;
 		return ProjectMetadata();
 	}
