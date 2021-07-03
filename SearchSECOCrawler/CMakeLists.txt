@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.13)
 set(CMAKE_CXX_STANDARD 17)
 
-project(crawler)
+project(SearchSECOCrawler)
 
 add_subdirectory(../libSearchSECOCrawler ./Crawler)
 
@@ -14,8 +14,8 @@ if (UNIX)
 endif(UNIX)
 
 set(CMAKE_CXX_STANDARD 20)
-set(EXE_NAME crawler_standalone)
+set(EXE_NAME SearchSECOCrawlerStandalone)
 add_executable(${EXE_NAME} main.cpp)
-target_link_libraries(${EXE_NAME} crawler)
+target_link_libraries(${EXE_NAME} libSearchSECOCrawler)
 
 target_include_directories(${EXE_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ../libSearchSECOCrawler)
