@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.13)
 set(CMAKE_CXX_STANDARD 17)
 
-message("Building the crawler...")
+message("Building libSearchSECOCrawler...")
 if(NOT DEFINED LOGURU_INCLUDED)
    set(LOGURU_FILES
    loguru/loguru.hpp
@@ -50,7 +50,7 @@ set(CRAWLER_HEADER_LIST
   LoggerCrawler.h
 )
 
-add_library(crawler
+add_library(libSearchSECOCrawler
   GithubCrawler.cpp
   RunCrawler.cpp
   JSON.cpp
@@ -66,9 +66,9 @@ add_library(crawler
   ${LOGURU_FILES}
 )
 
-target_link_libraries(crawler curlcpp nlohmann_json::nlohmann_json)
-target_include_directories(crawler PUBLIC "${PROJECT_BINARY_DIR}" ../external/curlcpp/include)
+target_link_libraries(libSearchSECOCrawler curlcpp nlohmann_json::nlohmann_json)
+target_include_directories(libSearchSECOCrawler PUBLIC "${PROJECT_BINARY_DIR}" ../external/curlcpp/include)
 
 if(CMAKE_DL_LIBS)
-    target_link_libraries(crawler ${CMAKE_DL_LIBS})
+    target_link_libraries(libSearchSECOCrawler ${CMAKE_DL_LIBS})
 endif()

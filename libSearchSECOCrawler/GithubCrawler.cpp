@@ -20,9 +20,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
 	CrawlData crawlData = getCrawlData(json, handler, currentId);
 
-	LoggerCrawler::logInfo("100% done, finished crawling one page (" + std::to_string(MAXRESULTS) +
-							   " repositories)",
-						   __FILE__, __LINE__);
+	LoggerCrawler::logInfo("100% done", __FILE__, __LINE__);
 	crawlData.finalProjectId = currentId;
 	delete handler;
 	return crawlData;
@@ -168,7 +166,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	// Construct projectMetadata using the owner and repo and the JSON variable we just found.
 	ProjectMetadata projectMetadata = constructProjectMetadata(json, getOwnerAndRepo(url));
 
-	LoggerCrawler::logInfo("Successfully found all relevant metadata, returning.", __FILE__, __LINE__);
+	LoggerCrawler::logDebug("Successfully found all relevant metadata, returning.", __FILE__, __LINE__);
 	delete json;
 	delete handler;
 	delete githubHandler;
