@@ -89,7 +89,7 @@ ProjectMetadata RunCrawler::findMetadata(std::string const &url, std::string use
 		return ProjectMetadata();
 	}
 
-	LoggerCrawler::logInfo("Getting metadata", __FILE__, __LINE__);
+	LoggerCrawler::logDebug("Getting metadata", __FILE__, __LINE__);
 
 	switch (makeCrawlableSource(url))
 	{
