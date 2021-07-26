@@ -28,6 +28,8 @@ githubAPIResponse GithubClientErrorConverter::convertResponse(long code, std::st
 			return githubAPIResponse::forbidden;
 		case 404: // Url not found.
 			return githubAPIResponse::urlNotFound;
+		case 451: // Access blocked.
+			return githubAPIResponse::forbidden;
 		case 502: // Bad gateway (can happen when executing too many queries at once).
 			return githubAPIResponse::badGateway;
 		default: // We don't know what the error is.
