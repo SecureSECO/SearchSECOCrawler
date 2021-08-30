@@ -145,6 +145,24 @@ public:
 	}
 
 	/// <summary>
+	/// Gets the value sitting at position "index". Constructs a new list of items if none was present.
+	/// NOTE: order of items does not necessarily equal the order of input!
+	/// </summary>
+	/// <typeparam name="O">The type of the output.</typeparam>
+	/// <param name="index">The index.</param>
+	/// <returns>The value at the position of the index.</returns>
+	template <class O> std::vector<std::pair<std::string, O>> getItems()
+	{
+		std::vector<std::pair<std::string, O>> vec;
+		nlohmann::json jj = *json;
+		for (nlohmann::json::iterator it = jj.begin(); it != jj.end(); ++it)
+		{
+			vec.push_back(std::make_pair(it.key(), it.value()));
+		}
+		return vec;
+	}
+
+	/// <summary>
 	/// Can get a value from a JSON structure. In case the field is empty returns a default value.
 	/// </summary>
 	/// <param name="key">The key on which needs to be indexed.</param>

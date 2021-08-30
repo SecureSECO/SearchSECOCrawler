@@ -11,6 +11,7 @@ Utrecht University within the Software Project course.
 #include "JSON.h"
 
 #define WAITTIME 15
+#define INCORRECT_TOKEN_DELAY 526000
 
 
 class GithubInterface

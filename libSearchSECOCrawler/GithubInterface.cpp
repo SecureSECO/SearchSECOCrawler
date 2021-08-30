@@ -123,11 +123,13 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 		{
 			JSON *json = JSON::parse(ss.str(), jsonHandler);
 			msg = json->get<std::string, std::string>("message");
-
-			if (msg.find("API rate limit exceeded") != std::string::npos)
-			{
-			}
 			delete json;
+		}
+		else if (responseCode == 401)
+		{
+			LoggerCrawler::logWarn("Incorrect token, please update the token. Now waiting to stop.", __FILE__,
+								   __LINE__);
+			std::this_thread::sleep_for(std::chrono::minutes(INCORRECT_TOKEN_DELAY));
 		}
 		retry++;
 	} while (responseCode == 403 && type.find("application/json") != std::string::npos &&
