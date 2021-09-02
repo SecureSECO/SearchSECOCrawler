@@ -47,6 +47,7 @@ private:
 	/// Gets the fraction of parseable lines of code to the total number of lines of code.
 	/// </summary>
 	/// <param name="repoUrl">The project URL (with api. in front).</param>
+	/// <param name="languages">The list of encountered languages.</param>
 	/// <returns>The total number of parseable lines divided by the total number of lines,
 	/// and 0 if the total is 0.</returns>
 	std::pair<float, int> getParseableRatio(std::string repoUrl, std::map<std::string, int> &languages,

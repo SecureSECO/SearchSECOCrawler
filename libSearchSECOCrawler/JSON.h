@@ -145,12 +145,10 @@ public:
 	}
 
 	/// <summary>
-	/// Gets the value sitting at position "index". Constructs a new list of items if none was present.
-	/// NOTE: order of items does not necessarily equal the order of input!
+	/// Gets all the items in the json.
 	/// </summary>
 	/// <typeparam name="O">The type of the output.</typeparam>
-	/// <param name="index">The index.</param>
-	/// <returns>The value at the position of the index.</returns>
+	/// <returns>A vector with the names and values.</returns>
 	template <class O> std::vector<std::pair<std::string, O>> getItems()
 	{
 		std::vector<std::pair<std::string, O>> vec;
