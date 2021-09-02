@@ -22,6 +22,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 
 	LoggerCrawler::logInfo("100% done", __FILE__, __LINE__);
 	crawlData.finalProjectId = currentId;
+	LoggerCrawler::logDebug("Finished crawling at index " + std::to_string(currentId), __FILE__, __LINE__);
 	delete handler;
 	return crawlData;
 }
@@ -62,7 +63,7 @@ CrawlData GithubCrawler::getCrawlData(std::unique_ptr<JSON> &json, GithubErrorTh
 void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowHandler *handler)
 {
 	std::string repoUrl = branch.get<std::string, std::string>("url", true);
-	std::pair<float, int> parseable = getParseableRatio(repoUrl, handler);
+	std::pair<float, int> parseable = getParseableRatio(repoUrl, crawlData.languages, handler);
 
 	// Only add URLs which contain data that we can parse.
 	if (std::get<1>(parseable) != 0)
@@ -222,13 +223,20 @@ int GithubCrawler::getStars(std::string repoUrl, GithubErrorThrowHandler *handle
 	return stars;
 }
 
-std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl, GithubErrorThrowHandler *handler)
+std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl, std::map<std::string, int> &languages, GithubErrorThrowHandler *handler)
 {
 	std::string languagesUrl = repoUrl + "/languages";
 	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl, handler));
 	int total = 0;
 	int parseable = 0;
 	int length = json->length();
+
+	std::vector<std::pair<std::string, int>> items = json->getItems<int>();
+
+	for (std::pair<std::string, int> item : items)
+	{
+		languages[item.first] += item.second;
+	}
 
 	// Loop through all the languages in the JSON variable, and retrieve the amount of bytes of code in that language.
 	for (int i = 0; i < length; i++)
