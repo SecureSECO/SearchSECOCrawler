@@ -105,10 +105,36 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 
 	addEasyInformation(query, easy, userAgent, userPWD);
 
-	executeCurlQueryWithTimeout(easy);
-	LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
+	long responseCode;
+	std::string type;
+	std::string msg;
+	int retry = 0;
 
-	long responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
+	do
+	{
+		std::this_thread::sleep_for(std::chrono::minutes(5*retry));
+		executeCurlQueryWithTimeout(easy);
+		LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
+
+		responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
+		type = easy.get_info<CURLINFO_CONTENT_TYPE>().get();
+
+		if (responseCode == 403 && type.find("application/json") != std::string::npos)
+		{
+			JSON *json = JSON::parse(ss.str(), jsonHandler);
+			msg = json->get<std::string, std::string>("message");
+			delete json;
+		}
+		else if (responseCode == 401)
+		{
+			LoggerCrawler::logWarn("Incorrect token, please update the token. Now waiting to stop.", __FILE__,
+								   __LINE__);
+			std::this_thread::sleep_for(std::chrono::minutes(INCORRECT_TOKEN_DELAY));
+		}
+		retry++;
+	} while (responseCode == 403 && type.find("application/json") != std::string::npos &&
+			 msg.find("API rate limit exceeded") != std::string::npos && retry <= 5);
+	
 	if (responseCode != 200)
 	{
 		handleGithubError(easy, ss, handler, jsonHandler);

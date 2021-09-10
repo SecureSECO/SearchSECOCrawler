@@ -11,6 +11,8 @@ Utrecht University within the Software Project course.
 #include "JSON.h"
 
 #define WAITTIME 15
+// If the token is incorrect we wait a little bit more than a year.
+#define INCORRECT_TOKEN_DELAY 526000
 
 
 class GithubInterface

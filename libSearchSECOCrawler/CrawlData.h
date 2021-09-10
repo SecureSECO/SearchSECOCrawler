@@ -9,6 +9,7 @@ Utrecht University within the Software Project course.
 // External includes.
 #include <string>
 #include <vector>
+#include <map>
 
 
 /// <summary>
@@ -18,5 +19,6 @@ Utrecht University within the Software Project course.
 struct CrawlData
 {
 	std::vector<std::pair<std::string, int>> URLImportanceList;
+	std::map<std::string, int> languages;
 	int finalProjectId;
 };
