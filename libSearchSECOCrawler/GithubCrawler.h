@@ -84,6 +84,13 @@ private:
 	int getImportanceMeasure(int stars, std::pair<float, int> percentageAndBytes);
 
 	/// <summary>
+	/// Gets the parse timeout of a given project.
+	/// </summary>
+	/// <param name="percentageAndBytes">the percentage and amount of parseable bytes.</param>
+	/// <returns>An int representing the parse timeout.</returns>
+	long long getTimeout(std::pair<float, int> percentageAndBytes);
+
+	/// <summary>
 	/// Logs the progress of a process.
 	/// </summary>
 	/// <param name="step">The current step the process is at.</param>

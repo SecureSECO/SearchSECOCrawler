@@ -70,7 +70,7 @@ void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowH
 	{
 		int stars = getStars(repoUrl, handler);
 		std::string url = branch.get<std::string, std::string>("html_url", true);
-		crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
+		crawlData.URLImportanceList.push_back(std::make_tuple(url, getImportanceMeasure(stars, parseable), getTimeout(parseable)));
 	}
 }
 
@@ -214,6 +214,12 @@ int GithubCrawler::getImportanceMeasure(int stars, std::pair<float, int> percent
 	float percentage = std::get<0>(percentageAndBytes);
 	int bytes = std::get<1>(percentageAndBytes);
 	return 20000000 * percentage * std::log(stars + 1) * std::log(std::log(bytes + 1) + 1);
+}
+
+long long GithubCrawler::getTimeout(std::pair<float, int> percentageAndBytes)
+{
+	// Default timeout of 120000 ms, two minutes.
+	return 120000 + percentageAndBytes.second / 5;
 }
 
 int GithubCrawler::getStars(std::string repoUrl, GithubErrorThrowHandler *handler)

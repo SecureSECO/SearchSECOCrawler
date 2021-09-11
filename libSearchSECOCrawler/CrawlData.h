@@ -18,7 +18,7 @@ Utrecht University within the Software Project course.
 /// </summary>
 struct CrawlData
 {
-	std::vector<std::pair<std::string, int>> URLImportanceList;
+	std::vector<std::tuple<std::string, int, long long>> URLImportanceList;
 	std::map<std::string, int> languages;
 	int finalProjectId;
 };
