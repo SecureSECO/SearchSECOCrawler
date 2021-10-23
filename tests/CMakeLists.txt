@@ -25,9 +25,9 @@ endif()
 set(CMAKE_CXX_STANDARD 20)
 set(TEST_NAME crawler_tests)
 add_executable(${TEST_NAME} GithubCrawler_test.cpp JSON_test.cpp IndividualErrorHandler_test.cpp GithubInterfaceMock.cpp)
-target_link_libraries(${TEST_NAME} gtest_main crawler)
-
 target_include_directories(${TEST_NAME} PUBLIC "${PROJECT_BINARY_DIR}" ../libSearchSECOCrawler)
+target_link_libraries(${TEST_NAME} gtest_main libSearchSECOCrawler)
+
 
 enable_testing()
 include(GoogleTest)
