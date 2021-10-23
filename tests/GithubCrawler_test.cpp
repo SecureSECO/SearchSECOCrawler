@@ -21,6 +21,13 @@ int finalVal()
 	return 20000000 * percentage * std::log(stars + 1) * std::log(std::log(bytes + 1) + 1);
 }
 
+int finalTimeout()
+{
+	int bytes = (int)(1.0 + 4.0 + 8.0 + 16.0);
+
+	return 120000 + bytes / 5;
+}
+
 TEST(CrawlRepositoriesTest, TestBasic)
 {
 	std::string jsonString = "[";
@@ -49,11 +56,14 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	GithubCrawler githubCrawler(mock);
 	CrawlData data = githubCrawler.crawlRepositories(0);
 	int val = finalVal();
+	int timeout = finalTimeout();
 	for (int i = 0; i < 100; i++)
 	{
-		EXPECT_EQ(data.URLImportanceList[i].first, std::to_string(i));
+		EXPECT_EQ(std::get<0>(data.URLImportanceList[i]), std::to_string(i));
 		
-		EXPECT_EQ(data.URLImportanceList[i].second, val);
+		EXPECT_EQ(std::get<1>(data.URLImportanceList[i]), val);
+
+		EXPECT_EQ(std::get<2>(data.URLImportanceList[i]), timeout);
 	}
 }
 

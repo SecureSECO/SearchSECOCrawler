@@ -44,7 +44,7 @@ TEST(CrawlRepositoriesTest, TestFindUrl)
 {
 	GithubCrawler githubCrawler("crawlerintegrationtesting", "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");
 	CrawlData projectMetadata = githubCrawler.crawlRepositories(372484242);
-	EXPECT_EQ(projectMetadata.URLImportanceList[0].first,
+	EXPECT_EQ(std::get<0>(projectMetadata.URLImportanceList[0]),
 			  "https://github.com/crawlerintegrationtesting/notemptyproject");
 }
 
@@ -68,7 +68,7 @@ TEST(TestCrawlRepositories, TestBasicCrawling)
 	std::map<std::string, bool> uniqueURLs;
 	for (int i = 0; i < data.URLImportanceList.size(); i++)
 	{
-		std::string url = data.URLImportanceList[i].first;
+		std::string url = std::get<0>(data.URLImportanceList[i]);
 		EXPECT_TRUE(uniqueURLs.count(url) == 0);
 		uniqueURLs[url] = true;
 	}

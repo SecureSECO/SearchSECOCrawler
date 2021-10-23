@@ -8,6 +8,10 @@ Utrecht University within the Software Project course.
 #include "GithubCrawler.h"
 #include "LoggerCrawler.h"
 
+#include <cmath>
+#include <memory>
+#include <algorithm>
+
 
 CrawlData GithubCrawler::crawlRepositories(int start)
 {
