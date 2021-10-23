@@ -86,6 +86,7 @@ ProjectMetadata RunCrawler::findMetadata(std::string const &url, std::string use
 	if (username == "" || token == "")
 	{
 		LoggerCrawler::logWarn("No valid github authentication supplied", __FILE__, __LINE__);
+		errno = 2;
 		return ProjectMetadata();
 	}
 
