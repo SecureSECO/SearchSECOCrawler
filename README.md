@@ -1,4 +1,5 @@
 # Crawler
+![Testing](https://github.com/SecureSECO/SearchSECOCrawler/actions/workflows/testing.yml/badge.svg)
 
 The Crawler is responsible for finding projects to process, scouring different code sources and returning found URLs. 
 These URLs are then processed by the Spider. Another important function of the Crawler is to retrieve project-specific metadata, like the name and email of the owner of the project.
