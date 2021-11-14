@@ -21,11 +21,13 @@ int finalVal()
 	return 20000000 * percentage * std::log(stars + 1) * std::log(std::log(bytes + 1) + 1);
 }
 
-int finalTimeout()
+int finalTimeout(int i)
 {
-	int bytes = (int)(1.0 + 4.0 + 8.0 + 16.0);
+	int bytes = (i+1)*(1.0 + 4.0 + 8.0*20 + 16.0);
+	int stars = 50;
+	double maxTimeout = 1800000 + 800000 * sqrt(stars);
 
-	return 120000 + bytes / 5;
+	return std::min((double)(180000 + 5000 * sqrt(bytes)), maxTimeout);
 }
 
 TEST(CrawlRepositoriesTest, TestBasic)
@@ -56,14 +58,13 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	GithubCrawler githubCrawler(mock);
 	CrawlData data = githubCrawler.crawlRepositories(0);
 	int val = finalVal();
-	int timeout = finalTimeout();
 	for (int i = 0; i < 100; i++)
 	{
 		EXPECT_EQ(std::get<0>(data.URLImportanceList[i]), std::to_string(i));
 		
 		EXPECT_EQ(std::get<1>(data.URLImportanceList[i]), val);
 
-		EXPECT_EQ(std::get<2>(data.URLImportanceList[i]), timeout);
+		EXPECT_EQ(std::get<2>(data.URLImportanceList[i]), finalTimeout(i));
 	}
 }
 
