@@ -11,6 +11,7 @@ Utrecht University within the Software Project course.
 #include <cmath>
 #include <memory>
 #include <algorithm>
+#include <set>
 
 
 CrawlData GithubCrawler::crawlRepositories(int start)
@@ -74,7 +75,8 @@ void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowH
 	{
 		int stars = getStars(repoUrl, handler);
 		std::string url = branch.get<std::string, std::string>("html_url", true);
-		crawlData.URLImportanceList.push_back(std::make_tuple(url, getImportanceMeasure(stars, parseable), getTimeout(parseable)));
+		crawlData.URLImportanceList.push_back(
+			std::make_tuple(url, getImportanceMeasure(stars, parseable), getTimeout(crawlData.languages, stars)));
 	}
 }
 
@@ -220,10 +222,27 @@ int GithubCrawler::getImportanceMeasure(int stars, std::pair<float, int> percent
 	return 20000000 * percentage * std::log(stars + 1) * std::log(std::log(bytes + 1) + 1);
 }
 
-long long GithubCrawler::getTimeout(std::pair<float, int> percentageAndBytes)
+long long GithubCrawler::getTimeout(std::map<std::string, int> languages, int stars)
 {
-	// Default timeout of 120000 ms, two minutes.
-	return 120000 + percentageAndBytes.second / 5;
+	float totalBytes = 0;
+	std::map<std::string, float> languageRatios = LANGUAGETIMEOUTRATIOS;
+	std::set<std::string> parseableLanguages = PARSEABLELANGUAGES;
+	for (auto const &language : languages)
+	{
+		if (languageRatios.count(language.first) == 1)
+		{
+			totalBytes += language.second * languageRatios[language.first];
+		}
+		else if (parseableLanguages.count(language.first) == 1)
+		{
+			totalBytes += language.second;
+		}
+	}
+	// Max timeout is 30 min for 0 stars, 3 days for 100k stars
+	float maxTimeout = 1800000 + 800000 * sqrt(stars);
+
+	// Minimal timeout of 180000 ms, three minutes.
+	return std::min(180000 + 5000 * sqrt(totalBytes), maxTimeout);
 }
 
 int GithubCrawler::getStars(std::string repoUrl, GithubErrorThrowHandler *handler)
