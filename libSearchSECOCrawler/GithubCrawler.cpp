@@ -239,10 +239,10 @@ long long GithubCrawler::getTimeout(std::map<std::string, int> languages, int st
 		}
 	}
 	// Max timeout is 30 min for 0 stars, 3 days for 100k stars
-	float maxTimeout = 1800000 + 800000 * sqrt(stars);
+	double maxTimeout = 1800000 + 800000 * sqrt(stars);
 
 	// Minimal timeout of 180000 ms, three minutes.
-	return std::min(180000 + 5000 * sqrt(totalBytes), maxTimeout);
+	return std::min((double)(180000 + 5000 * sqrt(totalBytes)), maxTimeout);
 }
 
 int GithubCrawler::getStars(std::string repoUrl, GithubErrorThrowHandler *handler)
