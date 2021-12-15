@@ -22,6 +22,7 @@ Utrecht University within the Software Project course.
 /// <param name="easy">The curl object.</param>
 void executeCurlQueryWithTimeout(curl::curl_easy &easy)
 {
+	errno = 0;
 	// Put the curl query in an async task to allow for a timeout.
 	std::future<void> future = std::async(std::launch::async, [&easy]() {
 		try
