@@ -23,7 +23,12 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 
 	// Create an unique_ptr from a GitHub request asking for a list of repositories, and use that to get the CrawlData.
 	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
-	CrawlData crawlData = getCrawlData(json, handler, currentId);
+	CrawlData crawlData;
+	if (errno != 0)
+	{
+		return crawlData;
+	}
+	crawlData = getCrawlData(json, handler, currentId);
 
 	LoggerCrawler::logInfo("100% done", __FILE__, __LINE__);
 	crawlData.finalProjectId = currentId;
@@ -69,11 +74,19 @@ void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowH
 {
 	std::string repoUrl = branch.get<std::string, std::string>("url", true);
 	std::pair<float, int> parseable = getParseableRatio(repoUrl, crawlData.languages, handler);
+	if (errno != 0)
+	{
+		return;
+	}
 
 	// Only add URLs which contain data that we can parse.
 	if (std::get<1>(parseable) != 0)
 	{
 		int stars = getStars(repoUrl, handler);
+		if (errno != 0)
+		{
+			return;
+		}
 		std::string url = branch.get<std::string, std::string>("html_url", true);
 		crawlData.URLImportanceList.push_back(
 			std::make_tuple(url, getImportanceMeasure(stars, parseable), getTimeout(crawlData.languages, stars)));
@@ -170,6 +183,10 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 			throw 1;
 		}
 	}
+	if (errno != 0)
+	{
+		return ProjectMetadata();
+	}
 	// Construct projectMetadata using the owner and repo and the JSON variable we just found.
 	ProjectMetadata projectMetadata = constructProjectMetadata(json, getOwnerAndRepo(url));
 
@@ -185,6 +202,11 @@ ProjectMetadata GithubCrawler::constructProjectMetadata(JSON *json, std::tuple<s
 	JSON branch = json->branch("owner");
 	JSON *ownerData = githubInterface->getRequest(branch.get<std::string, std::string>("url"));
 	ProjectMetadata projectMetadata;
+
+	if (errno != 0)
+	{
+		return projectMetadata;
+	}
 
 	LoggerCrawler::logDebug("Getting information about the owner...", __FILE__, __LINE__);
 	std::string email = ownerData->get<std::string, std::string>("email");
@@ -248,6 +270,10 @@ long long GithubCrawler::getTimeout(std::map<std::string, int> languages, int st
 int GithubCrawler::getStars(std::string repoUrl, GithubErrorThrowHandler *handler)
 {
 	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl, handler));
+	if (errno != 0)
+	{
+		return -1;
+	}
 	int stars = json->get<std::string, int>("stargazers_count");
 	return stars;
 }
@@ -256,6 +282,10 @@ std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl, std:
 {
 	std::string languagesUrl = repoUrl + "/languages";
 	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl, handler));
+	if (errno != 0)
+	{
+		return std::pair(0.0, 0);
+	}
 	int total = 0;
 	int parseable = 0;
 	int length = json->length();

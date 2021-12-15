@@ -33,7 +33,8 @@ void executeCurlQueryWithTimeout(curl::curl_easy &easy)
 		{
 			LoggerCrawler::logWarn("CURL ran into a problem", __FILE__, __LINE__);
 			error.print_traceback();
-			throw 0;
+			errno = ENETRESET;
+			return;
 		}
 	});
 	std::future_status status;
@@ -49,7 +50,8 @@ void executeCurlQueryWithTimeout(curl::curl_easy &easy)
 	if (status != std::future_status::ready)
 	{
 		LoggerCrawler::logWarn("CURL ran into a timeout", __FILE__, __LINE__);
-		throw 0;
+		errno = ETIMEDOUT;
+		return;
 	}
 }
 
@@ -114,6 +116,12 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 	{
 		std::this_thread::sleep_for(std::chrono::minutes(5*retry));
 		executeCurlQueryWithTimeout(easy);
+
+		if (errno != 0)
+		{
+			return nullptr;
+		}
+
 		LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
 
 		responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
