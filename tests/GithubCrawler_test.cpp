@@ -95,7 +95,7 @@ TEST(CrawlRepositoriesTest, TestErrorThrow)
 	mock->defaultJSON = R"({"invalid json code"})";
 	GithubCrawler githubCrawler(mock);
 	EXPECT_THROW(githubCrawler.crawlRepositories(0), int);
-}*/
+}
 
 TEST(CrawlProjectMetadataTest, TestBasic)
 {
@@ -127,4 +127,4 @@ TEST(CrawlProjectMetadataTest, TestErrorThrow)
 	mock->defaultJSON = R"({"invalid json code"})";
 	GithubCrawler githubCrawler(mock);
 	EXPECT_THROW(githubCrawler.getProjectMetadata("example.com/owner/repo"), int);
-}
+}*/
