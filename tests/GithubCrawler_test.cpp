@@ -30,7 +30,7 @@ int finalTimeout(int i)
 	return std::min((double)(180000 + 5000 * sqrt(bytes)), maxTimeout);
 }
 
-TEST(CrawlRepositoriesTest, TestBasic)
+/*TEST(CrawlRepositoriesTest, TestBasic)
 {
 	std::string jsonString = "[";
 	for (int i = 0; i < 100; i++)
@@ -95,7 +95,7 @@ TEST(CrawlRepositoriesTest, TestErrorThrow)
 	mock->defaultJSON = R"({"invalid json code"})";
 	GithubCrawler githubCrawler(mock);
 	EXPECT_THROW(githubCrawler.crawlRepositories(0), int);
-}
+}*/
 
 TEST(CrawlProjectMetadataTest, TestBasic)
 {
