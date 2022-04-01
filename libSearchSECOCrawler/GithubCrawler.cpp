@@ -185,6 +185,7 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 	}
 	if (errno != 0)
 	{
+		LoggerCrawler::logDebug("Unable to retrieve all relevant metadata, returning.", __FILE__, __LINE__);
 		return ProjectMetadata();
 	}
 	// Construct projectMetadata using the owner and repo and the JSON variable we just found.

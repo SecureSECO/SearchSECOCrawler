@@ -43,7 +43,7 @@ void executeCurlQueryWithTimeout(curl::curl_easy &easy)
 	// If the status is 'deferred', then our async task has not yet started.
 	do
 	{
-		status = future.wait_for(std::chrono::seconds(WAITTIME));
+		status = future.wait_for(std::chrono::minutes(WAITTIME));
 	} while (status == std::future_status::deferred);
 
 	// If the status is not ready (and not deferred either as we have already started the curl query),

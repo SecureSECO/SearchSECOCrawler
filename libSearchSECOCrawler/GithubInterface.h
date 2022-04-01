@@ -10,7 +10,7 @@ Utrecht University within the Software Project course.
 #include "ErrorHandler.h"
 #include "JSON.h"
 
-#define WAITTIME 15
+#define WAITTIME 5
 // If the token is incorrect we wait a little bit more than a year.
 #define INCORRECT_TOKEN_DELAY 526000
 
