@@ -51,7 +51,7 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	std::string projectString = R"({"stargazers_count": 50})";
 	GithubInterfaceMock *mock = new GithubInterfaceMock();
 	mock->queryToJsonMap = {
-		{"https://api.github.com/search/repositories?q=stars:>1&sort=stars&per_page=10&page=0", jsonString},
+		{"https://api.github.com/search/repositories?q=stars:>1&sort=stars&page=0", jsonString},
 		{"fake_url", projectString},
 	};
 	mock->defaultJSON = languagesString;
@@ -78,7 +78,7 @@ TEST(CrawlRepositoriesTest, TestEnd)
 	std::string projectString = R"({"stargazers_count": 0})";
 	std::string languagesString = R"({"C": 100000})";
 	mock->queryToJsonMap = {
-		{"https://api.github.com/search/repositories?q=stars:>1&sort=stars&per_page=10&page=0", jsonString},
+		{"https://api.github.com/search/repositories?q=stars:>1&sort=stars&page=0", jsonString},
 		{"fake_url", projectString},
 	};
 	mock->defaultJSON = languagesString;
