@@ -21,7 +21,7 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 	LoggerCrawler::logDebug("Starting crawling at page " + strStart, __FILE__, __LINE__);
 
 	// Create an unique_ptr from a GitHub request asking for a list of repositories, and use that to get the CrawlData.
-	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/search/repositories?q=stars:>1&sort=stars&per_page=10&page=" + strStart));
+	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/search/repositories?q=stars:>1&sort=stars&page=" + strStart));
 	CrawlData crawlData;
 	if (errno != 0)
 	{

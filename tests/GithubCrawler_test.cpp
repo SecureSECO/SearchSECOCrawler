@@ -33,11 +33,11 @@ int finalTimeout(int i)
 TEST(CrawlRepositoriesTest, TestBasic)
 {
 	std::string jsonString = "{ \"items\": [";
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		std::string base = "{\"html_url\": \"" + std::to_string(i) + "\", \"id\": 25" + ", \"url\": \"fake_url\"}";
 
-		if (i == 9)
+		if (i == 29)
 		{
 			jsonString.append(base);
 		}
@@ -58,7 +58,7 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	GithubCrawler githubCrawler(mock);
 	CrawlData data = githubCrawler.crawlRepositories(0);
 	int val = finalVal();
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		EXPECT_EQ(std::get<0>(data.URLImportanceList[i]), std::to_string(i));
 		
