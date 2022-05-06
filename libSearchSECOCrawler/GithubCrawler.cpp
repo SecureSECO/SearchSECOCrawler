@@ -18,37 +18,36 @@ CrawlData GithubCrawler::crawlRepositories(int start)
 {
 	auto strStart = std::to_string(start);
 	GithubErrorThrowHandler *handler = getCorrectGithubHandler();
-	LoggerCrawler::logDebug("Starting crawling at index " + strStart, __FILE__, __LINE__);
-	int currentId;
+	LoggerCrawler::logDebug("Starting crawling at page " + strStart, __FILE__, __LINE__);
 
 	// Create an unique_ptr from a GitHub request asking for a list of repositories, and use that to get the CrawlData.
-	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
+	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/search/repositories?q=stars:>1&sort=stars&page=" + strStart));
 	CrawlData crawlData;
 	if (errno != 0)
 	{
 		return crawlData;
 	}
-	crawlData = getCrawlData(json, handler, currentId);
+	crawlData = getCrawlData(json, handler);
 
 	LoggerCrawler::logInfo("100% done", __FILE__, __LINE__);
-	crawlData.finalProjectId = currentId;
-	LoggerCrawler::logDebug("Finished crawling at index " + std::to_string(currentId), __FILE__, __LINE__);
+	crawlData.finalProjectId = start + 1;
+	LoggerCrawler::logDebug("Finished crawling page " + std::to_string(start), __FILE__, __LINE__);
 	delete handler;
 	return crawlData;
 }
 
-CrawlData GithubCrawler::getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler *handler, int &currentId)
+CrawlData GithubCrawler::getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler *handler)
 {
 	CrawlData crawlData;
+	JSON result = json->branch("items");
 	// The maximum amount of URLs we can crawl.
-	int bound = std::min(json->length(), MAXRESULTS);
+	int bound = std::min(result.length(), MAXRESULTS);
 
 	for (int i = 0; i < bound; i++)
 	{
 		logProgress(i, bound);
 
-		JSON branch = json->branch(i);
-		currentId = branch.get<std::string, int>("id", true);
+		JSON branch = result.branch(i);
 
 		// Add URL if possible, if we get a 0 skip this URL, if we get a 1 we have a fatal error.
 		try

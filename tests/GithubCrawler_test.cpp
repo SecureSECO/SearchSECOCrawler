@@ -32,12 +32,12 @@ int finalTimeout(int i)
 
 TEST(CrawlRepositoriesTest, TestBasic)
 {
-	std::string jsonString = "[";
-	for (int i = 0; i < 100; i++)
+	std::string jsonString = "{ \"items\": [";
+	for (int i = 0; i < 30; i++)
 	{
 		std::string base = "{\"html_url\": \"" + std::to_string(i) + "\", \"id\": 25" + ", \"url\": \"fake_url\"}";
 
-		if (i == 99)
+		if (i == 29)
 		{
 			jsonString.append(base);
 		}
@@ -46,19 +46,19 @@ TEST(CrawlRepositoriesTest, TestBasic)
 			jsonString.append(base + ", ");
 		}
 	}
-	jsonString.append("]");
+	jsonString.append("] }");
 	std::string languagesString = R"({"C": 1, "Ruby": 2, "C#": 4, "Python": 8, "Java": 16})";
 	std::string projectString = R"({"stargazers_count": 50})";
 	GithubInterfaceMock *mock = new GithubInterfaceMock();
 	mock->queryToJsonMap = {
-		{"https://api.github.com/repositories?since=0", jsonString},
+		{"https://api.github.com/search/repositories?q=stars:>1&sort=stars&page=0", jsonString},
 		{"fake_url", projectString},
 	};
 	mock->defaultJSON = languagesString;
 	GithubCrawler githubCrawler(mock);
 	CrawlData data = githubCrawler.crawlRepositories(0);
 	int val = finalVal();
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		EXPECT_EQ(std::get<0>(data.URLImportanceList[i]), std::to_string(i));
 		
@@ -72,13 +72,13 @@ TEST(CrawlRepositoriesTest, TestEnd)
 {
 	GithubInterfaceMock *mock = new GithubInterfaceMock();
 	std::string jsonString =
-		R"([{"html_url": "url1", "id": 50, "url": "fake_url"},
+		R"({ "items": [{"html_url": "url1", "id": 50, "url": "fake_url"},
 		{"html_url": "url2", "id": 150, "url": "fake_url"}, 
-		{"html_url": "url3", "id": 250, "url": "fake_url"}])";
+		{"html_url": "url3", "id": 250, "url": "fake_url"}]})";
 	std::string projectString = R"({"stargazers_count": 0})";
 	std::string languagesString = R"({"C": 100000})";
 	mock->queryToJsonMap = {
-		{"https://api.github.com/repositories?since=0", jsonString},
+		{"https://api.github.com/search/repositories?q=stars:>1&sort=stars&page=0", jsonString},
 		{"fake_url", projectString},
 	};
 	mock->defaultJSON = languagesString;
@@ -86,7 +86,7 @@ TEST(CrawlRepositoriesTest, TestEnd)
 	CrawlData data = githubCrawler.crawlRepositories(0);
 
 	EXPECT_EQ(data.URLImportanceList.size(), 3);
-	EXPECT_EQ(data.finalProjectId, 250);
+	EXPECT_EQ(data.finalProjectId, 1);
 }
 
 TEST(CrawlRepositoriesTest, TestErrorThrow)
