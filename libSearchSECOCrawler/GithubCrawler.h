@@ -112,9 +112,8 @@ private:
 	/// </summary>
 	/// <param name="json">The JSON variable.</param>
 	/// <param name="handler">The GitHub error handler.</param>
-	/// <param name="currentId">The current ID.</param>
 	/// <returns>The crawldata retrieved from the JSON variable.</returns>
-	CrawlData getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler *handler, int &currentId);
+	CrawlData getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler *handler);
 
 public:
 	GithubCrawler(GithubInterface *githubInterface)
