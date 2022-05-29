@@ -33,11 +33,11 @@ int finalTimeout(int i)
 TEST(CrawlRepositoriesTest, TestBasic)
 {
 	std::string jsonString = "{ \"items\": [";
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		std::string base = "{\"html_url\": \"" + std::to_string(i) + "\", \"id\": 25" + ", \"url\": \"fake_url\"}";
 
-		if (i == 29)
+		if (i == 99)
 		{
 			jsonString.append(base);
 		}
@@ -51,14 +51,14 @@ TEST(CrawlRepositoriesTest, TestBasic)
 	std::string projectString = R"({"stargazers_count": 50})";
 	GithubInterfaceMock *mock = new GithubInterfaceMock();
 	mock->queryToJsonMap = {
-		{"https://api.github.com/search/repositories?q=stars:>1&sort=stars&page=0", jsonString},
+		{"https://api.github.com/search/repositories?q=sort=stars&per_page=100&q=stars:1..999999", jsonString},
 		{"fake_url", projectString},
 	};
 	mock->defaultJSON = languagesString;
 	GithubCrawler githubCrawler(mock);
-	CrawlData data = githubCrawler.crawlRepositories(0);
+	CrawlData data = githubCrawler.crawlRepositories(999999);
 	int val = finalVal();
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		EXPECT_EQ(std::get<0>(data.URLImportanceList[i]), std::to_string(i));
 		
@@ -78,15 +78,15 @@ TEST(CrawlRepositoriesTest, TestEnd)
 	std::string projectString = R"({"stargazers_count": 0})";
 	std::string languagesString = R"({"C": 100000})";
 	mock->queryToJsonMap = {
-		{"https://api.github.com/search/repositories?q=stars:>1&sort=stars&page=0", jsonString},
+		{"https://api.github.com/search/repositories?q=sort=stars&per_page=100&q=stars:1..999999", jsonString},
 		{"fake_url", projectString},
 	};
 	mock->defaultJSON = languagesString;
 	GithubCrawler githubCrawler(mock);
-	CrawlData data = githubCrawler.crawlRepositories(0);
+	CrawlData data = githubCrawler.crawlRepositories(999999);
 
 	EXPECT_EQ(data.URLImportanceList.size(), 3);
-	EXPECT_EQ(data.finalProjectId, 1);
+	EXPECT_EQ(data.finalProjectId, 0);
 }
 
 TEST(CrawlRepositoriesTest, TestErrorThrow)
