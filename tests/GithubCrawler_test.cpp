@@ -23,7 +23,7 @@ int finalVal()
 
 int finalTimeout(int i)
 {
-	int bytes = (i+1)*(1.0 + 4.0 + 8.0*20 + 16.0);
+	int bytes = 1.0 + 4.0 + 8.0*20 + 16.0;
 	int stars = 50;
 	double maxTimeout = 1800000 + 800000 * sqrt(stars);
 
