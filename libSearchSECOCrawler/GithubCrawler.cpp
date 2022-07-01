@@ -74,7 +74,12 @@ CrawlData GithubCrawler::getCrawlData(std::unique_ptr<JSON> &json, GithubErrorTh
 void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowHandler *handler)
 {
 	std::string repoUrl = branch.get<std::string, std::string>("url", true);
-	std::pair<float, int> parseable = getParseableRatio(repoUrl, crawlData.languages, handler);
+	std::map<std::string, int> languages;
+	for (auto language : languages)
+	{
+		crawlData.languages[language.first] += language.second;
+	}
+	std::pair<float, int> parseable = getParseableRatio(repoUrl, languages, handler);
 	if (errno != 0)
 	{
 		return;
@@ -90,7 +95,7 @@ void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowH
 		}
 		std::string url = branch.get<std::string, std::string>("html_url", true);
 		crawlData.URLImportanceList.push_back(
-			std::make_tuple(url, getImportanceMeasure(stars, parseable), getTimeout(crawlData.languages, stars)));
+			std::make_tuple(url, getImportanceMeasure(stars, parseable), getTimeout(languages, stars)));
 	}
 }
 
