@@ -12,6 +12,7 @@ Utrecht University within the Software Project course.
 #include "ProjectMetadata.h"
 
 #define PARSEABLELANGUAGES {"C", "C++", "Java", "C#", "Python", "JavaScript" }
+#define LANGUAGETIMEOUTRATIOS {{"C", 1}, {"C++", 1}, {"Java", 1}, {"C#", 1}, {"Python", 20}, {"JavaScript", 50}}
 #define MAXRESULTS 100
 
 
@@ -84,6 +85,13 @@ private:
 	int getImportanceMeasure(int stars, std::pair<float, int> percentageAndBytes);
 
 	/// <summary>
+	/// Gets the parse timeout of a given project.
+	/// </summary>
+	/// <param name="percentageAndBytes">the percentage and amount of parseable bytes.</param>
+	/// <returns>An int representing the parse timeout.</returns>
+	long long getTimeout(std::map<std::string, int> percentageAndBytes, int stars);
+
+	/// <summary>
 	/// Logs the progress of a process.
 	/// </summary>
 	/// <param name="step">The current step the process is at.</param>
@@ -104,9 +112,8 @@ private:
 	/// </summary>
 	/// <param name="json">The JSON variable.</param>
 	/// <param name="handler">The GitHub error handler.</param>
-	/// <param name="currentId">The current ID.</param>
 	/// <returns>The crawldata retrieved from the JSON variable.</returns>
-	CrawlData getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler *handler, int &currentId);
+	CrawlData getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler *handler, int &currentStars);
 
 public:
 	GithubCrawler(GithubInterface *githubInterface)

@@ -68,6 +68,10 @@ CrawlData RunCrawler::crawlGithub(CrawlData data, int start, std::string usernam
 	{
 		GithubCrawler githubCrawler(username, token);
 		CrawlData foundData = githubCrawler.crawlRepositories(start);
+		if (errno != 0)
+		{
+			return data;
+		}
 		LoggerCrawler::logDebug("Returning successful", __FILE__, __LINE__);
 		return foundData;
 	}
@@ -86,6 +90,7 @@ ProjectMetadata RunCrawler::findMetadata(std::string const &url, std::string use
 	if (username == "" || token == "")
 	{
 		LoggerCrawler::logWarn("No valid github authentication supplied", __FILE__, __LINE__);
+		errno = 2;
 		return ProjectMetadata();
 	}
 
@@ -112,7 +117,6 @@ ProjectMetadata RunCrawler::findMetadataFromGithub(std::string const &url, std::
 	{
 		GithubCrawler githubCrawler(username, token);
 		ProjectMetadata p = githubCrawler.getProjectMetadata(url);
-		errno = 0;
 		return p;
 	}
 	catch (int e)

@@ -8,37 +8,48 @@ Utrecht University within the Software Project course.
 #include "GithubCrawler.h"
 #include "LoggerCrawler.h"
 
+#include <cmath>
+#include <memory>
+#include <algorithm>
+#include <set>
+
 
 CrawlData GithubCrawler::crawlRepositories(int start)
 {
 	auto strStart = std::to_string(start);
 	GithubErrorThrowHandler *handler = getCorrectGithubHandler();
-	LoggerCrawler::logDebug("Starting crawling at index " + strStart, __FILE__, __LINE__);
-	int currentId;
+	LoggerCrawler::logDebug("Starting crawling at stars " + strStart, __FILE__, __LINE__);
+	int currentStars;
 
 	// Create an unique_ptr from a GitHub request asking for a list of repositories, and use that to get the CrawlData.
-	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/repositories?since=" + strStart));
-	CrawlData crawlData = getCrawlData(json, handler, currentId);
+	std::unique_ptr<JSON> json(githubInterface->getRequest("https://api.github.com/search/repositories?q=sort=stars&per_page=100&q=stars:1.." + strStart));
+	CrawlData crawlData;
+	if (errno != 0)
+	{
+		return crawlData;
+	}
+	crawlData = getCrawlData(json, handler, currentStars);
 
 	LoggerCrawler::logInfo("100% done", __FILE__, __LINE__);
-	crawlData.finalProjectId = currentId;
-	LoggerCrawler::logDebug("Finished crawling at index " + std::to_string(currentId), __FILE__, __LINE__);
+	crawlData.finalProjectId = currentStars;
+	LoggerCrawler::logDebug("Finished crawling at stars " + std::to_string(currentStars), __FILE__, __LINE__);
 	delete handler;
 	return crawlData;
 }
 
-CrawlData GithubCrawler::getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler *handler, int &currentId)
+CrawlData GithubCrawler::getCrawlData(std::unique_ptr<JSON> &json, GithubErrorThrowHandler *handler, int &currentStars)
 {
 	CrawlData crawlData;
+	JSON result = json->branch("items");
 	// The maximum amount of URLs we can crawl.
-	int bound = std::min(json->length(), MAXRESULTS);
+	int bound = std::min(result.length(), MAXRESULTS);
 
 	for (int i = 0; i < bound; i++)
 	{
 		logProgress(i, bound);
 
-		JSON branch = json->branch(i);
-		currentId = branch.get<std::string, int>("id", true);
+		JSON branch = result.branch(i);
+		currentStars = branch.get<std::string, int>("stargazers_count", true);
 
 		// Add URL if possible, if we get a 0 skip this URL, if we get a 1 we have a fatal error.
 		try
@@ -63,14 +74,28 @@ CrawlData GithubCrawler::getCrawlData(std::unique_ptr<JSON> &json, GithubErrorTh
 void GithubCrawler::addURL(JSON &branch, CrawlData &crawlData, GithubErrorThrowHandler *handler)
 {
 	std::string repoUrl = branch.get<std::string, std::string>("url", true);
-	std::pair<float, int> parseable = getParseableRatio(repoUrl, crawlData.languages, handler);
+	std::map<std::string, int> languages;
+	for (auto language : languages)
+	{
+		crawlData.languages[language.first] += language.second;
+	}
+	std::pair<float, int> parseable = getParseableRatio(repoUrl, languages, handler);
+	if (errno != 0)
+	{
+		return;
+	}
 
 	// Only add URLs which contain data that we can parse.
 	if (std::get<1>(parseable) != 0)
 	{
 		int stars = getStars(repoUrl, handler);
+		if (errno != 0)
+		{
+			return;
+		}
 		std::string url = branch.get<std::string, std::string>("html_url", true);
-		crawlData.URLImportanceList.push_back(std::make_pair(url, getImportanceMeasure(stars, parseable)));
+		crawlData.URLImportanceList.push_back(
+			std::make_tuple(url, getImportanceMeasure(stars, parseable), getTimeout(languages, stars)));
 	}
 }
 
@@ -164,6 +189,11 @@ ProjectMetadata GithubCrawler::getProjectMetadata(std::string url)
 			throw 1;
 		}
 	}
+	if (errno != 0)
+	{
+		LoggerCrawler::logDebug("Unable to retrieve all relevant metadata, returning.", __FILE__, __LINE__);
+		return ProjectMetadata();
+	}
 	// Construct projectMetadata using the owner and repo and the JSON variable we just found.
 	ProjectMetadata projectMetadata = constructProjectMetadata(json, getOwnerAndRepo(url));
 
@@ -179,6 +209,11 @@ ProjectMetadata GithubCrawler::constructProjectMetadata(JSON *json, std::tuple<s
 	JSON branch = json->branch("owner");
 	JSON *ownerData = githubInterface->getRequest(branch.get<std::string, std::string>("url"));
 	ProjectMetadata projectMetadata;
+
+	if (errno != 0)
+	{
+		return projectMetadata;
+	}
 
 	LoggerCrawler::logDebug("Getting information about the owner...", __FILE__, __LINE__);
 	std::string email = ownerData->get<std::string, std::string>("email");
@@ -216,9 +251,36 @@ int GithubCrawler::getImportanceMeasure(int stars, std::pair<float, int> percent
 	return 20000000 * percentage * std::log(stars + 1) * std::log(std::log(bytes + 1) + 1);
 }
 
+long long GithubCrawler::getTimeout(std::map<std::string, int> languages, int stars)
+{
+	float totalBytes = 0;
+	std::map<std::string, float> languageRatios = LANGUAGETIMEOUTRATIOS;
+	std::set<std::string> parseableLanguages = PARSEABLELANGUAGES;
+	for (auto const &language : languages)
+	{
+		if (languageRatios.count(language.first) == 1)
+		{
+			totalBytes += language.second * languageRatios[language.first];
+		}
+		else if (parseableLanguages.count(language.first) == 1)
+		{
+			totalBytes += language.second;
+		}
+	}
+	// Max timeout is 30 min for 0 stars, 3 days for 100k stars
+	double maxTimeout = 1800000 + 800000 * sqrt(stars);
+
+	// Minimal timeout of 180000 ms, three minutes.
+	return std::min((double)(180000 + 5000 * sqrt(totalBytes)), maxTimeout);
+}
+
 int GithubCrawler::getStars(std::string repoUrl, GithubErrorThrowHandler *handler)
 {
 	std::unique_ptr<JSON> json(githubInterface->getRequest(repoUrl, handler));
+	if (errno != 0)
+	{
+		return -1;
+	}
 	int stars = json->get<std::string, int>("stargazers_count");
 	return stars;
 }
@@ -227,6 +289,10 @@ std::pair<float, int> GithubCrawler::getParseableRatio(std::string repoUrl, std:
 {
 	std::string languagesUrl = repoUrl + "/languages";
 	std::unique_ptr<JSON> json(githubInterface->getRequest(languagesUrl, handler));
+	if (errno != 0)
+	{
+		return std::pair(0.0, 0);
+	}
 	int total = 0;
 	int parseable = 0;
 	int length = json->length();

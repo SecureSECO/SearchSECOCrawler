@@ -22,6 +22,7 @@ Utrecht University within the Software Project course.
 /// <param name="easy">The curl object.</param>
 void executeCurlQueryWithTimeout(curl::curl_easy &easy)
 {
+	errno = 0;
 	// Put the curl query in an async task to allow for a timeout.
 	std::future<void> future = std::async(std::launch::async, [&easy]() {
 		try
@@ -33,7 +34,8 @@ void executeCurlQueryWithTimeout(curl::curl_easy &easy)
 		{
 			LoggerCrawler::logWarn("CURL ran into a problem", __FILE__, __LINE__);
 			error.print_traceback();
-			throw 0;
+			errno = ENETRESET;
+			return;
 		}
 	});
 	std::future_status status;
@@ -41,7 +43,7 @@ void executeCurlQueryWithTimeout(curl::curl_easy &easy)
 	// If the status is 'deferred', then our async task has not yet started.
 	do
 	{
-		status = future.wait_for(std::chrono::seconds(WAITTIME));
+		status = future.wait_for(std::chrono::minutes(WAITTIME));
 	} while (status == std::future_status::deferred);
 
 	// If the status is not ready (and not deferred either as we have already started the curl query),
@@ -49,7 +51,8 @@ void executeCurlQueryWithTimeout(curl::curl_easy &easy)
 	if (status != std::future_status::ready)
 	{
 		LoggerCrawler::logWarn("CURL ran into a timeout", __FILE__, __LINE__);
-		throw 0;
+		errno = ETIMEDOUT;
+		return;
 	}
 }
 
@@ -114,6 +117,12 @@ JSON* GithubInterface::getRequest(std::string query, GithubErrorThrowHandler *ha
 	{
 		std::this_thread::sleep_for(std::chrono::minutes(5*retry));
 		executeCurlQueryWithTimeout(easy);
+
+		if (errno != 0)
+		{
+			return nullptr;
+		}
+
 		LoggerCrawler::logDebug("CURL query done", __FILE__, __LINE__);
 
 		responseCode = easy.get_info<CURLINFO_RESPONSE_CODE>().get();
