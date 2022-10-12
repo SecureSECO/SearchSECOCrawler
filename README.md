@@ -7,7 +7,7 @@ These URLs are then processed by the Spider. Another important function of the C
 # Installation
 
 ## Dependencies
-* c++17 (std::optional is used).
+* c++20.
 * nlohmann.json from the nuget package manager needs to be installed.
 The crawler has been confirmed to work on Windows 10, and works via the controller also on Ubuntu 18.04+.
 
